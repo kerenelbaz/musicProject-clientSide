@@ -72,7 +72,7 @@
             if (localStorage['onlineUser'] != null) {
                 let loginDiv = document.createElement("div")
                 loginDiv.id ="loggenIn"
-                loginDiv.innerHTML = `<span>logged in as : ${JSON.parse(localStorage['onlineUser']).name}</span>` 
+                loginDiv.innerHTML = `<span>Hello ${JSON.parse(localStorage['onlineUser']).name +"!"}</span>` 
                 document.getElementById("login").appendChild(loginDiv)
             }
         </script>
