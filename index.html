@@ -1,0 +1,220 @@
+<!DOCTYPE HTML>
+<!--
+	Helios by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>KILYRICS</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+		<script src="ajaxCalls.js"></script>
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+
+		<script>
+			// function to show the login form
+			function showLoginForm() {
+				// hide the register button
+				document.getElementById('registerButton').style.display = 'none';
+				document.getElementById('welcome').style.display = 'none';
+
+				// show the login form and submit button
+				document.getElementById('loginForm').style.display = 'block';
+			}
+
+			// function to handle the login form submission
+			$(document).ready(function () {
+            $("#loginForm").submit(LogIn);
+
+        	});
+
+			function LogIn(event) {
+            event.preventDefault(); // prevent the default form submission behavior
+            details = {
+                Email: $("#emailInput").val(),
+                Password: $("#passwordInput").val()
+            }
+
+            ajaxCall("POST", `https://localhost:7260/api/Users/login?email=${details.Email}`, (JSON.stringify(details.Email), JSON.stringify(details.Password)), success, error);
+
+            return false
+        	}
+
+
+
+			// This function is called in case of a success
+			function success(data) {
+				localStorage.setItem('onlineUser', JSON.stringify(data));
+				console.log("fsadsadsa")
+				//window.location.href = "index.html"; 
+			}
+
+			// This function is called in case of an error
+			function error(err) {
+				swal("this user doesn't exist", "try again", "error");
+			}
+
+		</script>
+		
+
+	</head>
+	<body class="homepage is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<div id="header">
+
+					<!-- Inner -->
+						<div class="inner">
+							<div id="welcome">
+								<header>
+									<h1><a href="index.html" id="logo">KILYRICS</a></h1>
+									<hr />
+									<p>Another fine freebie by HTML5 UP</p>
+								</header>
+								<footer>
+									<button id="loginButton" class="button circled scrolly">Sign in</button>
+									<a href="signUpPage.html"><button id="registerButton" class="button circled scrolly">Sign up</button></a>
+								</footer>
+							</div>
+							<div id="loginForm" style="display: none;">
+								<h2 class="loginheader">LOGIN</h2>
+								<form>
+									<label>Email:</label>
+									<input type="email" id="emailInput" required><br />
+									<label>Password:</label>
+									<input type="password" id="passwordInput" required><br />
+									<input type="submit" id="submitBTN" value="Log In" />
+								</form>							
+							</div>
+						</div>
+
+				</div>		
+
+						
+		</div>
+
+		<script>
+			// add event listeners to the buttons
+			document.getElementById('registerButton').onclick = function () {
+				// redirect to the registration page
+				window.location.href = "register.html";
+			};
+			document.getElementById('loginButton').onclick = showLoginForm;
+		</script>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
+
+<!--
+<script>   
+
+
+        // function to show the login form
+        function showLoginForm() {
+            // hide the register button
+            document.getElementById('registerButton').style.display = 'none';
+            document.getElementById('loginButton').style.display = 'none';
+
+            // show the login form and submit button
+            document.getElementById('loginForm').style.display = 'block';
+        }
+
+        // function to handle the login form submission
+        $(document).ready(function () {
+            $("#loginForm").submit(LogIn);
+
+        });
+
+        function LogIn(event) {
+            event.preventDefault(); // prevent the default form submission behavior
+            details = {
+                Email: $("#emailInput").val(),
+                Password: $("#passwordInput").val()
+            }
+
+            ajaxCall("POST", `https://localhost:7040/api/Users/logIn?email=${details.Email}`, (JSON.stringify(details.Email), JSON.stringify(details.Password)), success, error);
+
+            return false
+        }
+
+
+
+        // This function is called in case of a success
+        function success(data) {
+            localStorage.setItem('onlineUser', JSON.stringify(data));
+            window.location.href = "index.html"; 
+        }
+
+        // This function is called in case of an error
+        function error(err) {
+            swal("this user doesn't exist", "try again", "error");
+        }
+
+    </script>
+
+
+</head>
+<body>
+    <img id="logo" src="airbnb_logo_detail.jpg" />
+    <div id="container">
+
+        <div><h1>Welcome</h1></div>
+
+        <div>
+            <button id="registerButton">REGISTER</button>
+            <button id="loginButton">LOG IN</button>
+        </div>
+
+
+
+
+        <div id="loginForm" style="display: none;">
+            <h2>LOGIN</h2>
+            <form>
+                <label>Email:</label>
+                <input type="email" id="emailInput" required><br />
+                <label>Password:</label>
+                <input type="password" id="passwordInput" required><br />
+                <input type="submit" id="submitBTN" value="Log In" />
+            </form>
+            
+        </div>
+        <img src="helloGif.gif" />
+    </div>
+
+
+
+
+
+    <script>
+        // add event listeners to the buttons
+        document.getElementById('registerButton').onclick = function () {
+            // redirect to the registration page
+            window.location.href = "register.html";
+        };
+        document.getElementById('loginButton').onclick = showLoginForm;
+    </script>
+
+
+
+
+
+
+-->

@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<!--
+	Helios by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Left Sidebar - Helios by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+		<script src="ajaxCalls.js"></script>
+		<script>
+			$(document).ready(function () {
+				$("#myForm").submit(f1); // bind the submit event to a function called f1
+			});
+
+			function AddUser() {
+				User = {
+					Name: $("#FullName").val(),
+					Country: $("#Country").val(),
+					Email: $("#Email").val(),
+					Password: $("#Password").val(),
+					PhoneNumber: $("#Phone").val()
+
+				}
+				ajaxCall("POST", "https://localhost:7260/api/Users/registration", JSON.stringify(User), success, error);
+			}
+
+			// This function is called in case of a success
+			function success(data) {
+				if (data) {
+					swal({
+						title: "Added Successfully!",
+						text: "Great Job",
+						icon: "success",
+						buttons: {
+							confirm: {
+								text: "OK",
+								value: true,
+								visible: true,
+								className: "",
+								closeModal: true
+							}
+						}
+					}).then((value) => {
+						if (value) {
+							window.location.href = "index.html";
+						}
+					});
+				}
+				else {
+					swal("It seems like there is already a user with these attributes", "Oops", "error");
+				}
+			}
+			// This function is called in case of an error
+			function error(err) {
+				swal("Somthing went wrong!", "Oops", "error");
+			}
+			function f1() {
+				AddUser();
+
+				return false; // the return false will prevent the form from being submitted
+				// hence the page will not reload
+			}
+		</script>
+
+	</head>
+	
+	<body class="left-sidebar is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<div id="header">
+					<!-- Inner -->
+						<div class="inner">
+							<header>
+								<h1><a href="index.html" id="logo">KILYRICS</a></h1>
+							</header>
+						</div>
+				</div>
+
+			<!-- Main -->
+				<div class="wrapper style1">
+
+					<div class="container">
+						<form id="myForm">
+							<h2>Create your acount</h2>
+							
+							<div class="form-group">
+								<label class="registerLabel"><span class="red-star">★ </span>Full Name</label>
+								<input type="text" class="form-control" id="FullName" placeholder="Enter your name" required>
+							</div>
+							<div class="form-group">
+								<label class="registerLabel"><span class="red-star">★ </span>Country</label>
+								<input type="text" class="form-control" id="Country" placeholder="Enter your country" required>
+							</div>
+							<div class="form-group">
+								<label class="registerLabel"><span class="red-star">★ </span>Email</label>
+								<input type="email" class="form-control" id="Email" placeholder="Enter your Email" required />
+							</div>
+							<div class="form-group">
+								<label class="registerLabel"><span class="red-star">★ </span>Password</label>
+								<input type="password" minlength="6" class="form-control" id="Password" placeholder="Enter your password" required />
+							</div>			
+							<div class="form-group">
+								<label class="registerLabel"><span class="red-star">★ </span>Phone number</label>
+								<input type="tel" class="form-control" placeholder="Enter your phone number ddd-ddddddd" id="Phone"
+									   pattern="[0-9]{3}-[0-9]{7}"
+									   oninvalid="this.setCustomValidity('Format should be ddd-ddddddd')"
+									   oninput="this.setCustomValidity('')"required />
+							</div>
+				
+							<input type="submit" value="Submit" id="submitBTN" />
+						</form>
+						
+					</div>
+
+				</div>					
+		</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
