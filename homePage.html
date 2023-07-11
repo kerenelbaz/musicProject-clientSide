@@ -11,6 +11,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+		<script src="./scripts/ajaxCalls.js"></script>
 	</head>
 	<body class="left-sidebar is-preload">
 		<div id="page-wrapper">
@@ -51,6 +53,7 @@
 								<li><a href="left-sidebar.html">Left Sidebar</a></li>
 								<li><a href="right-sidebar.html">Right Sidebar</a></li>
 								<li><a href="no-sidebar.html">No Sidebar</a></li>
+								<li onclick="logOut()"><a href="">Log Out</a></li>
 							</ul>
 						</nav>
 
@@ -78,14 +81,94 @@
         </script>
 
 		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.dropotron.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.dropotron.min.js"></script>
+		<script src="assets/js/jquery.scrolly.min.js"></script>
+		<script src="assets/js/jquery.scrollex.min.js"></script>
+		<script src="assets/js/browser.min.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/main.js"></script>
+
+
+
+
+
+		<script>
+		// 	let container = document.createElement("div");
+        // 	container.id = "container";
+        // 	document.body.appendChild(container);
+
+        // for (var i in Arr) {
+        //     let card = document.createElement("div");
+        //     card.id = "card";
+        //     container.appendChild(card);
+
+        //     let img = document.createElement("img");
+        //     img.id = "appartmentIMG";
+        //     img.src = Arr[i].picture_url;
+        //     card.appendChild(img);
+
+        //     let name = document.createElement("h3");
+        //     name.innerHTML = Arr[i].name;;
+        //     card.appendChild(name);
+
+        //     let host_location = document.createElement("h4");
+        //     host_location.innerHTML = Arr[i].host_location;;
+        //     card.appendChild(host_location);
+
+        //     let id = document.createElement("h4");
+        //     id.innerHTML = "ID: " + Arr[i].id;
+        //     card.appendChild(id);
+
+        //     let bedrooms = document.createElement("p");
+        //     bedrooms.innerHTML = "Bedrooms: " + Arr[i].bedrooms;
+        //     card.appendChild(bedrooms);
+
+        //     let price = document.createElement("p");
+        //     price.innerHTML = "Price: " + Arr[i].price;
+        //     card.appendChild(price);
+
+        //     let rating = document.createElement("p");
+        //     rating.innerHTML = "Rrating: " + Arr[i].review_scores_rating + "out of 5 </br> </br >";
+        //     card.appendChild(rating);
+
+
+
+        //     let description = document.createElement("p");
+        //     description.id = "description";
+        //     description.innerHTML = "Description: </br> " + Arr[i].description;
+        //     card.appendChild(description);
+
+
+        //     let neighbourhood = document.createElement("p");
+        //     neighbourhood.innerHTML = "</br>neighbourhood: " + Arr[i].neighbourhood;
+        //     card.appendChild(neighbourhood);
+
+        //     let addAppartementBTN = document.createElement("button");
+        //     addAppartementBTN.id = i;
+        //     addAppartementBTN.onclick = function () {
+        //         sendToServer(this.id);
+        //     };
+        //     addAppartementBTN.innerHTML = "Add Appartmaent";
+        //     card.appendChild(addAppartementBTN);
+        // }
+
+
+
+		function logOut() {
+			swal("Are you sure you want to log out?", { buttons: ["No", "Yes"],}).then((value) => {
+						if (value) {
+							window.location.href = "welcomePage.html";
+						}
+					});
+		}
+
+
+
+		</script>
+
+			
 
 	</body>
 </html>
