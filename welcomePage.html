@@ -40,7 +40,7 @@
                 Password: $("#passwordInput").val()
             }
 
-            ajaxCall("POST", `https://localhost:7260/api/Users/login?email=${details.Email}`, (JSON.stringify(details.Email), JSON.stringify(details.Password)), success, error);
+            ajaxCall("POST", `https://localhost:7062/api/User/login?email=${details.Email}`, (JSON.stringify(details.Email), JSON.stringify(details.Password)), success, error);
 
             return false
         	}

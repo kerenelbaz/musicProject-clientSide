@@ -13,8 +13,182 @@
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 		<script src="./scripts/ajaxCalls.js"></script>
+
+
+		<script>
+			function sendToServer(index) {
+				const api = "https://localhost:7062/api/Song";
+				Song = {
+					id: Arr[index].id,
+					city: "Amsterdam",
+					address: Arr[index].neighbourhood,
+					price: parseFloat((Arr[index].price).replace('$', '')),
+					roomNum: parseInt(Arr[index].bedrooms),
+					imgUrl: Arr[index].picture_url,
+					apartmentName: Arr[index].name,
+					reviewScore: parseFloat(Arr[index].review_scores_rating),
+					description: Arr[index].description
+				};
+	
+				ajaxCall("POST", api, JSON.stringify(flat), successCB, errorCB)
+			}
+	
+	
+	
+			function successCB(data) {
+				if (data) {
+					alert("Appartment added");
+				}
+	
+				if (data == false) {
+					alert("This appartment already exist");
+				}
+			}
+			function errorCB(data) {
+				if (data == false) {
+					alert("error");
+				}
+	
+			}
+	
+	
+		</script>
+	
+	
+		<style>
+	
+			
+	
+			#container {
+				height: 100%;
+				text-align: center;
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
+				align-items: center;
+			}
+	
+			#card {
+				
+				height: 650px;
+				width: 400px;
+				margin: 1%;
+				background-color: white;
+				font-family: Candara;
+				border: 3px solid rgb(230, 221, 221);
+				border-radius: 10px;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				text-align: center; 
+			}
+	
+			
+	
+			#card img {
+				height: 220px;
+				width: 100%;
+				border-radius: 7px;
+			}
+	
+			h4 {
+				margin: 1px;
+			}
+	
+			p {
+				margin: 1px;
+				text-align: left;
+			}
+	
+			#lyrics {
+				margin: 10px;
+				float: left;
+				height: 300px;
+				overflow-y: scroll;
+				
+			}
+			#lyrics::-webkit-scrollbar-track , body::-webkit-scrollbar-track
+			{
+				-webkit-box-shadow: inset 0 0 6px rgba(114, 59, 114, 0.24);
+				border-radius: 10px;
+				background-color: #F5F5F5;
+			}
+
+			#lyrics::-webkit-scrollbar , body::-webkit-scrollbar
+			{
+				width: 12px;
+				background-color: #f1efef;
+			}
+
+			#lyrics::-webkit-scrollbar-thumb , body::-webkit-scrollbar-thumb
+			{
+				border-radius: 10px;
+				-webkit-box-shadow: inset 0 0 6px rgba(56, 47, 47, 0.295);
+				background-color: #655068c5;
+			}
+			/* body::-webkit-scrollbar-track {
+			-webkit-box-shadow: inset 0 0 6px rgba(114, 59, 114, 0.24);
+			border-radius: 10px;
+			background-color: #F5F5F5;
+			}
+
+			body::-webkit-scrollbar {
+				width: 12px;
+				background-color: #f1efef;
+			}
+
+			body::-webkit-scrollbar-thumb {
+				border-radius: 10px;
+				-webkit-box-shadow: inset 0 0 6px rgba(56, 47, 47, 0.295);
+				background-color: #655068c5;
+			} */
+
+
+	
+			#card button {
+				margin-top: 20px;
+				background-color: hsla(285, 33%, 26%, 0.808);
+				color: rgb(179, 169, 169);
+				border: none;
+				border-radius: 50px;
+				font-size: 15px;
+
+			}
+	
+	
+		
+			.buttons {
+				margin-left: 20px;
+			}
+		</style>
+	
+	
+	
+	
+		
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	</head>
-	<body class="left-sidebar is-preload">
+	<body class="left-sidebar is-preload" onload="getAllSONongsFromServer()">
 		<div id="page-wrapper">
 
 			<!-- Header -->
@@ -32,6 +206,9 @@
 						<nav id="nav">
 							<ul>
 								<li><a href="homePage.html">Home</a></li>
+
+								<li><a href="left-sidebar.html">Your Favorites</a></li>								
+								<li><a href="right-sidebar.html">Artists</a></li>
 								<li>
 									<a href="#">Search Music</a>
 									<ul>
@@ -41,25 +218,14 @@
 										
 									</ul>
 								</li>
-								<li><a href="left-sidebar.html">Left Sidebar</a></li>
-								<li><a href="right-sidebar.html">Right Sidebar</a></li>
-								<li><a href="no-sidebar.html">No Sidebar</a></li>
+								
+								
+								<li><a href="no-sidebar.html">hidon??</a></li>
 								<li onclick="logOut()"><a href="">Log Out</a></li>
 							</ul>
 						</nav>
 
 				</div>
-
-			<!-- Main -->
-				<div class="wrapper style1">
-
-					<div class="container">
-						
-					</div>
-
-				</div>
-
-			
 
 		</div>
         <script>
@@ -86,64 +252,76 @@
 
 
 		<script>
-		// 	let container = document.createElement("div");
-        // 	container.id = "container";
-        // 	document.body.appendChild(container);
 
-        // for (var i in Arr) {
-        //     let card = document.createElement("div");
-        //     card.id = "card";
-        //     container.appendChild(card);
+		function getAllSONongsFromServer() {
+            const api = `https://localhost:7062/api/Song`;
+            ajaxCall("GET", api, "", successCB, errorCB);
+        }
+        function successCB(data) {
+            if (data)
+                renderAllSongs(data);
+            else { alert("Somthing wrong"); }
 
-        //     let img = document.createElement("img");
-        //     img.id = "appartmentIMG";
-        //     img.src = Arr[i].picture_url;
-        //     card.appendChild(img);
+        }
 
-        //     let name = document.createElement("h3");
-        //     name.innerHTML = Arr[i].name;;
-        //     card.appendChild(name);
-
-        //     let host_location = document.createElement("h4");
-        //     host_location.innerHTML = Arr[i].host_location;;
-        //     card.appendChild(host_location);
-
-        //     let id = document.createElement("h4");
-        //     id.innerHTML = "ID: " + Arr[i].id;
-        //     card.appendChild(id);
-
-        //     let bedrooms = document.createElement("p");
-        //     bedrooms.innerHTML = "Bedrooms: " + Arr[i].bedrooms;
-        //     card.appendChild(bedrooms);
-
-        //     let price = document.createElement("p");
-        //     price.innerHTML = "Price: " + Arr[i].price;
-        //     card.appendChild(price);
-
-        //     let rating = document.createElement("p");
-        //     rating.innerHTML = "Rrating: " + Arr[i].review_scores_rating + "out of 5 </br> </br >";
-        //     card.appendChild(rating);
+		function errorCB(data) {
+            if (data == false)
+                alert("error");
+        }
 
 
 
-        //     let description = document.createElement("p");
-        //     description.id = "description";
-        //     description.innerHTML = "Description: </br> " + Arr[i].description;
-        //     card.appendChild(description);
+
+		function renderAllSongs(songsArr) {
+
+			let container = document.createElement("div");
+        	container.id = "container";
+        	document.body.appendChild(container);
+
+        	for (var i = 0 ; i<500 ; i++) {
+				let card = document.createElement("div");
+				card.id = "card";
+				container.appendChild(card);
+
+				let img = document.createElement("img");
+				img.id = "appartmentIMG";
+				img.src = "./images/pic01.jpg";
+				card.appendChild(img);
+
+				let artist = document.createElement("h4");
+				artist.innerHTML = "Artist: "+ songsArr[i].artist;
+				card.appendChild(artist);
+
+				let nameOfSong = document.createElement("h4");
+				nameOfSong.innerHTML = "Name: " + songsArr[i].songName;
+				card.appendChild(nameOfSong);
+
+				
+
+				//this is goind to the artists page!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+				// let description = document.createElement("p");
+				// description.id = "description";
+				// description.innerHTML = "Description: </br> " + Arr[i].description;
+				// card.appendChild(description);
 
 
-        //     let neighbourhood = document.createElement("p");
-        //     neighbourhood.innerHTML = "</br>neighbourhood: " + Arr[i].neighbourhood;
-        //     card.appendChild(neighbourhood);
+				let lyrics = document.createElement("p");
+				lyrics.id = "lyrics";
+				lyrics.innerHTML = "lyrics: </br> " + songsArr[i].lyrics;
+				card.appendChild(lyrics);
 
-        //     let addAppartementBTN = document.createElement("button");
-        //     addAppartementBTN.id = i;
-        //     addAppartementBTN.onclick = function () {
-        //         sendToServer(this.id);
-        //     };
-        //     addAppartementBTN.innerHTML = "Add Appartmaent";
-        //     card.appendChild(addAppartementBTN);
-        // }
+
+			
+				let addToFavBTN = document.createElement("button");
+				addToFavBTN.id = songsArr[i].songId;
+				addToFavBTN.onclick = function () {
+					sendToServer(this.id);
+				};
+				addToFavBTN.innerHTML = "Add To Your Favorites";
+				card.appendChild(addToFavBTN);
+        	}
+		}
 
 
 

@@ -29,7 +29,7 @@
 					PhoneNumber: $("#Phone").val()
 
 				}
-				ajaxCall("POST", "https://localhost:7260/api/Users/registration", JSON.stringify(User), success, error);
+				ajaxCall("POST", "https://localhost:7062/api/User/registration", JSON.stringify(User), success, error);
 			}
 
 			// This function is called in case of a success
