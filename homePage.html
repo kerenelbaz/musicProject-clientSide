@@ -1,284 +1,211 @@
 <!DOCTYPE HTML>
-<!--
-	Helios by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
 <html>
-	<head>
-		<title>Left Sidebar - Helios by HTML5 UP</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-		<script src="./scripts/ajaxCalls.js"></script>
+<head>
+	<title>KILYRICS</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="./scripts/ajaxCalls.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<style>
+		#container {
+			height: 100%;
+			text-align: center;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			align-items: center;
+		}
 
+		#card {
+			height: 650px;
+			width: 400px;
+			margin: 1%;
+			background-color: white;
+			font-family: Candara;
+			border: 3px solid rgb(230, 221, 221);
+			border-radius: 10px;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			text-align: center;
+		}
 
-		<script>
-			function sendToServer(index) {
-				const api = "https://localhost:7062/api/Song";
-				Song = {
-					id: Arr[index].id,
-					city: "Amsterdam",
-					address: Arr[index].neighbourhood,
-					price: parseFloat((Arr[index].price).replace('$', '')),
-					roomNum: parseInt(Arr[index].bedrooms),
-					imgUrl: Arr[index].picture_url,
-					apartmentName: Arr[index].name,
-					reviewScore: parseFloat(Arr[index].review_scores_rating),
-					description: Arr[index].description
-				};
-	
-				ajaxCall("POST", api, JSON.stringify(flat), successCB, errorCB)
-			}
-	
-	
-	
-			function successCB(data) {
-				if (data) {
-					alert("Appartment added");
-				}
-	
-				if (data == false) {
-					alert("This appartment already exist");
-				}
-			}
-			function errorCB(data) {
-				if (data == false) {
-					alert("error");
-				}
-	
-			}
-	
-	
-		</script>
-	
-	
-		<style>
-	
-			
-	
-			#container {
-				height: 100%;
-				text-align: center;
-				display: flex;
-				flex-wrap: wrap;
-				justify-content: center;
-				align-items: center;
-			}
-	
-			#card {
-				
-				height: 650px;
-				width: 400px;
-				margin: 1%;
-				background-color: white;
-				font-family: Candara;
-				border: 3px solid rgb(230, 221, 221);
-				border-radius: 10px;
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-				align-items: center;
-				text-align: center; 
-			}
-	
-			
-	
-			#card img {
-				height: 220px;
-				width: 100%;
-				border-radius: 7px;
-			}
-	
-			h4 {
-				margin: 1px;
-			}
-	
-			p {
-				margin: 1px;
-				text-align: left;
-			}
-	
-			#lyrics {
-				margin: 10px;
-				float: left;
-				height: 300px;
-				overflow-y: scroll;
-				
-			}
-			#lyrics::-webkit-scrollbar-track , body::-webkit-scrollbar-track
-			{
-				-webkit-box-shadow: inset 0 0 6px rgba(114, 59, 114, 0.24);
-				border-radius: 10px;
-				background-color: #F5F5F5;
-			}
+		#card img {
+			height: 220px;
+			width: 100%;
+			border-radius: 7px;
+		}
 
-			#lyrics::-webkit-scrollbar , body::-webkit-scrollbar
-			{
-				width: 12px;
-				background-color: #f1efef;
-			}
+		h4 {
+			margin: 1px;
+		}
 
-			#lyrics::-webkit-scrollbar-thumb , body::-webkit-scrollbar-thumb
-			{
-				border-radius: 10px;
-				-webkit-box-shadow: inset 0 0 6px rgba(56, 47, 47, 0.295);
-				background-color: #655068c5;
-			}
-			/* body::-webkit-scrollbar-track {
+		p {
+			margin: 1px;
+			text-align: left;
+		}
+
+		#lyrics {
+			margin: 10px;
+			float: left;
+			height: 300px;
+			overflow-y: scroll;
+		}
+
+		#lyrics::-webkit-scrollbar-track,
+		body::-webkit-scrollbar-track {
 			-webkit-box-shadow: inset 0 0 6px rgba(114, 59, 114, 0.24);
 			border-radius: 10px;
 			background-color: #F5F5F5;
-			}
+		}
 
-			body::-webkit-scrollbar {
-				width: 12px;
-				background-color: #f1efef;
-			}
+		#lyrics::-webkit-scrollbar,
+		body::-webkit-scrollbar {
+			width: 12px;
+			background-color: #f1efef;
+		}
 
-			body::-webkit-scrollbar-thumb {
-				border-radius: 10px;
-				-webkit-box-shadow: inset 0 0 6px rgba(56, 47, 47, 0.295);
-				background-color: #655068c5;
-			} */
+		#lyrics::-webkit-scrollbar-thumb,
+		body::-webkit-scrollbar-thumb {
+			border-radius: 10px;
+			-webkit-box-shadow: inset 0 0 6px rgba(56, 47, 47, 0.295);
+			background-color: #655068c5;
+		}
 
+
+
+		#card button {
+			margin-top: 20px;
+			background-color: hsla(285, 33%, 26%, 0.808);
+			color: rgb(179, 169, 169);
+			border: 1px solid rgb(242, 233, 243);
+			/* border: none; */
+			border-radius: 50px;
+			font-size: 15px;
+			
+		}
 
 	
-			#card button {
-				margin-top: 20px;
-				background-color: hsla(285, 33%, 26%, 0.808);
-				color: rgb(179, 169, 169);
-				border: none;
-				border-radius: 50px;
-				font-size: 15px;
+		#card button:hover .fa-star {
+			color: rgb(236, 248, 7);
+			
 
-			}
-	
-	
+		}
+
+
 		
-			.buttons {
-				margin-left: 20px;
-			}
-		</style>
-	
-	
-	
-	
-		
-		
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	</head>
-	<body class="left-sidebar is-preload" onload="getAllSONongsFromServer()">
-		<div id="page-wrapper">
-
-			<!-- Header -->
-				<div id="header">
-
-					<!-- Inner -->
-						<div class="inner">
-							<header>
-								<h1><a href="index.html" id="logo">KILYRICS</a></h1>
-                                <div id="login"></div>
-							</header>
-						</div>
-
-					<!-- Nav -->
-						<nav id="nav">
-							<ul>
-								<li><a href="homePage.html">Home</a></li>
-
-								<li><a href="left-sidebar.html">Your Favorites</a></li>								
-								<li><a href="right-sidebar.html">Artists</a></li>
-								<li>
-									<a href="#">Search Music</a>
-									<ul>
-										<li><a href="#">By Name Of Song</a></li>
-										<li><a href="#">By Artist</a></li>
-										<li><a href="#">By Lyrics</a></li>
-										
-									</ul>
-								</li>
-								
-								
-								<li><a href="no-sidebar.html">hidon??</a></li>
-								<li onclick="logOut()"><a href="">Log Out</a></li>
-							</ul>
-						</nav>
-
-				</div>
-
+	</style>
+</head>
+<body class="left-sidebar is-preload" onload="HomeRender()">
+	<div id="page-wrapper">
+		<!-- Header -->
+		<div id="header">
+			<!-- Inner -->
+			<div class="inner">
+				<header>
+					<h1><a href="homePage.html" id="logo">KILYRICS</a></h1>
+					<h1 id="whichPage"></h1>
+					<div id="helloUserName"></div>
+				</header>
+			</div>
+			<!-- Nav -->
+			<nav id="nav">
+				<ul>
+					<li onclick="HomeRender()"><a href="#">Home</a></li>
+					<li onclick="renderFavorites(JSON.parse(localStorage['onlineUser']).userId)"><a href="#">Your Favorites</a></li>
+					<li><a href="#">Artists</a></li>
+					<li>
+						<a href="#">Search Music</a>
+						<ul>
+							<li onclick=""><a href="#">By Name Of Song</a></li>
+							<li onclick=""><a href="#">By Artist</a></li>
+							<li onclick=""><a href="#">By Lyrics</a></li>
+						</ul>
+					</li>
+					<li><a href="no-sidebar.html">hidon??</a></li>
+					<li onclick="logOut()"><a href="#">Log Out</a></li>
+				</ul>
+			</nav>
 		</div>
-        <script>
-            if (localStorage['onlineUser'] != null) {
-                let loginDiv = document.createElement("div")
-                loginDiv.id ="loggenIn"
-                loginDiv.innerHTML = `<span>Hello ${JSON.parse(localStorage['onlineUser']).name +"!"}</span>` 
-                document.getElementById("login").appendChild(loginDiv)
-            }
-        </script>
+		<div id="container"></div>
+	</div>
 
-		<!-- Scripts -->
-		<script src="assets/js/jquery.min.js"></script>
-		<script src="assets/js/jquery.dropotron.min.js"></script>
-		<script src="assets/js/jquery.scrolly.min.js"></script>
-		<script src="assets/js/jquery.scrollex.min.js"></script>
-		<script src="assets/js/browser.min.js"></script>
-		<script src="assets/js/breakpoints.min.js"></script>
-		<script src="assets/js/util.js"></script>
-		<script src="assets/js/main.js"></script>
+	<script>
+		if (localStorage['onlineUser'] != null) {
+			let loginDiv = document.createElement("div");
+			loginDiv.id = "loggedIn";
+			loginDiv.innerHTML = `<span>Hello ${JSON.parse(localStorage['onlineUser']).name}!</span>`;
+			document.getElementById("helloUserName").appendChild(loginDiv);
+		}
+	</script>
 
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.dropotron.min.js"></script>
+	<script src="assets/js/jquery.scrolly.min.js"></script>
+	<script src="assets/js/jquery.scrollex.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+	<script>
 
-
-
-
-		<script>
-
-		function getAllSONongsFromServer() {
-            const api = `https://localhost:7062/api/Song`;
-            ajaxCall("GET", api, "", successCB, errorCB);
-        }
-        function successCB(data) {
-            if (data)
-                renderAllSongs(data);
-            else { alert("Somthing wrong"); }
-
-        }
-
-		function errorCB(data) {
-            if (data == false)
-                alert("error");
-        }
+		let userID = JSON.parse(localStorage['onlineUser']).userId;
+		let favoriteSongsOfUserArr = {}; //this array will be used in 'GetFavoriteSongsOfUser' function that do the ajaxCall and read all the favorites songs.
+		GetFavoriteSongsOfUser(JSON.parse(userID));
 
 
 
 
-		function renderAllSongs(songsArr) {
 
-			let container = document.createElement("div");
-        	container.id = "container";
-        	document.body.appendChild(container);
 
-        	for (var i = 0 ; i<500 ; i++) {
+		function addToFavorite(songId) {
+			if (localStorage['onlineUser'] != null) {
+				let userId = JSON.parse(localStorage['onlineUser']).userId;
+				const api = `https://localhost:7062/api/User/insertSongToFavorites?songId=${songId}&userId=${userId}`;
+				ajaxCall("POST", api, "", successCB2, errorCB);
+			}
+		}
+
+		function successCB2(data) {
+			if (data) {
+				alert("Song added to your favorites");
+
+			}
+
+			if (data == false) {
+				alert("This song is already in your favorites");
+			}
+		}
+
+		
+
+		function HomeRender() {
+			
+			whichPage = document.getElementById("whichPage");
+			whichPage.innerHTML = "HOME";
+			GetFavoriteSongsOfUser(JSON.parse(userID));
+			const api = `https://localhost:7062/api/Song`;
+			ajaxCall("GET", api, "", successCB1, errorCB);
+		}
+
+		function successCB1(data) {
+			if (data)
+				renderSongs(data);
+			else
+				alert("Something went wrong");
+		}
+
+
+		function renderSongs(songsArr) {
+			let container = document.getElementById("container");
+			container.innerHTML = "";
+
+			for (var i = 0; i <songsArr.length; i++) {
 				let card = document.createElement("div");
 				card.id = "card";
 				container.appendChild(card);
@@ -289,55 +216,163 @@
 				card.appendChild(img);
 
 				let artist = document.createElement("h4");
-				artist.innerHTML = "Artist: "+ songsArr[i].artist;
+				artist.innerHTML = "Artist: " + songsArr[i].artist;
 				card.appendChild(artist);
 
 				let nameOfSong = document.createElement("h4");
 				nameOfSong.innerHTML = "Name: " + songsArr[i].songName;
 				card.appendChild(nameOfSong);
 
-				
-
-				//this is goind to the artists page!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-				// let description = document.createElement("p");
-				// description.id = "description";
-				// description.innerHTML = "Description: </br> " + Arr[i].description;
-				// card.appendChild(description);
-
-
 				let lyrics = document.createElement("p");
 				lyrics.id = "lyrics";
-				lyrics.innerHTML = "lyrics: </br> " + songsArr[i].lyrics;
+				lyrics.innerHTML = "Lyrics: <br/>" + songsArr[i].lyrics;
 				card.appendChild(lyrics);
 
+				let addOrRemoveSongBTN = document.createElement("button");
+				addOrRemoveSongBTN.id = songsArr[i].songId;
+				addOrRemoveSongBTN.innerHTML = "<i class='fa-solid fa-star'></i>";
 
-			
-				let addToFavBTN = document.createElement("button");
-				addToFavBTN.id = songsArr[i].songId;
-				addToFavBTN.onclick = function () {
-					sendToServer(this.id);
+				for (var j = 0 ; j<favoriteSongsOfUserArr.length ; j++){
+					if(favoriteSongsOfUserArr[j].songId == songsArr[i].songId){
+						addOrRemoveSongBTN.style.color='rgb(236, 248, 7)';
+					}
+				}
+
+				addOrRemoveSongBTN.onclick = function () {
+					if (this.style.color=='rgb(236, 248, 7)'){
+						this.style.color='rgb(179, 169, 169)';
+						removeSongFromFav(this.id);
+					}
+					else{
+						this.style.color='rgb(236, 248, 7)';
+						addToFavorite(this.id);
+					}
 				};
-				addToFavBTN.innerHTML = "Add To Your Favorites";
-				card.appendChild(addToFavBTN);
-        	}
+				card.appendChild(addOrRemoveSongBTN);
+			}
 		}
+	
+
 
 
 
 		function logOut() {
-			swal("Are you sure you want to log out?", { buttons: ["No", "Yes"],}).then((value) => {
-						if (value) {
-							window.location.href = "welcomePage.html";
-						}
-					});
+			swal("Are you sure you want to log out?", {
+				buttons: ["No", "Yes"],
+			}).then((value) => {
+				if (value) {
+					window.location.href = "welcomePage.html";
+				}
+			});
+		}
+
+		function renderFavorites(userId) {
+			let whichPage = document.getElementById("whichPage");
+			whichPage.innerHTML = "YOUR FAVORITES";
+			GetFavoriteSongsOfUser(userId);
+			
+			
 		}
 
 
 
-		</script>
+		function GetFavoriteSongsOfUser(userId){
+			const api = `https://localhost:7062/api/User/GetFavoriteSongsOfUser?userId=${userId}`;
+			ajaxCall("GET", api, "", successCB3, errorCB);
+		}
+		
+		function successCB3(data) {
+			if (data){
+				favoriteSongsOfUserArr = data;
+				let whichPage = document.getElementById("whichPage");
+				if (whichPage.innerHTML == "YOUR FAVORITES" ){
+					renderSongs(favoriteSongsOfUserArr);
+				}
+			}
 
-			
 
-	</body>
+			else
+				alert("Something went wrong");
+		}
+
+
+
+
+		// function renderFavoritesSongsOfUser(songsArr) {
+		// 	let container = document.getElementById("container");
+		// 	container.innerHTML = "";
+
+		// 	for (var i = 0; i < songsArr.length; i++) {
+		// 		let card = document.createElement("div");
+		// 		card.id = "card";
+		// 		container.appendChild(card);
+
+		// 		let img = document.createElement("img");
+		// 		img.src = "./images/pic01.jpg";
+		// 		card.appendChild(img);
+
+		// 		let artist = document.createElement("h4");
+		// 		artist.innerHTML = "Artist: " + songsArr[i].artist;
+		// 		card.appendChild(artist);
+
+		// 		let nameOfSong = document.createElement("h4");
+		// 		nameOfSong.innerHTML = "Name: " + songsArr[i].songName;
+		// 		card.appendChild(nameOfSong);
+
+		// 		let lyrics = document.createElement("p");
+		// 		lyrics.id = "lyrics";
+		// 		lyrics.innerHTML = "Lyrics: <br/>" + songsArr[i].lyrics;
+		// 		card.appendChild(lyrics);
+
+		// 		let removeFromFavBTN = document.createElement("button");
+		// 		removeFromFavBTN.id = songsArr[i].songId;
+		// 		removeFromFavBTN.onclick = function () {
+		// 		removeSongFromFav(this.id);
+		// 		};
+		// 		removeFromFavBTN.innerHTML = "<i class='fa-solid fa-star'></i>";
+		// 		removeFromFavBTN.style.color = "rgb(236, 248, 7)";
+
+		// 		// Add event listeners for mouseover and mouseout
+		// 		removeFromFavBTN.onmouseover = function () {
+		// 			this.style.color = "rgb(179, 169, 169)";
+		// 			this.innerHTML = "Remove from favorites";
+					
+		// 		};
+
+		// 		removeFromFavBTN.onmouseout = function () {
+		// 			removeFromFavBTN.innerHTML = "<i class='fa-solid fa-star'></i>";
+		// 			this.style.color = "rgb(236, 248, 7)";
+		// 		};
+
+		// 		card.appendChild(removeFromFavBTN);
+
+
+
+		// 		}
+		// 	}
+
+
+		function removeSongFromFav(songId){
+			const api = `https://localhost:7062/api/User/deleteSongFromFavorites?songId=${songId}&userId=${JSON.parse(localStorage['onlineUser']).userId}`;
+            ajaxCall("DELETE", api, "", successCBDelete, errorCB);
+
+		}
+
+        function successCBDelete(data) {
+            alert("song deleted");
+            favoriteSongsOfUserArr = data;
+        }
+
+		function errorCB(data) {
+			if (data == false) {
+				alert("Error");
+			}
+		}
+
+
+
+
+
+	</script>
+</body>
 </html>
