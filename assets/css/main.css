@@ -1944,7 +1944,7 @@ input, select, textarea {
 		display: block;
 		font-weight: 400;
 		color: rgb(0, 0, 0);
-		margin: 0 0 1em 0;
+		margin:  0.5em 0 0 0;
 	}
 
 	form input[type="text"],
@@ -1952,15 +1952,17 @@ input, select, textarea {
 	form input[type="password"],
 	form input[type="tel"],
 	form select,
-	form textarea {
+	form textarea, 
+	#searchBox {
 		-webkit-appearance: none;
 		display: block;
 		border: 0;
 		background: #fafafa;
 		width: 100%;
-		border-radius: 0.5em;
+		border-radius: 3em;
 		border: solid 1px #E5E5E5;
-		padding: 1em;
+		padding: 0.5em;
+		margin:  0 0 0.5em 0;
 		-moz-transition: background-color 0.35s ease-in-out, border-color 0.35s ease-in-out;
 		-webkit-transition: background-color 0.35s ease-in-out, border-color 0.35s ease-in-out;
 		-ms-transition: background-color 0.35s ease-in-out, border-color 0.35s ease-in-out;
@@ -1973,7 +1975,7 @@ input, select, textarea {
 		form select:focus,
 		form textarea:focus {
 			background: #fff;
-			border-color: #df7366;
+			border-color: #f1eeee;
 		}
 
 	form input[type="text"],
@@ -2059,7 +2061,7 @@ input, select, textarea {
 		background: rgb(96 73 97 / 70%);
 		color: #fff;
 		text-align: center;
-		border-radius: 0.5em;
+		border-radius: 3em;
 		text-decoration: none;
 		padding: 0.65em 3em 0.65em 3em;
 		border: 0;
@@ -2078,7 +2080,7 @@ input, select, textarea {
 		button:hover,
 		.button:hover {
 			color: #fff;
-			background: rgb(96 73 97 / 91%);
+			background: rgba(123, 94, 124, 0.91);
 		}
 
 		input[type="button"].alt,
@@ -2166,7 +2168,7 @@ input, select, textarea {
 	.wrapper {
 		background: #fff;
 		margin: 0 0 2em 0;
-		padding: 6em 0 6em 0;
+		padding: 1em 0 1em 0;
 	}
 
 		.wrapper.style2 {
@@ -3043,7 +3045,7 @@ input, select, textarea {
 		/* Wrapper */
 
 			.wrapper {
-				padding: 3em 1em 3em 1em;
+				padding: 1em 1em 1em 1em;
 			}
 
 		/* Header */
