@@ -17,6 +17,7 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 		<script src="./scripts/ajaxCalls.js"></script>
+		<script src="./scripts/apies.js"></script>
 		<noscript><link rel="stylesheet" href="./assets/css/noscript.css" /></noscript>
 		<script>
 			// function to show the login form
@@ -42,7 +43,7 @@
                 Password: $("#passwordInput").val()
             }
 
-            ajaxCall("POST", `https://localhost:7062/api/User/login?email=${details.Email}`, (JSON.stringify(details.Email), JSON.stringify(details.Password)), success, error);
+            ajaxCall("POST", `${port}/api/User/login?email=${details.Email}`, (JSON.stringify(details.Email), JSON.stringify(details.Password)), success, error);
 
             return false
         	}

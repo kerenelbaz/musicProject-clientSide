@@ -15,6 +15,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script src="./scripts/ajaxCalls.js"></script>
+	<script src="./scripts/apies.js"></script>
 	<script>
 		$(document).ready(function () {
 			$("#myForm").submit(f1); // bind the submit event to a function called f1
@@ -28,7 +29,7 @@
 				Password: $("#Password").val(),
 				PhoneNumber: $("#Phone").val()
 			}
-			ajaxCall("POST", "https://localhost:7062/api/User/registration", JSON.stringify(User), success, error);
+			ajaxCall("POST", `${port}/api/User/registration`, JSON.stringify(User), success, error);
 		}
 
 		// This function is called in case of success

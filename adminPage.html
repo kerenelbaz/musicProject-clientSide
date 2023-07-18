@@ -9,7 +9,7 @@
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script src="./scripts/ajaxCalls.js"></script>
 	<script src="./scripts/apies.js"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 	<style>
 		#container {
 			height: 100%;
@@ -123,17 +123,17 @@
 			<nav id="nav">
 				<ul>
 					<li onclick="HomeRender()"><a href="#">Home</a></li>
-					<li onclick="renderFavorites(JSON.parse(localStorage['onlineUser']).userId)"><a href="#">Your Favorites</a></li>
+					
 					<li><a href="#">Artists</a></li>
 					<li>
-						<a href="#">Search Music</a>
+						<a href="#">Songs</a>
 						<ul>
-							<li onclick="renderSearching(1)"><a href="#">By Name Of Song</a></li>
-							<li onclick="renderSearching(2)"><a href="#">By Artist</a></li>
-							<li onclick="renderSearching(3)"><a href="#">By Lyrics</a></li>
+							<li onclick="renderSearching(1)"><a href="#">Users</a></li>
+							<li onclick="renderSearching(2)"><a href="#">Songs</a></li>
+							<li onclick="renderSearching(3)"><a href="#">Artists</a></li>
 						</ul>
 					</li>
-					<li><a href="#">hidon??</a></li>
+					<li><a href="#">Users</a></li>
 					<li onclick="logOut()"><a href="#">Log Out</a></li>
 				</ul>
 			</nav>
@@ -166,16 +166,10 @@
 		GetFavoriteSongsOfUser(JSON.parse(userID));
 
 
-
-
-
-
-		
-
 		function HomeRender() {
 			
 			whichPage = document.getElementById("whichPage");
-			whichPage.innerHTML = "HOME";
+			whichPage.innerHTML = "ADMIN PAGE";
 			GetFavoriteSongsOfUser(JSON.parse(userID));
 			const api = `${port}/api/Song`;
 			ajaxCall("GET", api, "", successCB, errorCB);
