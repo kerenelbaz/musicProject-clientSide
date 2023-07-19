@@ -99,7 +99,12 @@
 		#searchBTN{
 			margin: 0 0 0.5em 0.5em;
 		}
-	
+		
+		#quizDiv{
+			width: 30%;
+			height: 30%;
+			background-color: #212529;
+		}
 
 
 		
@@ -429,17 +434,37 @@
 
 		function quiz()
 		{
-			const songsDataString = localStorage.getItem("songsData");
-			if (songsDataString !== null) {
- 			 	// "songsData" exists, parse the JSON string
-  				const t = JSON.parse(songsDataString);
-  				console.log(t);
-			} else {
-  				console.log("No data found in localStorage for 'songsData'.");
+			const songsDataString =  JSON.parse(localStorage.getItem("songsData"));
+			console.log(songsDataString);
+
+			//all 3 arrays are a dictionary maps type arrays
+			const songsName=[];
+			const lyricsFromSong = [];
+			const artistFromSong = [];
+
+			for(var item of songsDataString)
+			{
+				songsName.push(item.songId, item.songName);
+				lyricsFromSong.push(item.songId, item.lyrics);
+				artistFromSong.push(item.songId, item.artist);
+
+				console.log(lyricsFromSong);
+				console.log(artistFromSong);
+				console.log(songsName);
 			}
-			// const songsName = localStorage.getItem("userData").
-			// const lyricsFromSong = 
-			// const artistFromSong = 
+			
+			let container = document.getElementById("container");
+			container.innerHTML = "";
+			const whichPage = document.getElementById("whichPage");
+			whichPage.innerHTML = "Let's play!";
+
+			const quizDiv = document.createElement("div");
+			quizDiv.id = "quizDiv";
+			const h1 = document.createElement("h1");
+			h1.innerHTML = "1";
+			quizDiv.appendChild(h1);
+			container.appendChild(quizDiv);
+			
 		}
 
 
