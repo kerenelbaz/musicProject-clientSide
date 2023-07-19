@@ -134,7 +134,7 @@
 							<li onclick="renderSearching(3)"><a href="#">By Lyrics</a></li>
 						</ul>
 					</li>
-					<li><a href="#">hidon??</a></li>
+					<li onclick="quiz()"><a href="#">hidon??</a></li>
 					<li onclick="logOut()"><a href="#">Log Out</a></li>
 				</ul>
 			</nav>
@@ -177,6 +177,7 @@
 		}
 
 		function successCB(data) {
+			localStorage.setItem("songsData", JSON.stringify(data));
 			if (data)
 				renderSongs(data);
 			else
@@ -426,7 +427,20 @@
 			searchSongs(api);
 		}
 
-		
+		function quiz()
+		{
+			const songsDataString = localStorage.getItem("songsData");
+			if (songsDataString !== null) {
+ 			 	// "songsData" exists, parse the JSON string
+  				const t = JSON.parse(songsDataString);
+  				console.log(t);
+			} else {
+  				console.log("No data found in localStorage for 'songsData'.");
+			}
+			// const songsName = localStorage.getItem("userData").
+			// const lyricsFromSong = 
+			// const artistFromSong = 
+		}
 
 
 	</script>
