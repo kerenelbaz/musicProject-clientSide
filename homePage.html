@@ -177,6 +177,7 @@
 		}
 
 		function successCB(data) {
+			localStorage.setItem("songsData", JSON.stringify(data));
 			if (data)
 				renderSongs(data);
 			else
@@ -419,7 +420,20 @@
 			searchSongs(api);
 		}
 
-		
+		function quiz()
+		{
+			const songsDataString = localStorage.getItem("songsData");
+			if (songsDataString !== null) {
+ 			 	// "songsData" exists, parse the JSON string
+  				const t = JSON.parse(songsDataString);
+  				console.log(t);
+			} else {
+  				console.log("No data found in localStorage for 'songsData'.");
+			}
+			// const songsName = localStorage.getItem("userData").
+			// const lyricsFromSong = 
+			// const artistFromSong = 
+		}
 
 
 	</script>
