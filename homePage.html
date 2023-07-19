@@ -441,10 +441,11 @@
 			const songsName=[];
 			const lyricsFromSong = [];
 			const artistFromSong = [];
+			const allArrays=[songsName,lyricsFromSong,artistFromSong];
+
 			function createArrays()
 			{
 				
-
 				for(var item of songsDataString)
 				{
 					// Create dictionary maps for lyrics and artist arrays
@@ -472,6 +473,8 @@
 			createQuastion();
 
 			function createQuastion(){
+
+
 				let container = document.getElementById("container");
 				container.innerHTML = "";
 				const whichPage = document.getElementById("whichPage");
@@ -493,13 +496,88 @@
 					const currentSong = document.createElement("h3");
 					quizDiv.appendChild(currentSong);
 					
-					currentSong.innerText = Object.values(songsName[currentQuestion]);
+					//currentSong.innerText = Object.values(songsName[currentQuestion]);
+					currentSong.innerText = renderQuestion();
 					const songID = document.createElement("h3");
 					songID.innerHTML = "ID: " + Object.keys(songsName[currentQuestion]);
 					
 					quizDiv.appendChild(songID);
 					quizDiv.appendChild(questionBtn);
 				}
+
+					
+					function renderQuestion()
+					{
+						const questionDict={
+							A : 'which artist wrote the song #?',
+							B : 'what is the name of the song that his lyrics are # ?', 
+							C : 'who wrote the song that goes like that # ?', 
+							D : 'fill the correct word'
+						};
+
+						// for(var item of artistFromSong){
+						// 	const uniqueArtistArray = artistFromSong.filter((value, index, self) => self.indexOf(value) === index);
+						// 	const q = "which artist wrote "
+						// }
+					
+						const keyQue = getRandomQuestion(questionDict);
+						var questionStr;
+
+						switch (keyQue) {
+							case 'A':
+							questionStr = getSongsNames(songsName, questionDict[keyQue]); 
+								break;
+								default:
+						console.log("Unknown!");
+
+						}
+						console.log("kdksjcnbs++  "+ questionStr);
+	
+						return questionStr;
+						
+
+						// const randomItem = getRandomItemFromArray(myArray);
+						// console.log(randomItem); // Output: A random element from the myArray
+					
+
+					}
+
+					function getRandomQuestion(obj) { // get a random question by key
+						const keys = Object.keys(obj);
+						const randomIndex = Math.floor(Math.random() * keys.length);
+						// const question = obj[keys[randomIndex]];
+						return keys[randomIndex]; 
+					}
+
+					function getSongsNames(arr, question) {
+						const tmpArr=[];
+						let songID = Object.keys(getRandomItemFromArray(arr));
+						let songName = Object.values(getRandomItemFromArray(arr));
+						tmpArr.push(songName);
+						tmpArr.push(songID);
+						console.log("tmparr "+ tmpArr);
+						console.log(tmpArr);
+	
+						const completeQuestion = question.replace('#', songName);
+						return completeQuestion;
+					}
+
+					
+					function getRandomItemFromArray(arr) {
+						const randomIndex = Math.floor(Math.random() * arr.length);
+						return arr[randomIndex];
+					}
+
+					
+					function renderAnswers() {
+						const answerDiv = document.createElement("div");
+						quizDiv.appendChild(answerDiv);
+
+						const answerSelect = document.getElementById("dynamicSelect");
+						//selecttttt!!!!!!
+
+						const dynamicOptionsData = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"];
+					}
 
 				showCurrentSong();
 				
