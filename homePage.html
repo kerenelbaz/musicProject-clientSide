@@ -206,6 +206,13 @@
 				let nameOfSong = document.createElement("h4");
 				nameOfSong.innerHTML = "Name: " + songsArr[i].songName;
 				card.appendChild(nameOfSong);
+				
+				if(JSON.parse(localStorage['onlineUser']).email == "admin@gmail.com"){
+					let numOfLikes = document.createElement("h4");
+					numOfLikes.innerHTML = songsArr[i].songInFavorite +" Users like this song"
+					card.appendChild(numOfLikes);
+				}
+				
 
 				let lyrics = document.createElement("p");
 				lyrics.id = "lyrics";
