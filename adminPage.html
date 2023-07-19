@@ -10,7 +10,6 @@
 	<!-- Scripts -->
 	<script src="assets/js/jquery.min.js"></script>
 	<script src="assets/js/jquery.dropotron.min.js"></script>
-	<script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
 	<script src="assets/js/jquery.scrolly.min.js"></script>
 	<script src="assets/js/jquery.scrollex.min.js"></script>
 	<script src="assets/js/browser.min.js"></script>
@@ -32,6 +31,14 @@
 			flex-wrap: wrap;
 			justify-content: center;
 			align-items: center;
+		}
+		
+		#pForm{
+			width :100%;
+			justify-content: center;
+			align-items: center;
+			
+			display: flex;
 		}
 
 		#card {
@@ -117,6 +124,73 @@
 
 		
 	</style>
+	<script>
+		 // will run when the document is ready
+		$(document).ready(function () {
+
+			// once the document is ready we fetch a list of cars from the server
+			ajaxCall("GET", "https://localhost:7070/api/User", "", getSuccess, error);
+		});
+		
+		// wire all the buttons to their functions
+        function buttonEvents() {
+			$(document).on("click", ".viewBtn", function () {
+				markSelected(this);
+				GetFavoriteSongsOfUser(this.getAttribute('data-userid'))
+				// console.log(this.getAttribute('data-userid'))
+                // $("#editDiv").show();
+                // $("#editDiv :input").prop("disabled", false); // edit mode: enable all controls in the form
+                // populateFields(this.getAttribute('data-carId')); // fill the form fields according to the selected row
+           	
+			});
+		}
+
+		// mark the selected row
+        function markSelected(btn) {
+            $("#example tr").removeClass("selected"); // remove seleced class from rows that were selected before
+            row = (btn.parentNode).parentNode; // button is in TD which is in Row
+            row.className = 'selected'; // mark as selected
+        }
+
+		 // this function is activated in case of a success
+		 function getSuccess(usersdata) {
+            users = usersdata; // keep the cars array in a global variable;
+            try{
+                tbl = $('#example').DataTable({
+                    data: usersdata,
+                    pageLength: 5,
+                    columns: [
+                        {
+                            render: function (data, type, row, meta) {
+                                let dataUser = "data-userId='" + row.userId + "'";                             
+                                viewBtn = "<button type='button' class = 'viewBtn btn btn-info' " + dataUser + "> View </button>";
+                                
+                                return  viewBtn;
+                            }
+                        },
+                        { data: "userId" },
+                        { data: "name" },
+                        { data: "country" },
+                        { data: "email" },
+                        { data: "password" },
+                        { data: "phoneNumber" },
+                        { data: "registrationTime" }                                              
+                    ],
+                });
+                buttonEvents();
+            }
+
+            catch (err) {
+                alert(err);
+            }
+        }
+
+        // this function is activated in case of a failure
+        function error(err) {
+            swal("Error: " + err );
+        }
+
+	</script>
 </head>
 <body class="left-sidebar is-preload" onload="HomeRender()">
 	<div id="page-wrapper">
@@ -152,69 +226,30 @@
 				</ul>
 			</nav>
 		</div>
-		<table id ="example"> 
-			<thead>
-				<tr>User Id</tr>
-				<tr>Name</tr>
-				<tr>Country</tr>
-				<tr>Email</tr>
-				<tr>Password</tr>
-				<tr>Phone Number</tr>
-				<tr>Registered At</tr>
-			</thead>
+		<form id="pForm">
+			<table id ="example"> 
+				<thead>
+					<tr>
+						<td></td>
+						<td>User Id</td>
+						<td>Name</td>
+						<td>Country</td>
+						<td>Email</td>
+						<td>Password</td>
+						<td>Phone Number</td>
+						<td>Registered At</td>
+					</tr>
+				</thead>			
+			</table>
+		</form>
+		
+		<div id="container">
 			
-		</table>
-		<div id="container"></div>
+		</div>
 	</div>
 
 	<script>
-		ajaxCall("GET", `${port}/api/User`, "", successCBuser, errorCB);
-		
-
-		function successCBuser(data) {
-			
-			if (data){
-				$(document).ready( function () {
-					$('#example').DataTable({
-						
-						columns: [
-							{ data: 'userId' },
-							{ data: 'name' },
-							{ data: 'country' },
-							{ data: 'email' },
-							{ data: 'password' },
-							{ data: 'phoneNumber' },
-							{ data: 'registrationTime' }
-						]
-					} );
-				} );
-			}
-			else
-				alert("Something went wrong");
-		}
-
-		function errorCB(data) {
-			if (data == false) {
-				alert("Error");
-			}
-		}
-		$(document).ready( function () {
-			$('#example').DataTable({
-				ajax: {
-					url: `${port}/api/User`,
-					dataSrc: 'data'
-				},
-				columns: [
-					{ data: 'userId' },
-					{ data: 'name' },
-					{ data: 'country' },
-					{ data: 'email' },
-					{ data: 'password' },
-					{ data: 'phoneNumber' },
-					{ data: 'registrationTime' }
-				]
-			} );
-		} );
+		 
 	
 		if (localStorage['onlineUser'] != null) {
 			let loginDiv = document.createElement("div");
@@ -229,24 +264,24 @@
 
 		let userID = JSON.parse(localStorage['onlineUser']).userId;
 		let favoriteSongsOfUserArr = {}; //this array will be used in 'GetFavoriteSongsOfUser' function that do the ajaxCall and read all the favorites songs.
-		GetFavoriteSongsOfUser(JSON.parse(userID));
+		// GetFavoriteSongsOfUser(JSON.parse(userID));
 
 
-		function HomeRender() {
+		function HomeRender(userId) {
 			
 			whichPage = document.getElementById("whichPage");
 			whichPage.innerHTML = "ADMIN PAGE";
-			GetFavoriteSongsOfUser(JSON.parse(userID));
-			const api = `${port}/api/Song`;
-			ajaxCall("GET", api, "", successCB, errorCB);
+			// GetFavoriteSongsOfUser(JSON.parse(userID));
+			// const api = `${port}/api/Song`;
+			// ajaxCall("GET", api, "", successCB, errorCB);
 		}
 
-		function successCB(data) {
-			if (data)
-				renderSongs(data);
-			else
-				alert("Something went wrong");
-		}
+		// function successCB(data) {
+		// 	if (data)
+		// 		renderSongs(data);
+		// 	else
+		// 		alert("Something went wrong");
+		// }
 
 
 		function renderSongs(songsArr) {
@@ -314,14 +349,14 @@
 			});
 		}
 
-		function renderFavorites(userId) {
-			let whichPage = document.getElementById("whichPage");
-			whichPage.innerHTML = "YOUR FAVORITES";
-			GetFavoriteSongsOfUser(userId);
-			//renderSongs(favoriteSongsOfUserArr);
+		// function renderFavorites(userId) {
+		// 	let whichPage = document.getElementById("whichPage");
+		// 	whichPage.innerHTML = "YOUR FAVORITES";
+		// 	GetFavoriteSongsOfUser(userId);
+		// 	//renderSongs(favoriteSongsOfUserArr);
 			
 			
-		}
+		// }
 
 
 
@@ -333,10 +368,9 @@
 		function successCB_getFavoriteSongsOfUser(data) {
 			if (data){
 				favoriteSongsOfUserArr = data;
-				let whichPage = document.getElementById("whichPage");
-				if (whichPage.innerHTML == "YOUR FAVORITES" ){
+				
 					renderSongs(favoriteSongsOfUserArr);
-				}
+				
 			}
 
 
@@ -387,98 +421,98 @@
 
 
 
-		function renderSearching(number) {
-			let container = document.getElementById("container");
-			container.innerHTML = "";
-			const whichPage = document.getElementById("whichPage");
-			whichPage.innerHTML = "SEARCH MUSIC BY ";
+		// function renderSearching(number) {
+		// 	let container = document.getElementById("container");
+		// 	container.innerHTML = "";
+		// 	const whichPage = document.getElementById("whichPage");
+		// 	whichPage.innerHTML = "SEARCH MUSIC BY ";
 
-			const searchDiv = document.createElement('div');
-			searchDiv.style.display = 'flex';
-			searchDiv.id = "searchDiv";
+		// 	const searchDiv = document.createElement('div');
+		// 	searchDiv.style.display = 'flex';
+		// 	searchDiv.id = "searchDiv";
 
-			const textBox = document.createElement('input');
-			textBox.id = 'searchBox';
-			textBox.type = 'text';
-			searchDiv.appendChild(textBox);
+		// 	const textBox = document.createElement('input');
+		// 	textBox.id = 'searchBox';
+		// 	textBox.type = 'text';
+		// 	searchDiv.appendChild(textBox);
 
-			switch (number) {
-				case 1:
-					whichPage.innerHTML += "NAME";
-					textBox.placeholder = 'Enter a name of a song';
-					break;
-				case 2:
-					whichPage.innerHTML += "ARTIST";
-					textBox.placeholder = 'Enter an artist';
-					break;
-				case 3:
-					whichPage.innerHTML += "LYRICS";
-					textBox.placeholder = 'Enter lyrics';
-					break;
-				default:
-					console.log("Unknown!");
-			}
+		// 	switch (number) {
+		// 		case 1:
+		// 			whichPage.innerHTML += "NAME";
+		// 			textBox.placeholder = 'Enter a name of a song';
+		// 			break;
+		// 		case 2:
+		// 			whichPage.innerHTML += "ARTIST";
+		// 			textBox.placeholder = 'Enter an artist';
+		// 			break;
+		// 		case 3:
+		// 			whichPage.innerHTML += "LYRICS";
+		// 			textBox.placeholder = 'Enter lyrics';
+		// 			break;
+		// 		default:
+		// 			console.log("Unknown!");
+		// 	}
 
-			const searchBTN = document.createElement('button');
-			searchBTN.style.margin = "0 0 0.5em 0.5em";
-			searchBTN.innerHTML = 'Search';
-			searchBTN.onclick = function() {
-				const input = document.getElementById("searchBox").value;
-				if (input !== "") {
-					switch (number) {
-						case 1:
-						getSongsByName(input);
-						break;
-						case 2:
-						getSongsByArtist(input);
-						break;
-						case 3:
-						getSongsByLyrics(input);
-						break;
-						default:
-						console.log("Unknown!");
-					}
-				} else {
-					switch (number) {
-						case 1:
-						alert("Enter the name of a song");
-						break;
-						case 2:
-						alert("Enter the name of an artist");
-						break;
-						case 3:
-						alert("Enter the lyrics");
-						break;
-						default:
-						console.log("Unknown!");
-					}
-				}
-			};
+		// 	const searchBTN = document.createElement('button');
+		// 	searchBTN.style.margin = "0 0 0.5em 0.5em";
+		// 	searchBTN.innerHTML = 'Search';
+		// 	searchBTN.onclick = function() {
+		// 		const input = document.getElementById("searchBox").value;
+		// 		if (input !== "") {
+		// 			switch (number) {
+		// 				case 1:
+		// 				getSongsByName(input);
+		// 				break;
+		// 				case 2:
+		// 				getSongsByArtist(input);
+		// 				break;
+		// 				case 3:
+		// 				getSongsByLyrics(input);
+		// 				break;
+		// 				default:
+		// 				console.log("Unknown!");
+		// 			}
+		// 		} else {
+		// 			switch (number) {
+		// 				case 1:
+		// 				alert("Enter the name of a song");
+		// 				break;
+		// 				case 2:
+		// 				alert("Enter the name of an artist");
+		// 				break;
+		// 				case 3:
+		// 				alert("Enter the lyrics");
+		// 				break;
+		// 				default:
+		// 				console.log("Unknown!");
+		// 			}
+		// 		}
+		// 	};
 
 			
 
-			searchDiv.appendChild(searchBTN);
-			whichPage.appendChild(searchDiv);
-		}
+		// 	searchDiv.appendChild(searchBTN);
+		// 	whichPage.appendChild(searchDiv);
+		// }
 
-		function searchSongs(api) {
-			ajaxCall("GET", api, "", successCB, errorCB);
-		}
+		// function searchSongs(api) {
+		// 	ajaxCall("GET", api, "", successCB, errorCB);
+		// }
 
-		function getSongsByName(songName) {
-			const api = `${port}/api/Song/bySongName?songName=${songName}`;
-			searchSongs(api);
-		}
+		// function getSongsByName(songName) {
+		// 	const api = `${port}/api/Song/bySongName?songName=${songName}`;
+		// 	searchSongs(api);
+		// }
 
-		function getSongsByArtist(artist) {
-			const api = `${port}/api/Song/byArtistName?artistName=${artist}`;
-			searchSongs(api);
-		}
+		// function getSongsByArtist(artist) {
+		// 	const api = `${port}/api/Song/byArtistName?artistName=${artist}`;
+		// 	searchSongs(api);
+		// }
 
-		function getSongsByLyrics(lyrics) {
-			const api = `${port}/api/Song/bySongLyrics?lyrics=${lyrics}`;
-			searchSongs(api);
-		}
+		// function getSongsByLyrics(lyrics) {
+		// 	const api = `${port}/api/Song/bySongLyrics?lyrics=${lyrics}`;
+		// 	searchSongs(api);
+		// }
 
 
 
