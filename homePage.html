@@ -3,6 +3,7 @@
 <head>
 	<title>KILYRICS</title>
 	<meta charset="utf-8" />
+	<link rel="icon" type="image/png" href="./images/iconKIL.png"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 	<link rel="stylesheet" href="assets/css/main.css" />
 	<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
@@ -120,7 +121,7 @@
 				</header>
 			</div>
 			<!-- Nav -->
-			<nav id="nav">
+			<nav id="nav"><!--nevigate menu-->
 				<ul>
 					<li onclick="HomeRender()"><a href="#">Home</a></li>
 					<li onclick="renderFavorites(JSON.parse(localStorage['onlineUser']).userId)"><a href="#">Your Favorites</a></li>
@@ -166,12 +167,6 @@
 		GetFavoriteSongsOfUser(JSON.parse(userID));
 
 
-
-
-
-
-		
-
 		function HomeRender() {
 			
 			whichPage = document.getElementById("whichPage");
@@ -199,7 +194,7 @@
 				container.appendChild(card);
 
 				let img = document.createElement("img");
-				img.id = "appartmentIMG";
+				// img.id = "appartmentIMG";
 				img.src = "./images/pic01.jpg";
 				card.appendChild(img);
 
@@ -218,11 +213,11 @@
 
 				let addOrRemoveSongBTN = document.createElement("button");
 				addOrRemoveSongBTN.id = songsArr[i].songId;
-				addOrRemoveSongBTN.innerHTML = "<i class='fa-solid fa-star'></i>";
+				addOrRemoveSongBTN.innerHTML = "<i class='fa-solid fa-star'></i>"; //the star is font of the btn
 
-				for (var j = 0 ; j<favoriteSongsOfUserArr.length ; j++){
+				for (var j = 0 ; j<favoriteSongsOfUserArr.length ; j++){ //checking if the favorite song is in the array in order to mark it as favorite
 					if(favoriteSongsOfUserArr[j].songId == songsArr[i].songId){
-						addOrRemoveSongBTN.style.color='rgb(236, 248, 7)';
+						addOrRemoveSongBTN.style.color='rgb(236, 248, 7)'; //change the font color in order to mark the song as favorite
 					}
 				}
 
@@ -276,9 +271,13 @@
 				let whichPage = document.getElementById("whichPage");
 				if (whichPage.innerHTML == "YOUR FAVORITES" ){
 					renderSongs(favoriteSongsOfUserArr);
+					// if(favoriteSongsOfUserArr.length == 0)
+					// {
+					// 	alert("You don't have favorite songs yet");
+					// }
 				}
+				
 			}
-
 
 			else
 				alert("Something went wrong");
@@ -349,11 +348,11 @@
 					break;
 				case 2:
 					whichPage.innerHTML += "ARTIST";
-					textBox.placeholder = 'Enter an artist';
+					textBox.placeholder = 'Enter an artist name';
 					break;
 				case 3:
 					whichPage.innerHTML += "LYRICS";
-					textBox.placeholder = 'Enter lyrics';
+					textBox.placeholder = 'Enter lyrics from the song';
 					break;
 				default:
 					console.log("Unknown!");
