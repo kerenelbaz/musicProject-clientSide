@@ -7,10 +7,23 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 	<link rel="stylesheet" href="assets/css/main.css" />
 	<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.dropotron.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+	<script src="assets/js/jquery.scrolly.min.js"></script>
+	<script src="assets/js/jquery.scrollex.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script src="./scripts/ajaxCalls.js"></script>
 	<script src="./scripts/apies.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.css" />
+  
+	<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.js"></script>
 	<style>
 		#container {
 			height: 100%;
@@ -139,10 +152,70 @@
 				</ul>
 			</nav>
 		</div>
+		<table id ="example"> 
+			<thead>
+				<tr>User Id</tr>
+				<tr>Name</tr>
+				<tr>Country</tr>
+				<tr>Email</tr>
+				<tr>Password</tr>
+				<tr>Phone Number</tr>
+				<tr>Registered At</tr>
+			</thead>
+			
+		</table>
 		<div id="container"></div>
 	</div>
 
 	<script>
+		ajaxCall("GET", `${port}/api/User`, "", successCBuser, errorCB);
+		
+
+		function successCBuser(data) {
+			
+			if (data){
+				$(document).ready( function () {
+					$('#example').DataTable({
+						
+						columns: [
+							{ data: 'userId' },
+							{ data: 'name' },
+							{ data: 'country' },
+							{ data: 'email' },
+							{ data: 'password' },
+							{ data: 'phoneNumber' },
+							{ data: 'registrationTime' }
+						]
+					} );
+				} );
+			}
+			else
+				alert("Something went wrong");
+		}
+
+		function errorCB(data) {
+			if (data == false) {
+				alert("Error");
+			}
+		}
+		$(document).ready( function () {
+			$('#example').DataTable({
+				ajax: {
+					url: `${port}/api/User`,
+					dataSrc: 'data'
+				},
+				columns: [
+					{ data: 'userId' },
+					{ data: 'name' },
+					{ data: 'country' },
+					{ data: 'email' },
+					{ data: 'password' },
+					{ data: 'phoneNumber' },
+					{ data: 'registrationTime' }
+				]
+			} );
+		} );
+	
 		if (localStorage['onlineUser'] != null) {
 			let loginDiv = document.createElement("div");
 			loginDiv.id = "loggedIn";
@@ -151,15 +224,7 @@
 		}
 	</script>
 
-	<!-- Scripts -->
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/jquery.dropotron.min.js"></script>
-	<script src="assets/js/jquery.scrolly.min.js"></script>
-	<script src="assets/js/jquery.scrollex.min.js"></script>
-	<script src="assets/js/browser.min.js"></script>
-	<script src="assets/js/breakpoints.min.js"></script>
-	<script src="assets/js/util.js"></script>
-	<script src="assets/js/main.js"></script>
+	
 	<script>
 
 		let userID = JSON.parse(localStorage['onlineUser']).userId;
