@@ -2351,9 +2351,7 @@ input, select, textarea {
 			#nav > ul > li > ul {
 				display: none;
 			}
-			#nav > ul > li > ul:hover{
-				display: inline-block;
-			}
+			
 
 .dropotron {
 	background: rgba(255, 255, 255, 0.975);
