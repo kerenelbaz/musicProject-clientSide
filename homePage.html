@@ -7,11 +7,23 @@
 	<link rel="icon" type="image/png" href="./images/iconKIL.png"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 	<link rel="stylesheet" href="assets/css/main.css" />
+	<!-- Scripts -->
 	<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script src="./scripts/ajaxCalls.js"></script>
 	<script src="./scripts/apies.js"></script>
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.dropotron.min.js"></script>
+	<script src="assets/js/jquery.scrolly.min.js"></script>
+	<script src="assets/js/jquery.scrollex.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.css" />
+  
+	<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.js"></script>
 	<style>
 		#container {
 			height: 100%;
@@ -20,6 +32,14 @@
 			flex-wrap: wrap;
 			justify-content: center;
 			align-items: center;
+		}
+
+		#pForm{
+			width :100%;
+			justify-content: center;
+			align-items: center;
+			
+			display: none;
 		}
 
 		#card {
@@ -131,7 +151,7 @@
 				<ul>
 					<li onclick="HomeRender()"><a href="#">Home</a></li>
 					<li onclick="renderFavorites(JSON.parse(localStorage['onlineUser']).userId)"><a href="#">Your Favorites</a></li>
-					<li onclick="renderAtrists()"><a href="#">Artists</a></li>
+					<li onclick="renderAtrists()"><a href="#">Artists</a></li>					
 					<li>
 						<a href="#">Search Music</a>
 						<ul>
@@ -145,6 +165,22 @@
 				</ul>
 			</nav>
 		</div>
+		<form id="pForm">
+			<table id ="example"> 
+				<thead>
+					<tr>
+						<td></td>
+						<td>User Id</td>
+						<td>Name</td>
+						<td>Country</td>
+						<td>Email</td>
+						<td>Password</td>
+						<td>Phone Number</td>
+						<td>Registered At</td>
+					</tr>
+				</thead>			
+			</table>
+		</form>
 		<div id="container"></div>
 	</div>
 
@@ -155,17 +191,17 @@
 			loginDiv.innerHTML = `<span>Hello ${JSON.parse(localStorage['onlineUser']).name}!</span>`;
 			document.getElementById("helloUserName").appendChild(loginDiv);
 		}
+		if(JSON.parse(localStorage['onlineUser']).email == 'admin@gmail.com'){
+			const usersLi = document.createElement("li");
+    		usersLi.innerHTML = '<a href="#">Users</a>';
+			usersLi.addEventListener("click", function(){
+				renderUsersTable()
+			})
+    		document.getElementById("nav").getElementsByTagName("ul")[0].appendChild(usersLi);
+		}
 	</script>
 
-	<!-- Scripts -->
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/jquery.dropotron.min.js"></script>
-	<script src="assets/js/jquery.scrolly.min.js"></script>
-	<script src="assets/js/jquery.scrollex.min.js"></script>
-	<script src="assets/js/browser.min.js"></script>
-	<script src="assets/js/breakpoints.min.js"></script>
-	<script src="assets/js/util.js"></script>
-	<script src="assets/js/main.js"></script>
+	
 	<script>
 
 		let userID = JSON.parse(localStorage['onlineUser']).userId;
@@ -178,6 +214,7 @@
 			whichPage = document.getElementById("whichPage");
 			whichPage.innerHTML = "HOME";
 			GetFavoriteSongsOfUser(JSON.parse(userID));
+			document.getElementById("pForm").style.display = "none"
 			const api = `${port}/api/Song`;
 			ajaxCall("GET", api, "", successCB, errorCB);
 		}
@@ -266,30 +303,128 @@
 		function renderFavorites(userId) {
 			let whichPage = document.getElementById("whichPage");
 			whichPage.innerHTML = "YOUR FAVORITES";
+			document.getElementById("pForm").style.display = "none"
 			GetFavoriteSongsOfUser(userId);
 			//renderSongs(favoriteSongsOfUserArr);
 			
 			
 		}
 
+		function renderUsersTable(){
+			let whichPage = document.getElementById("whichPage");
+			whichPage.innerHTML = "USERS VIEW";
+			document.getElementById("container").innerHTML = ""
+			document.getElementById("pForm").style.display = "flex"
+			ajaxCall("GET", "https://localhost:7070/api/User", "", getSuccess, error);
+		}
 
+		// wire all the buttons to their functions
+        function buttonEvents() {
+			$(document).on("click", ".viewBtn", function () {
+				markSelected(this);
+				GetFavoriteSongsOfUser(this.getAttribute('data-userid'))
+				
+			});
+		}
+
+		// mark the selected row
+        function markSelected(btn) {
+            $("#example tr").removeClass("selected"); // remove seleced class from rows that were selected before
+            row = (btn.parentNode).parentNode; // button is in TD which is in Row
+            row.className = 'selected'; // mark as selected
+        }
+
+		function getSuccess(usersdata) {
+            users = usersdata; // keep the cars array in a global variable;
+            try{
+                tbl = $('#example').DataTable({
+                    data: usersdata,
+					retrieve: true,  				
+                    pageLength: 5,
+                    columns: [
+                        {
+                            render: function (data, type, row, meta) {
+                                let dataUser = "data-userId='" + row.userId + "'";                             
+                                viewBtn = "<button type='button' class = 'viewBtn btn btn-info' " + dataUser + "> View </button>";
+                                
+                                return  viewBtn;
+                            }
+                        },
+                        { data: "userId" },
+                        { data: "name" },
+                        { data: "country" },
+                        { data: "email" },
+                        { data: "password" },
+                        { data: "phoneNumber" },
+                        { data: "registrationTime" }                                              
+                    ],
+                });
+                buttonEvents();
+            }
+
+            catch (err) {
+                alert(err);
+            }
+        }
+
+        // this function is activated in case of a failure
+        function error(err) {
+            swal("Error: " + err );
+        }
 
 		function GetFavoriteSongsOfUser(userId){
 			const api = `${port}/api/User/GetFavoriteSongsOfUser?userId=${userId}`;
 			ajaxCall("GET", api, "", successCB_getFavoriteSongsOfUser, errorCB);
+		}
+
+		function renderSongsFromTable(songsArr) {
+			let container = document.getElementById("container");
+			container.innerHTML = "";
+
+			for (var i = 0; i <songsArr.length; i++) {
+				let card = document.createElement("div");
+				card.id = "card";
+				container.appendChild(card);
+
+				let img = document.createElement("img");
+				// img.id = "appartmentIMG";
+				img.src = "./images/pic01.jpg";
+				card.appendChild(img);
+
+				let artist = document.createElement("h4");
+				artist.innerHTML = "Artist: " + songsArr[i].artist;
+				card.appendChild(artist);
+
+				let nameOfSong = document.createElement("h4");
+				nameOfSong.innerHTML = "Name: " + songsArr[i].songName;
+				card.appendChild(nameOfSong);
+				
+				if(JSON.parse(localStorage['onlineUser']).email == "admin@gmail.com"){
+					let numOfLikes = document.createElement("h4");
+					numOfLikes.innerHTML = songsArr[i].songInFavorite +" Users like this song"
+					card.appendChild(numOfLikes);
+				}
+				
+
+				let lyrics = document.createElement("p");
+				lyrics.id = "lyrics";
+				lyrics.innerHTML = "Lyrics: <br/>" + songsArr[i].lyrics;
+				card.appendChild(lyrics);
+			}
 		}
 		
 		function successCB_getFavoriteSongsOfUser(data) {
 			if (data){
 				favoriteSongsOfUserArr = data;
 				let whichPage = document.getElementById("whichPage");
-				if (whichPage.innerHTML == "YOUR FAVORITES" ){
+				if (whichPage.innerHTML == "YOUR FAVORITES"){
 					renderSongs(favoriteSongsOfUserArr);
-					// if(favoriteSongsOfUserArr.length == 0)
-					// {
-					// 	alert("You don't have favorite songs yet");
-					// }
 				}
+				if(whichPage.innerHTML == "USERS VIEW"){
+					renderSongsFromTable(favoriteSongsOfUserArr)
+				}
+					
+				
 				
 			}
 
@@ -436,8 +571,9 @@
 		let currrntSongID;
 		function quiz()
 		{
-			const songsData =  JSON.parse(localStorage.getItem("songsData"));
-			// console.log(songsDataString);
+			document.getElementById("pForm").style.display = "none"
+			const songsDataString =  JSON.parse(localStorage.getItem("songsData"));
+			console.log(songsDataString);
 
 			//all 3 are a dictionary maps type 
 			const songsMap={};
@@ -651,13 +787,15 @@
 						const dynamicOptionsData = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"];
 					}
 
-				
-				
-				
+				showCurrentSong();				
+				questionBtn.addEventListener("click", function () {
+					quizDiv.innerHTML = "";
+					currentQuestion = (currentQuestion + 1) % songsName.length;
+					showCurrentSong();
+					console.log(currentQuestion);
+				});
 
-			}
-			
-			
+			}	
 		}
 
 
@@ -689,7 +827,15 @@
 					let artist = document.createElement("h4");
 					artist.innerHTML = response.artist.name;
 					card.appendChild(artist);
-
+					
+					if(JSON.parse(localStorage['onlineUser']).email == "admin@gmail.com"){
+						ajaxCall("GET", `${port}/api/Artist/inFavoriteCount?artistName=${response.artist.name}`, "",
+						function(number){	
+							let numOfFavorites = document.createElement("h4");
+							numOfFavorites.innerHTML = `Apears ${number} times in favorites`;
+							card.appendChild(numOfFavorites);
+						} , errorCB);
+					}
 					
 					let bio = document.createElement("p");
 					bio.id = "Bio";
@@ -705,27 +851,16 @@
 			});
 		}
 
-
-		
-
 		function renderAtrists(){
 			whichPage = document.getElementById("whichPage");
 			whichPage.innerHTML = "ARTISTS";
-			const api =  `${port}/api/Artist/GetAllArtists`;
+			document.getElementById("pForm").style.display = "none"
+			const api =  `${port}/api/Artist/GetAllArtists`;			
 			ajaxCall("GET", api, "", successCB_renderAtrists , errorCB);
 
 		}
 
-
-
-
-
-
-
-
-
-
-		function successCB_renderAtrists(data){
+		function successCB_renderAtrists(data){			
 			if(data){
 				let container = document.getElementById("container");
 				container.innerHTML = "";
@@ -738,26 +873,6 @@
 			else alert("something wrong");
 		}
 
-
-
-
-
-
-
-
-
-	
-
-
-
-
-
-
-
-
-
-
-		
 	</script>
 </body>
 </html>
