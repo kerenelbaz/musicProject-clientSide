@@ -647,13 +647,15 @@
 					songNum.innerHTML = currentQuestion;
 					songNum.innerHTML = "Song Number: " + currentQuestion;
 
-					let queStr = document.createElement("h2");
+					const queStr = document.createElement("h2");
 					queStr.id = "queStr"; 
-					
 					queStr.innerHTML = renderQuestion();
 
-					quizDiv.appendChild(queStr);
+					const radioContainer = createArtistsOption(); // Retrieve the radioContainer directly from the createArtistsOption function
+					
 					quizDiv.appendChild(songNum);
+					quizDiv.appendChild(queStr);
+					quizDiv.appendChild(radioContainer);
 					quizDiv.appendChild(questionBtn);
 					
 				}
@@ -754,6 +756,7 @@
 						console.log("correct answer: "+  correctAnswer);
 						
 						const radioContainer = document.createElement("div");
+						radioContainer.innerHTML = "";
 						radioContainer.id = "radioContainer";
 
 						for (let i = 0; i < possibleAnswer.length; i++) {
@@ -772,8 +775,8 @@
 							radioContainer.appendChild(document.createElement("br"));
 						}
 
-quizDiv.appendChild(radioContainer);
-						
+							// quizDiv.appendChild(radioContainer);
+							return radioContainer;
 					}
 
 					
