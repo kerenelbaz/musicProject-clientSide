@@ -376,18 +376,55 @@
 			const api = `${port}/api/User/GetFavoriteSongsOfUser?userId=${userId}`;
 			ajaxCall("GET", api, "", successCB_getFavoriteSongsOfUser, errorCB);
 		}
+
+		function renderSongsFromTable(songsArr) {
+			let container = document.getElementById("container");
+			container.innerHTML = "";
+
+			for (var i = 0; i <songsArr.length; i++) {
+				let card = document.createElement("div");
+				card.id = "card";
+				container.appendChild(card);
+
+				let img = document.createElement("img");
+				// img.id = "appartmentIMG";
+				img.src = "./images/pic01.jpg";
+				card.appendChild(img);
+
+				let artist = document.createElement("h4");
+				artist.innerHTML = "Artist: " + songsArr[i].artist;
+				card.appendChild(artist);
+
+				let nameOfSong = document.createElement("h4");
+				nameOfSong.innerHTML = "Name: " + songsArr[i].songName;
+				card.appendChild(nameOfSong);
+				
+				if(JSON.parse(localStorage['onlineUser']).email == "admin@gmail.com"){
+					let numOfLikes = document.createElement("h4");
+					numOfLikes.innerHTML = songsArr[i].songInFavorite +" Users like this song"
+					card.appendChild(numOfLikes);
+				}
+				
+
+				let lyrics = document.createElement("p");
+				lyrics.id = "lyrics";
+				lyrics.innerHTML = "Lyrics: <br/>" + songsArr[i].lyrics;
+				card.appendChild(lyrics);
+			}
+		}
 		
 		function successCB_getFavoriteSongsOfUser(data) {
 			if (data){
 				favoriteSongsOfUserArr = data;
 				let whichPage = document.getElementById("whichPage");
-				if (whichPage.innerHTML == "YOUR FAVORITES" || whichPage.innerHTML == "USERS VIEW"){
+				if (whichPage.innerHTML == "YOUR FAVORITES"){
 					renderSongs(favoriteSongsOfUserArr);
-					// if(favoriteSongsOfUserArr.length == 0)
-					// {
-					// 	alert("You don't have favorite songs yet");
-					// }
 				}
+				if(whichPage.innerHTML == "USERS VIEW"){
+					renderSongsFromTable(favoriteSongsOfUserArr)
+				}
+					
+				
 				
 			}
 
@@ -684,8 +721,7 @@
 						const dynamicOptionsData = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"];
 					}
 
-				showCurrentSong();
-				
+				showCurrentSong();				
 				questionBtn.addEventListener("click", function () {
 					quizDiv.innerHTML = "";
 					currentQuestion = (currentQuestion + 1) % songsName.length;
@@ -693,9 +729,7 @@
 					console.log(currentQuestion);
 				});
 
-			}
-			
-			
+			}	
 		}
 
 
@@ -727,7 +761,15 @@
 					let artist = document.createElement("h4");
 					artist.innerHTML = response.artist.name;
 					card.appendChild(artist);
-
+					
+					if(JSON.parse(localStorage['onlineUser']).email == "admin@gmail.com"){
+						ajaxCall("GET", `${port}/api/Artist/inFavoriteCount?artistName=${response.artist.name}`, "",
+						function(number){	
+							let numOfFavorites = document.createElement("h4");
+							numOfFavorites.innerHTML = `Apears ${number} times in favorites`;
+							card.appendChild(numOfFavorites);
+						} , errorCB);
+					}
 					
 					let bio = document.createElement("p");
 					bio.id = "Bio";
@@ -747,12 +789,12 @@
 			whichPage = document.getElementById("whichPage");
 			whichPage.innerHTML = "ARTISTS";
 			document.getElementById("pForm").style.display = "none"
-			const api =  `${port}/api/Artist/GetAllArtists`;
+			const api =  `${port}/api/Artist/GetAllArtists`;			
 			ajaxCall("GET", api, "", successCB_renderAtrists , errorCB);
 
 		}
 
-		function successCB_renderAtrists(data){
+		function successCB_renderAtrists(data){			
 			if(data){
 				let container = document.getElementById("container");
 				container.innerHTML = "";
