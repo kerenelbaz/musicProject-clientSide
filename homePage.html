@@ -767,24 +767,18 @@
 						//Get the corresponding song name from the songsMap object using the randomly selected song ID
 						const randomSongName = songsMap[randomSongID];
 						return randomSongName;
-
-						// console.log(arr);
-						// const randomIndex = Math.floor(Math.random() * arr.length);
-						// console.log("randomINDX: "+randomIndex);
-						// console.log("arr[randomIndex]: "+JSON.stringify(arr[randomIndex]));
-						// return arr[randomIndex];
 					}
 
 					
-					function renderAnswers() {
-						const answerDiv = document.createElement("div");
-						quizDiv.appendChild(answerDiv);
+					// function renderAnswers() {
+					// 	const answerDiv = document.createElement("div");
+					// 	quizDiv.appendChild(answerDiv);
 
-						const answerSelect = document.getElementById("dynamicSelect");
-						//selecttttt!!!!!!
+					// 	const answerSelect = document.getElementById("dynamicSelect");
+					// 	//selecttttt!!!!!!
 
-						const dynamicOptionsData = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"];
-					}
+					// 	const dynamicOptionsData = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"];
+					// }
 
 				showCurrentSong();				
 				questionBtn.addEventListener("click", function () {
