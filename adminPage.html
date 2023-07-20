@@ -137,11 +137,7 @@
 			$(document).on("click", ".viewBtn", function () {
 				markSelected(this);
 				GetFavoriteSongsOfUser(this.getAttribute('data-userid'))
-				// console.log(this.getAttribute('data-userid'))
-                // $("#editDiv").show();
-                // $("#editDiv :input").prop("disabled", false); // edit mode: enable all controls in the form
-                // populateFields(this.getAttribute('data-carId')); // fill the form fields according to the selected row
-           	
+				
 			});
 		}
 
@@ -264,24 +260,16 @@
 
 		let userID = JSON.parse(localStorage['onlineUser']).userId;
 		let favoriteSongsOfUserArr = {}; //this array will be used in 'GetFavoriteSongsOfUser' function that do the ajaxCall and read all the favorites songs.
-		// GetFavoriteSongsOfUser(JSON.parse(userID));
 
 
 		function HomeRender(userId) {
 			
 			whichPage = document.getElementById("whichPage");
 			whichPage.innerHTML = "ADMIN PAGE";
-			// GetFavoriteSongsOfUser(JSON.parse(userID));
-			// const api = `${port}/api/Song`;
-			// ajaxCall("GET", api, "", successCB, errorCB);
+			
 		}
 
-		// function successCB(data) {
-		// 	if (data)
-		// 		renderSongs(data);
-		// 	else
-		// 		alert("Something went wrong");
-		// }
+		
 
 
 		function renderSongs(songsArr) {
@@ -335,10 +323,6 @@
 			}
 		}
 	
-
-
-
-
 		function logOut() {
 			swal("Are you sure you want to log out?", {
 				buttons: ["No", "Yes"],
@@ -348,17 +332,6 @@
 				}
 			});
 		}
-
-		// function renderFavorites(userId) {
-		// 	let whichPage = document.getElementById("whichPage");
-		// 	whichPage.innerHTML = "YOUR FAVORITES";
-		// 	GetFavoriteSongsOfUser(userId);
-		// 	//renderSongs(favoriteSongsOfUserArr);
-			
-			
-		// }
-
-
 
 		function GetFavoriteSongsOfUser(userId){
 			const api = `${port}/api/User/GetFavoriteSongsOfUser?userId=${userId}`;
@@ -418,105 +391,6 @@
 				alert("Error");
 			}
 		}
-
-
-
-		// function renderSearching(number) {
-		// 	let container = document.getElementById("container");
-		// 	container.innerHTML = "";
-		// 	const whichPage = document.getElementById("whichPage");
-		// 	whichPage.innerHTML = "SEARCH MUSIC BY ";
-
-		// 	const searchDiv = document.createElement('div');
-		// 	searchDiv.style.display = 'flex';
-		// 	searchDiv.id = "searchDiv";
-
-		// 	const textBox = document.createElement('input');
-		// 	textBox.id = 'searchBox';
-		// 	textBox.type = 'text';
-		// 	searchDiv.appendChild(textBox);
-
-		// 	switch (number) {
-		// 		case 1:
-		// 			whichPage.innerHTML += "NAME";
-		// 			textBox.placeholder = 'Enter a name of a song';
-		// 			break;
-		// 		case 2:
-		// 			whichPage.innerHTML += "ARTIST";
-		// 			textBox.placeholder = 'Enter an artist';
-		// 			break;
-		// 		case 3:
-		// 			whichPage.innerHTML += "LYRICS";
-		// 			textBox.placeholder = 'Enter lyrics';
-		// 			break;
-		// 		default:
-		// 			console.log("Unknown!");
-		// 	}
-
-		// 	const searchBTN = document.createElement('button');
-		// 	searchBTN.style.margin = "0 0 0.5em 0.5em";
-		// 	searchBTN.innerHTML = 'Search';
-		// 	searchBTN.onclick = function() {
-		// 		const input = document.getElementById("searchBox").value;
-		// 		if (input !== "") {
-		// 			switch (number) {
-		// 				case 1:
-		// 				getSongsByName(input);
-		// 				break;
-		// 				case 2:
-		// 				getSongsByArtist(input);
-		// 				break;
-		// 				case 3:
-		// 				getSongsByLyrics(input);
-		// 				break;
-		// 				default:
-		// 				console.log("Unknown!");
-		// 			}
-		// 		} else {
-		// 			switch (number) {
-		// 				case 1:
-		// 				alert("Enter the name of a song");
-		// 				break;
-		// 				case 2:
-		// 				alert("Enter the name of an artist");
-		// 				break;
-		// 				case 3:
-		// 				alert("Enter the lyrics");
-		// 				break;
-		// 				default:
-		// 				console.log("Unknown!");
-		// 			}
-		// 		}
-		// 	};
-
-			
-
-		// 	searchDiv.appendChild(searchBTN);
-		// 	whichPage.appendChild(searchDiv);
-		// }
-
-		// function searchSongs(api) {
-		// 	ajaxCall("GET", api, "", successCB, errorCB);
-		// }
-
-		// function getSongsByName(songName) {
-		// 	const api = `${port}/api/Song/bySongName?songName=${songName}`;
-		// 	searchSongs(api);
-		// }
-
-		// function getSongsByArtist(artist) {
-		// 	const api = `${port}/api/Song/byArtistName?artistName=${artist}`;
-		// 	searchSongs(api);
-		// }
-
-		// function getSongsByLyrics(lyrics) {
-		// 	const api = `${port}/api/Song/bySongLyrics?lyrics=${lyrics}`;
-		// 	searchSongs(api);
-		// }
-
-
-
-
 	</script>
 </body>
 </html>
