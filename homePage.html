@@ -129,6 +129,43 @@
 		}
 
 
+		#radioContainer {
+			direction: ltr;
+		}
+
+		input[type="radio"] {
+			appearance: none;
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			width: 16px;
+			height: 16px;
+			border: 2px solid #212529;
+			border-radius: 50%;
+			float: left;
+			margin-right: 10px;
+		}
+
+		
+
+		input[type="radio"]:checked {
+			/* Add a background color to create the dot effect when the radio button is checked */
+			background-color: #212529;
+			/* You can change the size and position of the dot here */
+			background-size: 8px 8px;
+			background-position: center;
+			background-repeat: no-repeat;
+		}
+
+		label {
+			padding-left: 17%;
+			float: left;
+			margin-left: -14%;
+			display: inline-block;
+			vertical-align: top;
+			direction: ltr;
+		}
+
+
 		
 	</style>
 </head>
@@ -582,6 +619,7 @@
 			const artistsMap = {};
 			const allArrays=[songsMap,lyricsMap,artistsMap];
 
+			
 			function createDS()
 			{
 				
@@ -600,14 +638,37 @@
 					lyricsMap[songID] = lyrics;
 					
 				}
-				//console.log(lyricsMap);
-				//console.log(artistsMap);
-				//console.log(songsMap);
 				allArrays.push(songsMap, artistsMap, lyricsMap);
+
+				// Iterate through each key-value pair in the lyricsMap and truncate the values
+				for (const key in lyricsMap) {
+					if (lyricsMap.hasOwnProperty(key)) {
+						lyricsMap[key] = truncateToWords(lyricsMap[key], 10);
+					}
+				}
 			}
 			
 			createDS();
-			//console.log(allArrays);
+			//חותכת את מילות השיר למספר מילים שנותנים לפונקציה
+			function truncateToWords(str, numWords) 
+			{
+				const words = str.split(" ");
+				stringToReturn = words.slice(0, numWords).join(" ");
+				stringToReturn = removeAfterLineBreak(stringToReturn)
+				return stringToReturn;
+			}
+			//מורידה רווחים ואת ה\r\
+			function removeAfterLineBreak(sentence) {
+				const index = sentence.indexOf("\r\n");
+				if (index !== -1) {
+					sentence = sentence.substring(0, index);
+				}
+				return sentence.trimEnd(); //remove whitespace
+			}
+			
+
+			console.log(lyricsMap);
+
 			createQuastion();
 
 			function createQuastion()
@@ -622,8 +683,11 @@
 				const quizDiv = document.createElement("div");
 				quizDiv.id = "quizDiv";
 				container.appendChild(quizDiv);
+
+				const optionDiv = document.createElement("div");
+				optionDiv.id = "optionDiv";
+				quizDiv.appendChild(optionDiv);
 				
-				// const h1question = document.createElement("h1");
 				const questionBtn = document.createElement("BUTTON");
 				questionBtn.id = "questionBtn";
 				questionBtn.textContent = "Next question";
@@ -632,30 +696,26 @@
 					quizDiv.innerHTML = "";
 					currentQuestion += 1;
 					showCurrentSong(currentQuestion);
-					// console.log(currentQuestion);
 				});
-
-
-				// quizDiv.appendChild(h1question);
 				
-
 				showCurrentSong(currentQuestion);
-
+				console.log("current question: "+currentQuestion);
 				function showCurrentSong(currentQuestion) {
 					quizDiv.innerHTML = "";
 					const songNum = document.createElement("h3");
-					songNum.innerHTML = currentQuestion;
+					songNum.id="songNum";
 					songNum.innerHTML = "Song Number: " + currentQuestion;
 
-					const queStr = document.createElement("h2");
+					const queStr = document.createElement("h3");
 					queStr.id = "queStr"; 
 					queStr.innerHTML = renderQuestion();
 
-					//const radioContainer = createArtistsOption(); // Retrieve the radioContainer directly from the createArtistsOption function
 					
+					//optionDiv.innerHTML = "";
+
 					quizDiv.appendChild(songNum);
 					quizDiv.appendChild(queStr);
-					quizDiv.appendChild(radioContainer);
+					quizDiv.appendChild(optionDiv);
 					quizDiv.appendChild(questionBtn);
 					
 				}
@@ -666,24 +726,40 @@
 							A : 'which artist wrote the song #?',
 							B : 'what is the name of the song that his lyrics are # ?', 
 							C : 'who wrote the song that goes like that # ?', 
-							D : 'fill the correct word'
+							D : 'fill the correct word',
+							E : 'what song did # wrote ?'
 						};
 
 						//random select which question (A B C or D) selected
 						const keyQue = getRandomQuestion(questionDict);
 						//var questionStr;
-
+						let tmpArr=[];
 						switch (keyQue) {
 							case 'A':
-							const tmpArr = getsongsMaps(songsMap, questionDict[keyQue]);
-							radioContainer = createArtistsOption(tmpArr[0]);
-							 //console.log(tmpArr);
-							return tmpArr[2]; 
+								tmpArr = getsongsMaps(songsMap, questionDict[keyQue]);
+								radioContainer = createArtistsOption(tmpArr[0]);
+								console.log(radioContainer);	
+								optionDiv.innerHTML = "";
+								optionDiv.appendChild(radioContainer);
+							 	//console.log(tmpArr);
+								return tmpArr[2]; 
+							break;
+							case 'B':
+								console.log("nothing");
 								break;
-							// case 'B':
-							// questionStr = getsongsMaps(songsMap, questionDict[keyQue]); 
-								// break;
-								default:
+							case 'C':
+							
+								console.log("nothing");
+								
+								break;
+
+							case 'D':
+								console.log("nothing");
+								break;
+							case 'E':
+								const tmpArr = getsongsMaps(artistsMap, questionDict[keyQue]);
+								return tmpArr[2]; 
+							default:
 						console.log("default!");
 
 						}
@@ -693,7 +769,7 @@
 					function getRandomQuestion(obj) { // get a random question by key
 						const keys = Object.keys(obj);
 						const randomIndex = Math.floor(Math.random() * keys.length);
-						// console.log(keys[randomIndex]);
+						console.log(keys[randomIndex]);
 						return keys[randomIndex]; 
 					}
 
@@ -741,11 +817,10 @@
 
 						return pickedStrings;
 					}
+					
 					function createArtistsOption(songID)
 					{
 						let quizDiv = document.getElementById("quizDiv");
-
-						//let possibleAns=Object.keys(artistsMap);
 						//מוצאים את השם של הזמר
 						let correctAnswer = artistsMap[songID] 
 						const artistNames = Object.values(artistsMap);
@@ -775,11 +850,9 @@
 							radioContainer.appendChild(document.createElement("br"));
 						}
 
-							// quizDiv.appendChild(radioContainer);
 							return radioContainer;
 					}
-
-					
+		
 					function getRandomItem(obj) //gets songsMap/artissMap/lyricsMap
 					{
 						//Retrieve all the song IDs (keys) from the object (songMap/artistMap/lyricsMap)
@@ -795,12 +868,12 @@
 					
 					
 				showCurrentSong();				
-				questionBtn.addEventListener("click", function () {
-					quizDiv.innerHTML = "";
-					currentQuestion = (currentQuestion + 1) % songsMap.length;
-					showCurrentSong();
-					console.log(currentQuestion);
-				});
+				// questionBtn.addEventListener("click", function () {
+				// 	quizDiv.innerHTML = "";
+				// 	currentQuestion = (currentQuestion + 1) % songsMap.length;
+				// 	showCurrentSong();
+				// 	console.log(currentQuestion);
+				// });
 
 			}	
 		}
