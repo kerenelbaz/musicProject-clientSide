@@ -600,6 +600,8 @@
 					currentSong.innerText = renderQuestion();
 					const songID = document.createElement("h3");
 					songID.innerHTML = "ID: " + Object.keys(songsName[currentQuestion]);
+
+
 					
 					quizDiv.appendChild(songID);
 					quizDiv.appendChild(questionBtn);
@@ -625,6 +627,9 @@
 
 						switch (keyQue) {
 							case 'A':
+							questionStr = getSongsNames(songsName, questionDict[keyQue]); 
+								break;
+							case 'B':
 							questionStr = getSongsNames(songsName, questionDict[keyQue]); 
 								break;
 								default:
