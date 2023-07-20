@@ -124,7 +124,8 @@
 		#quizDiv{
 			width: 30%;
 			height: 30%;
-			background-color: #212529;
+			background-color: whitesmoke;
+			/* background-color: #212529; */
 		}
 
 
@@ -573,8 +574,7 @@
 		{
 			document.getElementById("pForm").style.display = "none"
 			const songsData =  JSON.parse(localStorage.getItem("songsData"));
-			console.log(songsData);
-			// console.log(songsDataString);
+			
 
 			//all 3 are a dictionary maps type 
 			const songsMap={};
@@ -674,8 +674,8 @@
 						switch (keyQue) {
 							case 'A':
 							const tmpArr = getsongsMaps(songsMap, questionDict[keyQue]);
-							createArtistsOption();
-							console.log(tmpArr);
+							createArtistsOption(tmpArr[0]);
+							// console.log(tmpArr);
 							return tmpArr[2]; 
 								break;
 							// case 'B':
@@ -691,7 +691,7 @@
 					function getRandomQuestion(obj) { // get a random question by key
 						const keys = Object.keys(obj);
 						const randomIndex = Math.floor(Math.random() * keys.length);
-						console.log(keys[randomIndex]);
+						// console.log(keys[randomIndex]);
 						return keys[randomIndex]; 
 					}
 
@@ -715,46 +715,65 @@
 						return tmpArr;
 					}
 					
-					function createArtistsOption(){
-						// Step 1: Get a random song ID from songsMap (excluding the correct answer)
-						let randomSongIDs = Object.keys(songsMap).filter((songID) => songID !== currrntSongID);
+					function pickAndInsertRandomStrings(setOfStrings, givenString) {
+						// Make a copy of the setOfStrings array to avoid modifying the original array
+						const remainingStrings = [...setOfStrings];
 
-						//Get 3 additional random song IDs to serve as incorrect answers
-						while (randomSongIDs.length < 4) {
-							const randomSongID = Math.floor(Math.random() * (Object.keys(songsMap).length - 1 + 1)) + 1;
-							if (!randomSongIDs.includes(randomSongID)) {
-								randomSongIDs.push(randomSongID);
-							}
-						}
-						// Randomly shuffle the four song IDs
-						randomSongIDs = randomSongIDs.sort(() => Math.random() - 0.5);
-
-						// Retrieve the corresponding song names and display them as checkbox labels
-						
-						tmpdiv= document.createElement("div");
-						queStr.appendChild(tmpdiv);
-						tmpdiv.innerHTML = ""; // Clear previous question content
-						
-						const questionText = document.createElement("p");
-						questionText.textContent = "Which one is the correct answer?";
-						tmpdiv.appendChild(questionText);
-
-						for (const songID of randomSongIDs) {
-							const songName = artistsMap[songID];
-
-							const checkboxLabel = document.createElement("label");
-							checkboxLabel.textContent = songName;
-
-							const checkbox = document.createElement("input");
-							checkbox.type = "checkbox";
-							checkbox.name = "answer";
-							checkbox.value = songID;
-
-							checkboxLabel.appendChild(checkbox);
-							questionDiv.appendChild(checkboxLabel);
-							questionDiv.appendChild(document.createElement("br"));
+						// Remove the givenString from the remainingStrings array (if it exists)
+						const indexToRemove = remainingStrings.indexOf(givenString);
+						if (indexToRemove !== -1) {
+							remainingStrings.splice(indexToRemove, 1);
 						}
 
+						// Pick 3 random strings from the remainingStrings array
+						const pickedStrings = [];
+						for (let i = 0; i < 3; i++) {
+							const randomIndex = Math.floor(Math.random() * remainingStrings.length);
+							const randomString = remainingStrings.splice(randomIndex, 1)[0];
+							pickedStrings.push(randomString);
+						}
+
+						// Insert the givenString randomly into the pickedStrings array
+						const randomInsertIndex = Math.floor(Math.random() * 4);
+						pickedStrings.splice(randomInsertIndex, 0, givenString);
+
+						return pickedStrings;
+					}
+					function createArtistsOption(songID)
+					{
+						let quizDiv = document.getElementById("quizDiv");
+
+						//let possibleAns=Object.keys(artistsMap);
+						//מוצאים את השם של הזמר
+						let correctAnswer = artistsMap[songID] 
+						const artistNames = Object.values(artistsMap);
+						const uniqueArtistArray = [...new Set(artistNames)]; //unique the array above
+						let possibleAnswer = pickAndInsertRandomStrings(uniqueArtistArray, correctAnswer);
+						
+						console.log("poosible answer: " + possibleAnswer);
+						console.log("correct answer: "+  correctAnswer);
+						
+						const radioContainer = document.createElement("div");
+						radioContainer.id = "radioContainer";
+
+						for (let i = 0; i < possibleAnswer.length; i++) {
+							const radioLabel = document.createElement("label");
+							radioLabel.setAttribute("for", "radioOption" + i);
+							radioLabel.textContent = possibleAnswer[i];
+
+							const radioButton = document.createElement("input");
+							radioButton.type = "radio";
+							radioButton.id = "radioOption" + i;
+							radioButton.name = "radioOptions";
+							radioButton.value = i;
+
+							radioContainer.appendChild(radioButton);
+							radioContainer.appendChild(radioLabel);
+							radioContainer.appendChild(document.createElement("br"));
+						}
+
+quizDiv.appendChild(radioContainer);
+						
 					}
 
 					
@@ -771,16 +790,7 @@
 					}
 
 					
-					// function renderAnswers() {
-					// 	const answerDiv = document.createElement("div");
-					// 	quizDiv.appendChild(answerDiv);
-
-					// 	const answerSelect = document.getElementById("dynamicSelect");
-					// 	//selecttttt!!!!!!
-
-					// 	const dynamicOptionsData = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"];
-					// }
-
+					
 				showCurrentSong();				
 				questionBtn.addEventListener("click", function () {
 					quizDiv.innerHTML = "";
