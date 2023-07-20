@@ -639,9 +639,6 @@
 			});
 		}
 
-
-		
-
 		function renderAtrists(){
 			whichPage = document.getElementById("whichPage");
 			whichPage.innerHTML = "ARTISTS";
@@ -649,15 +646,6 @@
 			ajaxCall("GET", api, "", successCB_renderAtrists , errorCB);
 
 		}
-
-
-
-
-
-
-
-
-
 
 		function successCB_renderAtrists(data){
 			if(data){
