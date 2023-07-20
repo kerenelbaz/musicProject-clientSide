@@ -572,8 +572,8 @@
 		function quiz()
 		{
 			document.getElementById("pForm").style.display = "none"
-			const songsDataString =  JSON.parse(localStorage.getItem("songsData"));
-			console.log(songsDataString);
+			const songsData =  JSON.parse(localStorage.getItem("songsData"));
+			// console.log(songsDataString);
 
 			//all 3 are a dictionary maps type 
 			const songsMap={};
@@ -620,6 +620,7 @@
 
 				const quizDiv = document.createElement("div");
 				quizDiv.id = "quizDiv";
+				container.appendChild(quizDiv);
 				
 				// const h1question = document.createElement("h1");
 				const questionBtn = document.createElement("BUTTON");
@@ -635,7 +636,7 @@
 
 
 				// quizDiv.appendChild(h1question);
-				container.appendChild(quizDiv);
+				
 
 				showCurrentSong(currentQuestion);
 
@@ -645,12 +646,10 @@
 					songNum.innerHTML = currentQuestion;
 					songNum.innerHTML = "Song Number: " + currentQuestion;
 
-					queStr = document.createElement("h2");
+					let queStr = document.createElement("h2");
 					queStr.id = "queStr"; 
 					
-					const strst = "keren"
-					strst=renderQuestion();
-					queStr.innerHTML = strst;
+					queStr.innerHTML = renderQuestion();
 
 					quizDiv.appendChild(queStr);
 					quizDiv.appendChild(songNum);
@@ -790,7 +789,7 @@
 				showCurrentSong();				
 				questionBtn.addEventListener("click", function () {
 					quizDiv.innerHTML = "";
-					currentQuestion = (currentQuestion + 1) % songsName.length;
+					currentQuestion = (currentQuestion + 1) % songsMap.length;
 					showCurrentSong();
 					console.log(currentQuestion);
 				});
