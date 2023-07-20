@@ -574,6 +574,7 @@
 			document.getElementById("pForm").style.display = "none"
 			const songsData =  JSON.parse(localStorage.getItem("songsData"));
 			console.log(songsData);
+			// console.log(songsDataString);
 
 			//all 3 are a dictionary maps type 
 			const songsMap={};
@@ -620,6 +621,7 @@
 
 				const quizDiv = document.createElement("div");
 				quizDiv.id = "quizDiv";
+				container.appendChild(quizDiv);
 				
 				// const h1question = document.createElement("h1");
 				const questionBtn = document.createElement("BUTTON");
@@ -635,7 +637,7 @@
 
 
 				// quizDiv.appendChild(h1question);
-				container.appendChild(quizDiv);
+				
 
 				showCurrentSong(currentQuestion);
 
@@ -645,12 +647,10 @@
 					songNum.innerHTML = currentQuestion;
 					songNum.innerHTML = "Song Number: " + currentQuestion;
 
-					queStr = document.createElement("h2");
+					let queStr = document.createElement("h2");
 					queStr.id = "queStr"; 
 					
-					const strst = "keren"
-					strst=renderQuestion();
-					queStr.innerHTML = strst;
+					queStr.innerHTML = renderQuestion();
 
 					quizDiv.appendChild(queStr);
 					quizDiv.appendChild(songNum);
@@ -768,29 +768,23 @@
 						//Get the corresponding song name from the songsMap object using the randomly selected song ID
 						const randomSongName = songsMap[randomSongID];
 						return randomSongName;
-
-						// console.log(arr);
-						// const randomIndex = Math.floor(Math.random() * arr.length);
-						// console.log("randomINDX: "+randomIndex);
-						// console.log("arr[randomIndex]: "+JSON.stringify(arr[randomIndex]));
-						// return arr[randomIndex];
 					}
 
 					
-					function renderAnswers() {
-						const answerDiv = document.createElement("div");
-						quizDiv.appendChild(answerDiv);
+					// function renderAnswers() {
+					// 	const answerDiv = document.createElement("div");
+					// 	quizDiv.appendChild(answerDiv);
 
-						const answerSelect = document.getElementById("dynamicSelect");
-						//selecttttt!!!!!!
+					// 	const answerSelect = document.getElementById("dynamicSelect");
+					// 	//selecttttt!!!!!!
 
-						const dynamicOptionsData = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"];
-					}
+					// 	const dynamicOptionsData = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"];
+					// }
 
 				showCurrentSong();				
 				questionBtn.addEventListener("click", function () {
 					quizDiv.innerHTML = "";
-					currentQuestion = (currentQuestion + 1) % songsName.length;
+					currentQuestion = (currentQuestion + 1) % songsMap.length;
 					showCurrentSong();
 					console.log(currentQuestion);
 				});
