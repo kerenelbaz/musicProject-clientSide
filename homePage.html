@@ -305,7 +305,7 @@
 			whichPage.innerHTML = "YOUR FAVORITES";
 			document.getElementById("pForm").style.display = "none"
 			GetFavoriteSongsOfUser(userId);
-			//renderSongs(favoriteSongsOfUserArr);
+
 			
 			
 		}
@@ -698,7 +698,28 @@
 			
 		}
 
+		
+		
+		// async function getArtistInfo(artistName) {
+		// 	const url = 'https://genius-song-lyrics1.p.rapidapi.com/artist/details/?id=344497';
+		// 	const options = {
+		// 		method: 'GET',
+		// 		headers: {
+		// 			'X-RapidAPI-Key': '8ca6442259mshfdaecd0aeabaeabp195d39jsnd1943a2b84b2',
+		// 			'X-RapidAPI-Host': 'genius-song-lyrics1.p.rapidapi.com'
+		// 		}
+		// 	};
 
+		// 	try {
+		// 		const response = await fetch(url, options);
+		// 		const result = await response.text();
+		// 		console.log(result);
+		// 	} catch (error) {
+		// 		console.error(error);
+		// 	}
+
+
+		// }
 
 
 
@@ -713,26 +734,26 @@
 					format: 'json'
 				},
 				success: function(response) {
-					//console.log(response);
-					let container = document.getElementById("container");
+					 console.log(response);
+					// let container = document.getElementById("container");
 
-					let card = document.createElement("div");
-					card.id = "card";
-					container.appendChild(card);
+					// let card = document.createElement("div");
+					// card.id = "card";
+					// container.appendChild(card);
 
-					let img = document.createElement("img");
-					img.src = response.artist.image[4];
-					card.appendChild(img);
+					// let img = document.createElement("img");
+					// img.src = response.artist.image[4];
+					// card.appendChild(img);
 
-					let artist = document.createElement("h4");
-					artist.innerHTML = response.artist.name;
-					card.appendChild(artist);
+					// let artist = document.createElement("h4");
+					// artist.innerHTML = response.artist.name;
+					// card.appendChild(artist);
 
 					
-					let bio = document.createElement("p");
-					bio.id = "Bio";
-					bio.innerHTML = "Bio: <br/>" + response.artist.bio.content;
-					card.appendChild(bio);
+					// let bio = document.createElement("p");
+					// bio.id = "Bio";
+					// bio.innerHTML = "Bio: <br/>" + response.artist.bio.content;
+					// card.appendChild(bio);
 
 				
 				},
@@ -754,6 +775,7 @@
 
 		function successCB_renderAtrists(data){
 			if(data){
+
 				let container = document.getElementById("container");
 				container.innerHTML = "";
 				// Loop through the array and call the function for each artist
@@ -764,6 +786,73 @@
 			}
 			else alert("something wrong");
 		}
+
+
+
+		getArtistImage('abba');
+
+
+		async function getArtistImage(artistName) {
+			
+			const clientId = "76eb58574dca4292942f6b50535fe9b9";
+			const clientSecret = "df624510f02e46a39a9f04d250b1cde8";
+
+			const auth = btoa(`${clientId}:${clientSecret}`);
+			const tokenResponse = await fetch('https://accounts.spotify.com/api/token', {
+				method: 'POST',
+				headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Authorization': `Basic ${auth}`
+				},
+				body: 'grant_type=client_credentials'
+			});
+
+			const { access_token } = await tokenResponse.json();
+
+
+
+			const searchResponse = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(artistName)}&type=artist`, {
+				method: 'GET',
+				headers: {
+				'Authorization': `Bearer ${access_token}`
+				}
+			});
+
+			const { artists } = await searchResponse.json();
+			if (!artists || !artists.items || artists.items.length === 0) {
+				console.error('Artist not found or no image available.');
+				return;
+			}
+
+			const artistId = artists.items[0].id;
+
+			const artistDetailsResponse = await fetch(`https://api.spotify.com/v1/artists/${artistId}`, {
+				method: 'GET',
+				headers: {
+				'Authorization': `Bearer ${access_token}`
+				}
+			});
+
+			const artistDetails = await artistDetailsResponse.json();
+			if (!artistDetails || !artistDetails.images || artistDetails.images.length === 0) {
+				console.error('Artist not found or no image available.');
+				return;
+			}
+
+			// Assuming you want the first image, you can customize this to use a different size if needed.
+			const imageUrl = artistDetails.images[0].url;
+			console.log(artistDetails);
+
+			console.log('Image URL:', imageUrl);
+    	}
+
+
+
+
+
+
+
+
 
 	</script>
 </body>
