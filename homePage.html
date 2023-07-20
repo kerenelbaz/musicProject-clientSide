@@ -651,7 +651,7 @@
 					queStr.id = "queStr"; 
 					queStr.innerHTML = renderQuestion();
 
-					const radioContainer = createArtistsOption(); // Retrieve the radioContainer directly from the createArtistsOption function
+					//const radioContainer = createArtistsOption(); // Retrieve the radioContainer directly from the createArtistsOption function
 					
 					quizDiv.appendChild(songNum);
 					quizDiv.appendChild(queStr);
@@ -676,7 +676,7 @@
 						switch (keyQue) {
 							case 'A':
 							const tmpArr = getsongsMaps(songsMap, questionDict[keyQue]);
-							createArtistsOption(tmpArr[0]);
+							radioContainer = createArtistsOption(tmpArr[0]);
 							 //console.log(tmpArr);
 							return tmpArr[2]; 
 								break;
