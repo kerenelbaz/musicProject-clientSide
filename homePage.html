@@ -122,15 +122,19 @@
 		}
 		
 		#quizDiv{
-			width: 30%;
+			
+			width: 70%;
 			height: 30%;
 			background-color: whitesmoke;
 			/* background-color: #212529; */
+			margin-top: 7%;
 		}
 
 
 		#radioContainer {
 			direction: ltr;
+			padding-top: 9%;
+    		padding-bottom: 14%;
 		}
 
 		input[type="radio"] {
@@ -164,7 +168,9 @@
 			vertical-align: top;
 			direction: ltr;
 		}
-
+		#questionBtn{
+			background-color: rgb(96 73 97 / 159%);
+		}
 
 		
 	</style>
@@ -692,6 +698,7 @@
 				questionBtn.addEventListener("click", function () {
 					if(questionBtn.textContent == "Next question")
 					{
+						
 						quizDiv.innerHTML = "";
 						currentQuestion += 1;
 						showCurrentSong(currentQuestion);
@@ -898,6 +905,15 @@
 										console.log("Incorrect answer!");
 										
 									}
+								}
+
+								if(questionBtn.textContent == "correct" || questionBtn.textContent == "wrong")
+								{
+									setTimeout(function () {
+										questionBtn.textContent = "Next question";
+										questionBtn.disabled=false;
+										questionBtn.style.backgroundColor = 'rgb(96 73 97 / 159%)';
+									}, 3000);
 								}
 								
 
