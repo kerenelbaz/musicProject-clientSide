@@ -107,6 +107,28 @@ function quiz()
                             {
                                 questionBtn.style.backgroundColor = "red";
                                 questionBtn.textContent = "wrong";
+                                //צובע את הנכון בירוק
+                                const radioButtons = document.getElementsByName('radioOptions');
+                                for (let i = 0; i < radioButtons.length; i++) {
+                                    const radioButton = radioButtons[i];
+                                    const isCorrect = radioButton.getAttribute("data-correct") === "true";
+                        
+                                    if (isCorrect) {
+                                        // Change the style of the correct radio button's label to green
+                                        const labelForCorrectOption = document.querySelector(`label[for=${radioButton.id}]`);
+                                        labelForCorrectOption.style.color = "green";
+                                        radioButton.style.backgroundColor = "green";
+                                        radioButton.style.borderColor = "green";
+                                        radioButton.style.color = "white";
+                                    } else {
+                                        // Reset the style of the other radio buttons' labels
+                                        const labelForOption = document.querySelector(`label[for=${radioButton.id}]`);
+                                        labelForOption.style.color = "";
+                                        radioButton.style.borderColor = "";
+                                        radioButton.style.backgroundColor = "";
+                                        radioButton.style.color = "";
+                                    }
+                                }
                                 console.log("Incorrect answer!");
                             }
                         } 
@@ -133,15 +155,31 @@ function quiz()
 				function showCurrentSong(currentQuestion) {
 					quizDiv.innerHTML = "";
 					
-					const songNum = document.createElement("h3");
+					// const songNum = document.createElement("h3");
+					// songNum.id="songNum";
+					// songNum.innerHTML = currentQuestion;
+                    const songNum = document.createElement("BUTTON");
 					songNum.id="songNum";
-					songNum.innerHTML = currentQuestion;
-					
+					songNum.textContent =  currentQuestion;
+                    
+                    songNum.addEventListener("mouseover",function(){
+                        songNum.innerHTML = `<i class="fa fa-play"></i>`;
 
+                    });
+                    songNum.addEventListener("mouseout", function() {
+                        // Change the content of the element back to the current question number when the mouse leaves the button.
+                        songNum.innerHTML = currentQuestion;
+                    });
+
+                    songNum.addEventListener("click", function () {
+                        speakQueStr(queStr.innerHTML);
+                        
+                        
+                    });
 					let queStr = document.createElement("h3");
 					queStr.id = "queStr"; 
 					queStr.innerHTML = renderQuestion();
-                    speakQueStr("hello world for everyone. nice to meet you");
+                    // speakQueStr("hello world for everyone. nice to meet you");
 
 					quizDiv.appendChild(songNum);
 					quizDiv.appendChild(queStr);
