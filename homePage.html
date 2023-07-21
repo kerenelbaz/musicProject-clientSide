@@ -664,7 +664,7 @@
 			}
 			
 
-			console.log(lyricsMap);
+			
 
 			createQuastion();
 
@@ -696,7 +696,7 @@
 				});
 				
 				showCurrentSong(currentQuestion);
-				console.log("current question: "+currentQuestion);
+				// console.log("current question: "+currentQuestion);
 				function showCurrentSong(currentQuestion) {
 					quizDiv.innerHTML = "";
 					const songNum = document.createElement("h3");
@@ -719,7 +719,7 @@
 					{
 						const questionDict={
 							A : 'which artist wrote the song #?',
-							B : 'what is the name of the song that his lyrics are # ?', 
+							B : 'what is the name of the song that its lyrics are: \n# ?', 
 							C : 'who wrote the song that goes like that # ?', 
 							D : 'fill the correct word',
 							E : 'what song did # wrote ?'
@@ -728,12 +728,12 @@
 
 						//random select which question (A B C or D) selected
 						//const keyQue = getRandomQuestion(questionDict);
-						const keyQue = 'E';
+						const keyQue = 'A';
 						let returnedArray=[];
 						switch (keyQue) {
 							case 'A':
 								returnedArray = GetTheCompleteSentence(songsMap, questionDict[keyQue]);
-								console.log(returnedArray[0]);
+								console.log("2 song id came from the function: "+returnedArray[0]);
 								radioContainer = createArtistsOption(returnedArray[0]);
 								// console.log(radioContainer);	
 								optionDiv.innerHTML = "";
@@ -742,7 +742,11 @@
 								return returnedArray[2]; 
 							break;
 							case 'B':
-								console.log("nothing");
+								returnedArray = GetTheCompleteSentence(lyricsMap, questionDict[keyQue]);
+								// console.log(returnedArray);
+								console.log("2 song id came from the function: "+returnedArray[0]);
+								return returnedArray[2]; 
+								
 								break;
 							case 'C':
 							
@@ -766,26 +770,36 @@
 					function getRandomQuestion(obj) { // get a random question by key
 						const keys = Object.keys(obj);
 						const randomIndex = Math.floor(Math.random() * keys.length);
-						console.log(keys[randomIndex]);
+						// console.log(keys[randomIndex]);
 						return keys[randomIndex]; 
 					}
 
 					function GetTheCompleteSentence(arr, question) {
 						let tmpArr=[];
-						let currrntSongID;
-						let songName = getRandomItem(arr);
+
+						const songIDs = Object.keys(arr); // מערך של מפתחות 
+						const randomIndex = Math.floor(Math.random() * songIDs.length);// מגריל אינדקס
+						
+						const randomSongID = songIDs[randomIndex];
+						const randomSongName = songsMap[randomSongID];
+						
+						
+						// let currrntSongID;
+						// let arrayFromFunc = getRandomItem(arr);
+						// let songName = arrayFromFunc[0];
 
 						//to get the random songID of the random songName
-						for(const key in arr)
-						{
-							if(arr.hasOwnProperty(key) && arr[key]===songName)
-							currrntSongID = key;
-						}
+						// for(const key in arr)
+						// {
+						// 	if(arr.hasOwnProperty(key) && arr[key]===songName)
+						// 	currrntSongID = key;
+						// }
+						
 
-						const completeQuestion = question.replace('#', songName);
-
-						tmpArr.push(currrntSongID);
-						tmpArr.push(songName);
+						const completeQuestion = question.replace('#', randomSongName);
+						console.log("1 in the function - currrntSongID: "+randomSongID); 
+						tmpArr.push(randomSongID);
+						tmpArr.push(randomSongName);
 						tmpArr.push(completeQuestion);
 						return tmpArr;
 					}
@@ -824,8 +838,8 @@
 						const uniqueArtistArray = [...new Set(artistNames)]; //unique the array above
 						let possibleAnswer = pickAndInsertRandomStrings(uniqueArtistArray, correctAnswer);
 						
-						console.log("poosible answer: " + possibleAnswer);
-						console.log("correct answer: "+  correctAnswer);
+						// console.log("poosible answer: " + possibleAnswer);
+						// console.log("correct answer: "+  correctAnswer);
 						
 						const radioContainer = document.createElement("div");
 						radioContainer.innerHTML = "";
@@ -850,17 +864,21 @@
 							return radioContainer;
 					}
 		
-					function getRandomItem(obj) //gets songsMap/artissMap/lyricsMap
-					{
-						//Retrieve all the song IDs (keys) from the object (songMap/artistMap/lyricsMap)
-						const songIDs = Object.keys(obj); // מערך של מפתחות 
-						const randomIndex = Math.floor(Math.random() * songIDs.length);// מגריל אינדקס
-						//Use the random index to select a random song ID from the array of song IDs
-						const randomSongID = songIDs[randomIndex];
-						//Get the corresponding song name from the songsMap object using the randomly selected song ID
-						const randomSongName = songsMap[randomSongID];
-						return randomSongName;
-					}
+					// function getRandomItem(obj) //gets songsMap/artissMap/lyricsMap
+					// {
+					// 	let tmpToReturn = [];
+					// 	//Retrieve all the song IDs (keys) from the object (songMap/artistMap/lyricsMap)
+					// 	const songIDs = Object.keys(obj); // מערך של מפתחות 
+					// 	const randomIndex = Math.floor(Math.random() * songIDs.length);// מגריל אינדקס
+						
+					// 	const randomSongID = songIDs[randomIndex];
+					// 	const randomSongName = songsMap[randomSongID];
+						
+						
+					// 	tmpToReturn.push(randomSongName);
+					// 	tmpToReturn.push(randomSongID);
+					// 	return tmpToReturn;
+					// }
 
 					
 					
