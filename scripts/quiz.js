@@ -4,17 +4,14 @@ function quiz()
 			document.getElementById("pForm").style.display = "none"
 			const songsData =  JSON.parse(localStorage.getItem("songsData"));
 			
-
 			//all 3 are a dictionary maps type 
 			const songsMap={};
 			const lyricsMap = {};
 			const artistsMap = {};
-			const allArrays=[songsMap,lyricsMap,artistsMap];
+			const allArrays=[songsMap,lyricsMap,artistsMap]; //not necessary
 
-			
 			function createDS()
 			{
-				
 				for(var item of songsData)
 				{
 					// Create dictionary maps for lyrics and artist arrays
@@ -31,7 +28,7 @@ function quiz()
 					
 				}
 				allArrays.push(songsMap, artistsMap, lyricsMap);
-
+                
 				// Iterate through each key-value pair in the lyricsMap and truncate the values
 				for (const key in lyricsMap) {
 					if (lyricsMap.hasOwnProperty(key)) {
@@ -41,26 +38,26 @@ function quiz()
 			}
 			
 			createDS();
-			//חותכת את מילות השיר למספר מילים שנותנים לפונקציה
+			
+            //חותכת את מילות השיר למספר מילים שנותנים לפונקציה
 			function truncateToWords(str, numWords) 
 			{
 				const words = str.split(" ");
 				stringToReturn = words.slice(0, numWords).join(" ");
-				stringToReturn = removeAfterLineBreak(stringToReturn)
+				stringToReturn = removeLineBreaksAndDoubleSpaces(stringToReturn);
 				return stringToReturn;
 			}
-			//מורידה רווחים ואת ה\r\
-			function removeAfterLineBreak(sentence) {
-				const index = sentence.indexOf("\r\n");
-				if (index !== -1) {
-					sentence = sentence.substring(0, index);
-				}
-				return sentence.trimEnd(); //remove whitespace
-			}
-			
 
+            //מורידה רווחים ואת ה\r\
+            function removeLineBreaksAndDoubleSpaces(str) 
+            {
+                const regexLineBreaks = /\r?\n|\r/g;
+                const regexDoubleSpaces = /\s\s+/g;
+                const noLineBreaksStr = str.replace(regexLineBreaks, '');
+                const resultString = noLineBreaksStr.replace(regexDoubleSpaces, ' ');
+                return resultString;
+            }
 			
-
 			createQuastion();
 
 			function createQuastion()
@@ -70,7 +67,7 @@ function quiz()
 				const whichPage = document.getElementById("whichPage");
 				whichPage.innerHTML = "Let's play!";
 
-				let currentQuestion=1; 
+				currentQuestion=1; 
 
 				const quizDiv = document.createElement("div");
 				quizDiv.id = "quizDiv";
@@ -87,17 +84,52 @@ function quiz()
 				questionBtn.addEventListener("click", function () {
 					if(questionBtn.textContent == "Next question")
 					{
-						
 						quizDiv.innerHTML = "";
 						currentQuestion += 1;
 						showCurrentSong(currentQuestion);
 					}
+
+                    if (questionBtn.textContent == "check") 
+                    {
+                        // Get the selected radio button
+                        const selectedRadioButton = document.querySelector('input[type="radio"]:checked');
+                    
+                        if (selectedRadioButton) 
+                        {
+                            // Check if the selected radio button has the "data-correct" attribute set to "true"
+                            if (selectedRadioButton.getAttribute("data-correct") === "true") 
+                            {
+                                questionBtn.style.backgroundColor = "green";
+                                questionBtn.textContent = "correct";
+                                console.log("Correct answer!");
+                            } 
+                            else 
+                            {
+                                questionBtn.style.backgroundColor = "red";
+                                questionBtn.textContent = "wrong";
+                                console.log("Incorrect answer!");
+                            }
+                        } 
+                        else
+                         {
+                            // No radio button is selected
+                            console.log("Please select an answer.");
+                        }
+                      }
+                      if(questionBtn.textContent == "correct" || questionBtn.textContent == "wrong")
+                      {
+                          setTimeout(function () {
+                              questionBtn.textContent = "Next question";
+                              questionBtn.disabled=false;
+                              questionBtn.style.backgroundColor = 'rgb(96 73 97 / 159%)';
+                          }, 1500);
+                      }
 					
 					
 				});
 				
 				showCurrentSong(currentQuestion);
-				// console.log("current question: "+currentQuestion);
+				
 				function showCurrentSong(currentQuestion) {
 					quizDiv.innerHTML = "";
 					
@@ -121,48 +153,48 @@ function quiz()
 					function renderQuestion()
 					{
 						const questionDict={
-							A : 'which artist wrote the song #?',
+							A : 'which artist perform the song #?',
 							B : 'what is the name of the song that its lyrics are: \n# ?', 
 							C : 'who wrote the song that goes like that # ?', 
-							D : 'fill the correct word',
-							E : 'what song did # wrote ?'
+							D : 'which song did # wrote ?'
 						};
  
 
 						//random select which question (A B C or D) selected
-						//const keyQue = getRandomQuestion(questionDict);
-						const keyQue = 'A';
+						const keyQue = getRandomQuestion(questionDict);
+						// const keyQue = 'A';
 						let returnedArray=[];
 						switch (keyQue) {
 							case 'A':
 								returnedArray = GetTheCompleteSentence(songsMap, questionDict[keyQue]);
-								console.log("2 song id came from the function: "+returnedArray[0]);
+								//console.log("2 song id came from the function: "+returnedArray[0]);
 								radioContainer = createArtistsOption(artistsMap, returnedArray[0]);
-								// console.log(radioContainer);	
 								optionDiv.innerHTML = "";
 								optionDiv.appendChild(radioContainer);
-							 	//console.log(returnedArray);
 								return returnedArray[2]; 
 							break;
 							case 'B':
 								returnedArray = GetTheCompleteSentence(lyricsMap, questionDict[keyQue]);
-								// console.log(returnedArray);
-								console.log("2 song id came from the function: "+returnedArray[0]);
+                                radioContainer = createArtistsOption(songsMap, returnedArray[0]);
+                                optionDiv.innerHTML = "";
+								optionDiv.appendChild(radioContainer);
 								return returnedArray[2]; 
-								
-								break;
+							break;
+
 							case 'C':
-							
-								console.log("nothing");
-								
+                                returnedArray = GetTheCompleteSentence(lyricsMap, questionDict[keyQue]);
+                                radioContainer = createArtistsOption(artistsMap, returnedArray[0]);
+                                optionDiv.innerHTML = "";
+								optionDiv.appendChild(radioContainer);
+								return returnedArray[2];
 								break;
 
 							case 'D':
-								console.log("nothing");
-								break;
-							case 'E':
 								returnedArray = GetTheCompleteSentence(artistsMap, questionDict[keyQue]);
-								return returnedArray[2]; 
+                                radioContainer = createArtistsOption(songsMap, returnedArray[0]);
+                                optionDiv.innerHTML = "";
+								optionDiv.appendChild(radioContainer);
+								return returnedArray[2];
 							default:
 						console.log("default!");
 
@@ -173,7 +205,6 @@ function quiz()
 					function getRandomQuestion(obj) { // get a random question by key
 						const keys = Object.keys(obj);
 						const randomIndex = Math.floor(Math.random() * keys.length);
-						// console.log(keys[randomIndex]);
 						return keys[randomIndex]; 
 					}
 
@@ -185,19 +216,6 @@ function quiz()
 						
 						const randomSongID = songIDs[randomIndex];
 						const randomSongName = arr[randomSongID];
-						
-						
-						// let currrntSongID;
-						// let arrayFromFunc = getRandomItem(arr);
-						// let songName = arrayFromFunc[0];
-
-						//to get the random songID of the random songName
-						// for(const key in arr)
-						// {
-						// 	if(arr.hasOwnProperty(key) && arr[key]===songName)
-						// 	currrntSongID = key;
-						// }
-						
 
 						const completeQuestion = question.replace('#', randomSongName);
 						console.log("1 in the function - currrntSongID: "+randomSongID); 
@@ -240,10 +258,7 @@ function quiz()
 						const valuesNames = Object.values(arr);
 						const uniqueArray = [...new Set(valuesNames)]; //unique the array above
 						let possibleAnswer = pickAndInsertRandomStrings(uniqueArray, correctAnswer);
-						
-						// console.log("poosible answer: " + possibleAnswer);
-						// console.log("correct answer: "+  correctAnswer);
-						
+	
 						const radioContainer = document.createElement("div");
 						radioContainer.innerHTML = "";
 						radioContainer.id = "radioContainer";
@@ -251,7 +266,7 @@ function quiz()
 						// Get the index of the correct answer radio button
   						const correctAnswerIndex = possibleAnswer.indexOf(correctAnswer);
 						questionBtn.textContent = "check";
-                        
+
 						for (let i = 0; i < possibleAnswer.length; i++) {
 							const radioLabel = document.createElement("label");
 							radioLabel.setAttribute("for", "radioOption" + i);
@@ -273,79 +288,16 @@ function quiz()
 							radioContainer.appendChild(document.createElement("br"));
 						}
 
-							// Add click event listener to radio buttons
-							const radioButtons = radioContainer.querySelectorAll('input[type="radio"]');
-							radioButtons.forEach((radioButton) => {
-								radioButton.addEventListener("click", checkAnswer);
-							});	
-
-							function checkAnswer(event) {
-								if(questionBtn.textContent == "check")
-								{
-									const selectedRadioButton = event.target;
-									const isCorrectAnswer = selectedRadioButton.getAttribute("data-correct") === "true";
-									questionBtn.disabled=true;
-
-									if (isCorrectAnswer) {
-										questionBtn.style.backgroundColor = "green";
-										questionBtn.textContent = "correct";
-										console.log("Correct answer!");
-										
-									} else {
-										questionBtn.style.backgroundColor = "red";
-										questionBtn.textContent = "wrong";
-										console.log("Incorrect answer!");
-										
-									}
-								}
-
-								if(questionBtn.textContent == "correct" || questionBtn.textContent == "wrong")
-								{
-									setTimeout(function () {
-										questionBtn.textContent = "Next question";
-										questionBtn.disabled=false;
-										questionBtn.style.backgroundColor = 'rgb(96 73 97 / 159%)';
-									}, 3000);
-								}
-								
-
-								// questionBtn.addEventListener("click", function () {
-								// 	quizDiv.innerHTML = "";
-								// 	currentQuestion += 1;
-								// 	showCurrentSong(currentQuestion);
-									
-								// });
-
-							}
+							
 
 							return radioContainer;
 					}
 		
-					// function getRandomItem(obj) //gets songsMap/artissMap/lyricsMap
-					// {
-					// 	let tmpToReturn = [];
-					// 	//Retrieve all the song IDs (keys) from the object (songMap/artistMap/lyricsMap)
-					// 	const songIDs = Object.keys(obj); // מערך של מפתחות 
-					// 	const randomIndex = Math.floor(Math.random() * songIDs.length);// מגריל אינדקס
-						
-					// 	const randomSongID = songIDs[randomIndex];
-					// 	const randomSongName = songsMap[randomSongID];
-						
-						
-					// 	tmpToReturn.push(randomSongName);
-					// 	tmpToReturn.push(randomSongID);
-					// 	return tmpToReturn;
-					// }
+					
 
 					
 					
-				showCurrentSong();				
-				// questionBtn.addEventListener("click", function () {
-				// 	quizDiv.innerHTML = "";
-				// 	currentQuestion = (currentQuestion + 1) % songsMap.length;
-				// 	showCurrentSong();
-				// 	console.log(currentQuestion);
-				// });
+				
 
 			}	
 		}
