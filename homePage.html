@@ -690,9 +690,14 @@
 				questionBtn.textContent = "Next question";
 				
 				questionBtn.addEventListener("click", function () {
-					quizDiv.innerHTML = "";
-					currentQuestion += 1;
-					showCurrentSong(currentQuestion);
+					if(questionBtn.textContent == "Next question")
+					{
+						quizDiv.innerHTML = "";
+						currentQuestion += 1;
+						showCurrentSong(currentQuestion);
+					}
+					
+					
 				});
 				
 				showCurrentSong(currentQuestion);
@@ -734,7 +739,7 @@
 							case 'A':
 								returnedArray = GetTheCompleteSentence(songsMap, questionDict[keyQue]);
 								console.log("2 song id came from the function: "+returnedArray[0]);
-								radioContainer = createArtistsOption(returnedArray[0]);
+								radioContainer = createArtistsOption(artistsMap, returnedArray[0]);
 								// console.log(radioContainer);	
 								optionDiv.innerHTML = "";
 								optionDiv.appendChild(radioContainer);
@@ -781,7 +786,7 @@
 						const randomIndex = Math.floor(Math.random() * songIDs.length);// מגריל אינדקס
 						
 						const randomSongID = songIDs[randomIndex];
-						const randomSongName = songsMap[randomSongID];
+						const randomSongName = arr[randomSongID];
 						
 						
 						// let currrntSongID;
@@ -808,7 +813,7 @@
 						// Make a copy of the setOfStrings array to avoid modifying the original array
 						const remainingStrings = [...setOfStrings];
 
-						// Remove the givenString from the remainingStrings array (if it exists)
+						// Remove the givenString from the remainingStrings array (if exists)
 						const indexToRemove = remainingStrings.indexOf(givenString);
 						if (indexToRemove !== -1) {
 							remainingStrings.splice(indexToRemove, 1);
@@ -829,14 +834,14 @@
 						return pickedStrings;
 					}
 					
-					function createArtistsOption(songID)
+					function createArtistsOption(arr, songID)
 					{
 						let quizDiv = document.getElementById("quizDiv");
-						//מוצאים את השם של הזמר
-						let correctAnswer = artistsMap[songID] 
-						const artistNames = Object.values(artistsMap);
-						const uniqueArtistArray = [...new Set(artistNames)]; //unique the array above
-						let possibleAnswer = pickAndInsertRandomStrings(uniqueArtistArray, correctAnswer);
+						//מוצאים את השם של האופציה באמצעות הID
+						let correctAnswer = arr[songID] 
+						const valuesNames = Object.values(arr);
+						const uniqueArray = [...new Set(valuesNames)]; //unique the array above
+						let possibleAnswer = pickAndInsertRandomStrings(uniqueArray, correctAnswer);
 						
 						// console.log("poosible answer: " + possibleAnswer);
 						// console.log("correct answer: "+  correctAnswer);
@@ -844,7 +849,10 @@
 						const radioContainer = document.createElement("div");
 						radioContainer.innerHTML = "";
 						radioContainer.id = "radioContainer";
-
+						
+						// Get the index of the correct answer radio button
+  						const correctAnswerIndex = possibleAnswer.indexOf(correctAnswer);
+						questionBtn.textContent = "check";
 						for (let i = 0; i < possibleAnswer.length; i++) {
 							const radioLabel = document.createElement("label");
 							radioLabel.setAttribute("for", "radioOption" + i);
@@ -856,10 +864,51 @@
 							radioButton.name = "radioOptions";
 							radioButton.value = i;
 
+							// Add a unique identifier (e.g., data-correct) to the correct answer radio button
+							if (i === correctAnswerIndex) {
+								radioButton.setAttribute("data-correct", "true");
+							}
+
 							radioContainer.appendChild(radioButton);
 							radioContainer.appendChild(radioLabel);
 							radioContainer.appendChild(document.createElement("br"));
 						}
+
+							// Add click event listener to radio buttons
+							const radioButtons = radioContainer.querySelectorAll('input[type="radio"]');
+							radioButtons.forEach((radioButton) => {
+								radioButton.addEventListener("click", checkAnswer);
+							});	
+
+							function checkAnswer(event) {
+								if(questionBtn.textContent == "check")
+								{
+									const selectedRadioButton = event.target;
+									const isCorrectAnswer = selectedRadioButton.getAttribute("data-correct") === "true";
+									questionBtn.disabled=true;
+
+									if (isCorrectAnswer) {
+										questionBtn.style.backgroundColor = "green";
+										questionBtn.textContent = "correct";
+										console.log("Correct answer!");
+										
+									} else {
+										questionBtn.style.backgroundColor = "red";
+										questionBtn.textContent = "wrong";
+										console.log("Incorrect answer!");
+										
+									}
+								}
+								
+
+								// questionBtn.addEventListener("click", function () {
+								// 	quizDiv.innerHTML = "";
+								// 	currentQuestion += 1;
+								// 	showCurrentSong(currentQuestion);
+									
+								// });
+
+							}
 
 							return radioContainer;
 					}
