@@ -141,17 +141,28 @@ function quiz()
 					let queStr = document.createElement("h3");
 					queStr.id = "queStr"; 
 					queStr.innerHTML = renderQuestion();
-                    speakQueStr();
+                    speakQueStr("hello world for everyone. nice to meet you");
 
 					quizDiv.appendChild(songNum);
 					quizDiv.appendChild(queStr);
 					quizDiv.appendChild(optionDiv);
 					quizDiv.appendChild(questionBtn);
 
-                    function speakQueStr() {
-                        
+                    function speakQueStr(text) {
                         const synth = window.speechSynthesis;
-                        const utterance = new SpeechSynthesisUtterance(queStr);
+                        const utterance = new SpeechSynthesisUtterance(text);
+                    
+                        // Check if there are available voices
+                        if (synth.getVoices().length > 0) {
+                            // List all available voices in the console
+                            console.log(synth.getVoices());
+                            utterance.voice = synth.getVoices()[12];
+
+                            // Choose a specific voice (you can experiment with different voices)
+                            // For example, to select the first voice, you can use:
+                            // utterance.voice = synth.getVoices()[0];
+                        }
+                    
                         synth.speak(utterance);
                     }
 					
