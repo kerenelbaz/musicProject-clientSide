@@ -12,14 +12,7 @@
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script src="./scripts/ajaxCalls.js"></script>
 	<script src="./scripts/apies.js"></script>
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/jquery.dropotron.min.js"></script>
-	<script src="assets/js/jquery.scrolly.min.js"></script>
-	<script src="assets/js/jquery.scrollex.min.js"></script>
-	<script src="assets/js/browser.min.js"></script>
-	<script src="assets/js/breakpoints.min.js"></script>
-	<script src="assets/js/util.js"></script>
-	<script src="assets/js/main.js"></script>
+	
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.css" />
   
@@ -230,7 +223,7 @@
 					<li onclick="HomeRender()"><a href="#">Home</a></li>
 					<li onclick="renderFavorites(JSON.parse(localStorage['onlineUser']).userId)"><a href="#">Your Favorites</a></li>
 					<li onclick="renderAtrists()"><a href="#">Artists</a></li>					
-					<li>
+					<li class="opener">
 						<a href="#">Search Music</a>
 						<ul>
 							<li onclick="renderSearching(1)"><a href="#">By Name Of Song</a></li>
@@ -278,7 +271,15 @@
     		document.getElementById("nav").getElementsByTagName("ul")[0].appendChild(usersLi);
 		}
 	</script>
-
+    
+	<script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.dropotron.min.js"></script>
+    <script src="assets/js/jquery.scrolly.min.js"></script>
+    <script src="assets/js/jquery.scrollex.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
 	
 	<script>
 
@@ -347,7 +348,7 @@
 						hideClass: {
 							popup: 'animate__animated animate__fadeOutUp'
 						}
-						})
+					})
 				})
 				card.appendChild(lyrics);
 
