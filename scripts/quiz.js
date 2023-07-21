@@ -156,7 +156,7 @@ function quiz()
                         if (synth.getVoices().length > 0) {
                             // List all available voices in the console
                             console.log(synth.getVoices());
-                            utterance.voice = synth.getVoices()[12];
+                            utterance.voice = synth.getVoices()[12]; //פה משנים מבטא!
 
                             // Choose a specific voice (you can experiment with different voices)
                             // For example, to select the first voice, you can use:
