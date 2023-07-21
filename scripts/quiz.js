@@ -87,6 +87,8 @@ function quiz()
 						quizDiv.innerHTML = "";
 						currentQuestion += 1;
 						showCurrentSong(currentQuestion);
+                        // Stop any ongoing speech playback
+                        window.speechSynthesis.cancel();
 					}
 
                     if (questionBtn.textContent == "check") 
@@ -170,8 +172,10 @@ function quiz()
                         // Change the content of the element back to the current question number when the mouse leaves the button.
                         songNum.innerHTML = currentQuestion;
                     });
-
+                    initializeTTS();
                     songNum.addEventListener("click", function () {
+                        // Call initializeTTS at the start of your application
+                        
                         speakQueStr(queStr.innerHTML);
                         
                         
@@ -186,6 +190,20 @@ function quiz()
 					quizDiv.appendChild(optionDiv);
 					quizDiv.appendChild(questionBtn);
 
+                    function initializeTTS() {
+                        const synth = window.speechSynthesis;
+                    
+                        // Create a dummy utterance to trigger TTS engine initialization
+                        const dummyUtterance = new SpeechSynthesisUtterance("Initializing TTS.");
+                        dummyUtterance.volume = 0; // Set the volume to 0 to make it silent
+                    
+                        // Add an event listener for the "onvoiceschanged" event
+                        synth.onvoiceschanged = function() {
+                            // Trigger the dummy TTS request to initialize the engine
+                            synth.speak(dummyUtterance);
+                        };
+                    }
+
                     function speakQueStr(text) {
                         const synth = window.speechSynthesis;
                         const utterance = new SpeechSynthesisUtterance(text);
@@ -195,10 +213,6 @@ function quiz()
                             // List all available voices in the console
                             console.log(synth.getVoices());
                             utterance.voice = synth.getVoices()[0]; //פה משנים מבטא!
-
-                            // Choose a specific voice (you can experiment with different voices)
-                            // For example, to select the first voice, you can use:
-                            // utterance.voice = synth.getVoices()[0];
                         }
                     
                         synth.speak(utterance);
