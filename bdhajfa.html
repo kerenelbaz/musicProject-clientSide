@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FastSpeech2 Synthesizer</title>
+</head>
+<body>
+    <textarea id="textInput" rows="5" cols="50">The answer to the universe is 42</textarea>
+    <button onclick="synthesize()">Synthesize</button>
+
+    <script>
+        async function query(data) {
+            const response = await fetch(
+                "https://api-inference.huggingface.co/models/facebook/fastspeech2-en-ljspeech",
+                {
+                    headers: { Authorization: "Bearer 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" },
+                    method: "POST",
+                    body: JSON.stringify(data),
+                }
+            );
+            const result = await response.json();
+            return result;
+        }
+
+        async function synthesize() {
+            const textInput = document.getElementById('textInput').value;
+
+            const data = {
+                "inputs": textInput
+            };
+
+            const response = await query(data);
+            const audioData = response.audio;
+            const audioElement = new Audio('data:audio/wav;base64,' + audioData);
+            audioElement.play();
+        }
+    </script>
+</body>
+</html>
