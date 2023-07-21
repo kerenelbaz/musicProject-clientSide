@@ -17,7 +17,7 @@
                     body: JSON.stringify(data),
                 }
             );
-            const result = await response.json();
+            const result = await response.arrayBuffer();
             return result;
         }
 
@@ -28,9 +28,11 @@
                 "inputs": textInput
             };
 
-            const response = await query(data);
-            const audioData = response.audio;
-            const audioElement = new Audio('data:audio/wav;base64,' + audioData);
+            const audioData = await query(data);
+            const audioBlob = new Blob([audioData], { type: "audio/wav" });
+            const audioUrl = URL.createObjectURL(audioBlob);
+
+            const audioElement = new Audio(audioUrl);
             audioElement.play();
         }
     </script>
