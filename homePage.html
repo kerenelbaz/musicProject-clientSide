@@ -707,8 +707,6 @@
 					queStr.id = "queStr"; 
 					queStr.innerHTML = renderQuestion();
 
-					
-					//optionDiv.innerHTML = "";
 
 					quizDiv.appendChild(songNum);
 					quizDiv.appendChild(queStr);
@@ -727,20 +725,21 @@
 							E : 'what song did # wrote ?'
 						};
  
-						
+
 						//random select which question (A B C or D) selected
-						const keyQue = getRandomQuestion(questionDict);
-						//var questionStr;
-						let tmpArr=[];
+						//const keyQue = getRandomQuestion(questionDict);
+						const keyQue = 'E';
+						let returnedArray=[];
 						switch (keyQue) {
 							case 'A':
-								tmpArr = getsongsMaps(songsMap, questionDict[keyQue]);
-								radioContainer = createArtistsOption(tmpArr[0]);
-								console.log(radioContainer);	
+								returnedArray = GetTheCompleteSentence(songsMap, questionDict[keyQue]);
+								console.log(returnedArray[0]);
+								radioContainer = createArtistsOption(returnedArray[0]);
+								// console.log(radioContainer);	
 								optionDiv.innerHTML = "";
 								optionDiv.appendChild(radioContainer);
-							 	//console.log(tmpArr);
-								return tmpArr[2]; 
+							 	//console.log(returnedArray);
+								return returnedArray[2]; 
 							break;
 							case 'B':
 								console.log("nothing");
@@ -755,8 +754,8 @@
 								console.log("nothing");
 								break;
 							case 'E':
-								const tmpArr = getsongsMaps(artistsMap, questionDict[keyQue]);
-								return tmpArr[2]; 
+								returnedArray = GetTheCompleteSentence(artistsMap, questionDict[keyQue]);
+								return returnedArray[2]; 
 							default:
 						console.log("default!");
 
@@ -771,8 +770,8 @@
 						return keys[randomIndex]; 
 					}
 
-					function getsongsMaps(arr, question) {
-						const tmpArr=[];
+					function GetTheCompleteSentence(arr, question) {
+						let tmpArr=[];
 						let currrntSongID;
 						let songName = getRandomItem(arr);
 
