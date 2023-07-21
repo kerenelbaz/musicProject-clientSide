@@ -138,15 +138,22 @@ function quiz()
 					songNum.innerHTML = currentQuestion;
 					
 
-					const queStr = document.createElement("h3");
+					let queStr = document.createElement("h3");
 					queStr.id = "queStr"; 
 					queStr.innerHTML = renderQuestion();
-
+                    speakQueStr();
 
 					quizDiv.appendChild(songNum);
 					quizDiv.appendChild(queStr);
 					quizDiv.appendChild(optionDiv);
 					quizDiv.appendChild(questionBtn);
+
+                    function speakQueStr() {
+                        
+                        const synth = window.speechSynthesis;
+                        const utterance = new SpeechSynthesisUtterance(queStr);
+                        synth.speak(utterance);
+                    }
 					
 				}
 
@@ -294,10 +301,15 @@ function quiz()
 					}
 		
 					
-
+                    
 					
 					
 				
 
 			}	
 		}
+
+
+
+  
+        
