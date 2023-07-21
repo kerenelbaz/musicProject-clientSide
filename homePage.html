@@ -24,6 +24,9 @@
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.css" />
   
 	<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.js"></script>
+
+	<script src="./scripts/quiz.js"></script>
+	
 	<style>
 		#container {
 			height: 100%;
@@ -122,14 +125,91 @@
 		}
 		
 		#quizDiv{
-			width: 30%;
-			height: 30%;
+			
+			width: 49%;
+			/* height: 30%; */
 			background-color: whitesmoke;
 			/* background-color: #212529; */
+			margin-top: 3%;
+			margin-bottom: 9%;
+			border: solid 1px #212529;
+			border-radius: 100px 17px;
 		}
 
 
+		#radioContainer {
+			direction: ltr;
+			padding-top: 9%;
+    		padding-bottom: 14%;
+		}
+
+		input[type="radio"] {
+			appearance: none;
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			width: 16px;
+			height: 16px;
+			border: 2px solid #212529;
+			border-radius: 50%;
+			float: left;
+			margin-right: 10px;
+		}
+
 		
+
+		input[type="radio"]:checked {
+			/* Add a background color to create the dot effect when the radio button is checked */
+			background-color: #212529;
+			/* You can change the size and position of the dot here */
+			background-size: 8px 8px;
+			background-position: center;
+			background-repeat: no-repeat;
+		}
+
+		label {
+			padding-left: 17%;
+			float: left;
+			margin-left: -14%;
+			display: inline-block;
+			vertical-align: top;
+			direction: ltr;
+		}
+		#questionBtn{
+			background-color: rgb(96 73 97 / 159%);
+		}
+
+		#songNum {
+			border-radius: 98px;
+			padding: 2% 3%;
+			padding-top: -94%;
+			display: flex;
+			width: 10%;
+			text-align: center;
+			margin: auto;
+			justify-content: center;
+			margin-top: -5%;
+			margin-bottom: 5%;
+		}
+
+		#queStr{
+			padding-top: 3%;
+    		padding-right: 3%;
+    		padding-left: 3%;
+		}
+
+		button#questionBtn {
+    		margin-bottom: 5%;
+		}
+
+		h3#songNum {
+			background-color: rgb(162 125 164);
+			color: white;
+			border: rgb(162 125 164);
+		}
+
+		div#radioContainer {
+			margin-left: 10%;
+		}
 	</style>
 </head>
 <body class="left-sidebar is-preload" onload="HomeRender()">
@@ -258,6 +338,17 @@
 				let lyrics = document.createElement("p");
 				lyrics.id = "lyrics";
 				lyrics.innerHTML = "Lyrics: <br/>" + songsArr[i].lyrics;
+				lyrics.addEventListener("click", function(){
+					Swal.fire({
+						title: 'Custom animation with Animate.css',
+						showClass: {
+							popup: 'animate__animated animate__fadeInDown'
+						},
+						hideClass: {
+							popup: 'animate__animated animate__fadeOutUp'
+						}
+						})
+				})
 				card.appendChild(lyrics);
 
 				let addOrRemoveSongBTN = document.createElement("button");
@@ -567,241 +658,7 @@
 		}
 
 		let currrntSongID;
-		function quiz()
-		{
-			document.getElementById("pForm").style.display = "none"
-			const songsData =  JSON.parse(localStorage.getItem("songsData"));
-			
-
-			//all 3 are a dictionary maps type 
-			const songsMap={};
-			const lyricsMap = {};
-			const artistsMap = {};
-			const allArrays=[songsMap,lyricsMap,artistsMap];
-
-			function createDS()
-			{
-				
-				for(var item of songsData)
-				{
-					// Create dictionary maps for lyrics and artist arrays
-					const songID = item.songId;
-					
-					const songName = item.songName;
-					songsMap[songID] = songName;
-
-					const artistName = item.artist;
-					artistsMap[songID] = artistName;
-
-					const lyrics = item.lyrics;
-					lyricsMap[songID] = lyrics;
-					
-				}
-				//console.log(lyricsMap);
-				//console.log(artistsMap);
-				//console.log(songsMap);
-				allArrays.push(songsMap, artistsMap, lyricsMap);
-			}
-			
-			createDS();
-			//console.log(allArrays);
-			createQuastion();
-
-			function createQuastion()
-			{
-				let container = document.getElementById("container");
-				container.innerHTML = "";
-				const whichPage = document.getElementById("whichPage");
-				whichPage.innerHTML = "Let's play!";
-
-				let currentQuestion=1; 
-
-				const quizDiv = document.createElement("div");
-				quizDiv.id = "quizDiv";
-				container.appendChild(quizDiv);
-				
-				// const h1question = document.createElement("h1");
-				const questionBtn = document.createElement("BUTTON");
-				questionBtn.id = "questionBtn";
-				questionBtn.textContent = "Next question";
-				
-				questionBtn.addEventListener("click", function () {
-					quizDiv.innerHTML = "";
-					currentQuestion += 1;
-					showCurrentSong(currentQuestion);
-					// console.log(currentQuestion);
-				});
-
-
-				// quizDiv.appendChild(h1question);
-				
-
-				showCurrentSong(currentQuestion);
-
-				function showCurrentSong(currentQuestion) {
-					quizDiv.innerHTML = "";
-					const songNum = document.createElement("h3");
-					songNum.innerHTML = currentQuestion;
-					songNum.innerHTML = "Song Number: " + currentQuestion;
-
-					const queStr = document.createElement("h2");
-					queStr.id = "queStr"; 
-					queStr.innerHTML = renderQuestion();
-
-					//const radioContainer = createArtistsOption(); // Retrieve the radioContainer directly from the createArtistsOption function
-					
-					quizDiv.appendChild(songNum);
-					quizDiv.appendChild(queStr);
-					quizDiv.appendChild(radioContainer);
-					quizDiv.appendChild(questionBtn);
-					
-				}
-
-					function renderQuestion()
-					{
-						const questionDict={
-							A : 'which artist wrote the song #?',
-							B : 'what is the name of the song that his lyrics are # ?', 
-							C : 'who wrote the song that goes like that # ?', 
-							D : 'fill the correct word'
-						};
-
-						//random select which question (A B C or D) selected
-						const keyQue = getRandomQuestion(questionDict);
-						//var questionStr;
-
-						switch (keyQue) {
-							case 'A':
-							const tmpArr = getsongsMaps(songsMap, questionDict[keyQue]);
-							radioContainer = createArtistsOption(tmpArr[0]);
-							 //console.log(tmpArr);
-							return tmpArr[2]; 
-								break;
-							// case 'B':
-							// questionStr = getsongsMaps(songsMap, questionDict[keyQue]); 
-								// break;
-								default:
-						console.log("default!");
-
-						}
-						
-					}
-
-					function getRandomQuestion(obj) { // get a random question by key
-						const keys = Object.keys(obj);
-						const randomIndex = Math.floor(Math.random() * keys.length);
-						// console.log(keys[randomIndex]);
-						return keys[randomIndex]; 
-					}
-
-					function getsongsMaps(arr, question) {
-						const tmpArr=[];
-						let currrntSongID;
-						let songName = getRandomItem(arr);
-
-						//to get the random songID of the random songName
-						for(const key in arr)
-						{
-							if(arr.hasOwnProperty(key) && arr[key]===songName)
-							currrntSongID = key;
-						}
-
-						const completeQuestion = question.replace('#', songName);
-
-						tmpArr.push(currrntSongID);
-						tmpArr.push(songName);
-						tmpArr.push(completeQuestion);
-						return tmpArr;
-					}
-					
-					function pickAndInsertRandomStrings(setOfStrings, givenString) {
-						// Make a copy of the setOfStrings array to avoid modifying the original array
-						const remainingStrings = [...setOfStrings];
-
-						// Remove the givenString from the remainingStrings array (if it exists)
-						const indexToRemove = remainingStrings.indexOf(givenString);
-						if (indexToRemove !== -1) {
-							remainingStrings.splice(indexToRemove, 1);
-						}
-
-						// Pick 3 random strings from the remainingStrings array
-						const pickedStrings = [];
-						for (let i = 0; i < 3; i++) {
-							const randomIndex = Math.floor(Math.random() * remainingStrings.length);
-							const randomString = remainingStrings.splice(randomIndex, 1)[0];
-							pickedStrings.push(randomString);
-						}
-
-						// Insert the givenString randomly into the pickedStrings array
-						const randomInsertIndex = Math.floor(Math.random() * 4);
-						pickedStrings.splice(randomInsertIndex, 0, givenString);
-
-						return pickedStrings;
-					}
-					function createArtistsOption(songID)
-					{
-						let quizDiv = document.getElementById("quizDiv");
-
-						//let possibleAns=Object.keys(artistsMap);
-						//מוצאים את השם של הזמר
-						let correctAnswer = artistsMap[songID] 
-						const artistNames = Object.values(artistsMap);
-						const uniqueArtistArray = [...new Set(artistNames)]; //unique the array above
-						let possibleAnswer = pickAndInsertRandomStrings(uniqueArtistArray, correctAnswer);
-						
-						console.log("poosible answer: " + possibleAnswer);
-						console.log("correct answer: "+  correctAnswer);
-						
-						const radioContainer = document.createElement("div");
-						radioContainer.innerHTML = "";
-						radioContainer.id = "radioContainer";
-
-						for (let i = 0; i < possibleAnswer.length; i++) {
-							const radioLabel = document.createElement("label");
-							radioLabel.setAttribute("for", "radioOption" + i);
-							radioLabel.textContent = possibleAnswer[i];
-
-							const radioButton = document.createElement("input");
-							radioButton.type = "radio";
-							radioButton.id = "radioOption" + i;
-							radioButton.name = "radioOptions";
-							radioButton.value = i;
-
-							radioContainer.appendChild(radioButton);
-							radioContainer.appendChild(radioLabel);
-							radioContainer.appendChild(document.createElement("br"));
-						}
-
-							// quizDiv.appendChild(radioContainer);
-							return radioContainer;
-					}
-
-					
-					function getRandomItem(obj) //gets songsMap/artissMap/lyricsMap
-					{
-						//Retrieve all the song IDs (keys) from the object (songMap/artistMap/lyricsMap)
-						const songIDs = Object.keys(obj); // מערך של מפתחות 
-						const randomIndex = Math.floor(Math.random() * songIDs.length);// מגריל אינדקס
-						//Use the random index to select a random song ID from the array of song IDs
-						const randomSongID = songIDs[randomIndex];
-						//Get the corresponding song name from the songsMap object using the randomly selected song ID
-						const randomSongName = songsMap[randomSongID];
-						return randomSongName;
-					}
-
-					
-					
-				showCurrentSong();				
-				questionBtn.addEventListener("click", function () {
-					quizDiv.innerHTML = "";
-					currentQuestion = (currentQuestion + 1) % songsMap.length;
-					showCurrentSong();
-					console.log(currentQuestion);
-				});
-
-			}	
-		}
-
+		
 		
 		
 		// async function getArtistInfo(artistName) {
