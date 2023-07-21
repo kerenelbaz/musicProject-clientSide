@@ -711,9 +711,11 @@
 				// console.log("current question: "+currentQuestion);
 				function showCurrentSong(currentQuestion) {
 					quizDiv.innerHTML = "";
+					
 					const songNum = document.createElement("h3");
 					songNum.id="songNum";
-					songNum.innerHTML = "Song Number: " + currentQuestion;
+					songNum.innerHTML = currentQuestion;
+					
 
 					const queStr = document.createElement("h3");
 					queStr.id = "queStr"; 
