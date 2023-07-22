@@ -94,11 +94,11 @@
 
 		#card button {
 			margin-top: 20px;
-			background-color: hsla(285, 33%, 26%, 0.808);
+			background-color: hsla(0, 0%, 100%, 0.808);
 			color: rgb(179, 169, 169);
-			border: 1px solid rgb(242, 233, 243);
+			border: 1px solid rgb(255, 255, 255);
 			border-radius: 50px;
-			font-size: 15px;
+			font-size: 20px;
 			padding: 5px;
 
 			
@@ -401,7 +401,7 @@
 				}
 				
 				let lyricsBTN = document.createElement("BUTTON");
-				lyricsBTN.textContent = "L";
+				lyricsBTN.textContent = "<i class='fa-solid fa-bars'></i>";
 				lyricsBTN.addEventListener("click", function() {
 					swal({
 						title: 'Lyrics',
@@ -414,13 +414,12 @@
 						}
 					})
 				});
-
 				card.appendChild(lyricsBTN);
-				// let lyrics = document.createElement("p");
-				// lyrics.id = "lyrics";
-				// lyrics.innerHTML = "Lyrics: <br/>" + songsArr[i].lyrics;
-				
-				// card.appendChild(lyrics);
+
+				let playBTN = document.createElement("button");
+				playBTN.id = songsArr[i].songId;
+				playBTN.innerHTML = "<i class='fa-solid fa-play'></i>"; //the star is font of the btn
+				card.appendChild(playBTN);
 
 				let addOrRemoveSongBTN = document.createElement("button");
 				addOrRemoveSongBTN.id = songsArr[i].songId;
