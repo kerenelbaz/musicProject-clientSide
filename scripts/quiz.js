@@ -87,6 +87,8 @@ function quiz()
 						quizDiv.innerHTML = "";
 						currentQuestion += 1;
 						showCurrentSong(currentQuestion);
+                        // Stop any ongoing speech playback
+                        window.speechSynthesis.cancel();
 					}
 
                     if (questionBtn.textContent == "check") 
@@ -107,6 +109,28 @@ function quiz()
                             {
                                 questionBtn.style.backgroundColor = "red";
                                 questionBtn.textContent = "wrong";
+                                //צובע את הנכון בירוק
+                                const radioButtons = document.getElementsByName('radioOptions');
+                                for (let i = 0; i < radioButtons.length; i++) {
+                                    const radioButton = radioButtons[i];
+                                    const isCorrect = radioButton.getAttribute("data-correct") === "true";
+                        
+                                    if (isCorrect) {
+                                        // Change the style of the correct radio button's label to green
+                                        const labelForCorrectOption = document.querySelector(`label[for=${radioButton.id}]`);
+                                        labelForCorrectOption.style.color = "green";
+                                        radioButton.style.backgroundColor = "green";
+                                        radioButton.style.borderColor = "green";
+                                        radioButton.style.color = "white";
+                                    } else {
+                                        // Reset the style of the other radio buttons' labels
+                                        const labelForOption = document.querySelector(`label[for=${radioButton.id}]`);
+                                        labelForOption.style.color = "";
+                                        radioButton.style.borderColor = "";
+                                        radioButton.style.backgroundColor = "";
+                                        radioButton.style.color = "";
+                                    }
+                                }
                                 console.log("Incorrect answer!");
                             }
                         } 
@@ -133,20 +157,67 @@ function quiz()
 				function showCurrentSong(currentQuestion) {
 					quizDiv.innerHTML = "";
 					
-					const songNum = document.createElement("h3");
+					// const songNum = document.createElement("h3");
+					// songNum.id="songNum";
+					// songNum.innerHTML = currentQuestion;
+                    const songNum = document.createElement("BUTTON");
 					songNum.id="songNum";
-					songNum.innerHTML = currentQuestion;
-					
+					songNum.textContent =  currentQuestion;
+                    
+                    songNum.addEventListener("mouseover",function(){
+                        songNum.innerHTML = `<i class="fa fa-play"></i>`;
 
-					const queStr = document.createElement("h3");
+                    });
+                    songNum.addEventListener("mouseout", function() {
+                        // Change the content of the element back to the current question number when the mouse leaves the button.
+                        songNum.innerHTML = currentQuestion;
+                    });
+                    initializeTTS();
+                    songNum.addEventListener("click", function () {
+                        // Call initializeTTS at the start of your application
+                        
+                        speakQueStr(queStr.innerHTML);
+                        
+                        
+                    });
+					let queStr = document.createElement("h3");
 					queStr.id = "queStr"; 
 					queStr.innerHTML = renderQuestion();
-
+                    // speakQueStr("hello world for everyone. nice to meet you");
 
 					quizDiv.appendChild(songNum);
 					quizDiv.appendChild(queStr);
 					quizDiv.appendChild(optionDiv);
 					quizDiv.appendChild(questionBtn);
+
+                    function initializeTTS() {
+                        const synth = window.speechSynthesis;
+                    
+                        // Create a dummy utterance to trigger TTS engine initialization
+                        const dummyUtterance = new SpeechSynthesisUtterance("Initializing TTS.");
+                        dummyUtterance.volume = 0; // Set the volume to 0 to make it silent
+                    
+                        // Add an event listener for the "onvoiceschanged" event
+                        synth.onvoiceschanged = function() {
+                            // Trigger the dummy TTS request to initialize the engine
+                            synth.speak(dummyUtterance);
+                        };
+                    }
+
+                    function speakQueStr(text) {
+                        const synth = window.speechSynthesis;
+                        const utterance = new SpeechSynthesisUtterance(text);
+                    
+                        // Check if there are available voices
+                        if (synth.getVoices().length > 0) {
+                            // List all available voices in the console
+                            console.log(synth.getVoices());
+                            utterance.voice = synth.getVoices()[7]; //פה משנים מבטא!
+                            
+                        }
+                    
+                        synth.speak(utterance);
+                    }
 					
 				}
 
@@ -294,10 +365,15 @@ function quiz()
 					}
 		
 					
-
+                    
 					
 					
 				
 
 			}	
 		}
+
+
+
+  
+        

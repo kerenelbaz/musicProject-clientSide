@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Your other head elements here -->
+  <script src="sweetalert2.all.min.js"></script>
+</head>
+<body>
+  <!-- Your HTML content here -->
+    <div id="container"></div>
+  <script>
+    // Your JavaScript code here, including the event listener for lyricsBTN
+    let lyricsBTN = document.createElement("button");
+    lyricsBTN.textContent = "L";
+    lyricsBTN.addEventListener("click", function() {
+      Swal({
+        title: 'Lyrics',
+        text: "keren elbaz ",
+        showClass: {
+          popup: 'animate__animated animate__fadeInDown'
+        },
+        hideClass: {
+          popup: 'animate__animated animate__fadeOutUp'
+        }
+      });
+    });
+    document.getElementById('container').appendChild(lyricsBTN);
+    // Rest of your code
+  </script>
+</body>
+
+</html>
