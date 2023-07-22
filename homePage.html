@@ -15,6 +15,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 	<script src="./scripts/quiz.js"></script>
 	
+	
 	<style>
 		#container {
 			height: 100%;
@@ -269,6 +270,10 @@
 			width: 100%;
 		}
 
+		#placeholder{
+			width:300px; height:160px;
+		}
+
 	</style>
 </head>
 <body class="left-sidebar is-preload" onload="HomeRender()">
@@ -409,6 +414,10 @@
 				// img.src = "./images/pic01.jpg"; ///// לשים פה סרטון במקום 
 				// card.appendChild(img);
 				let videoDiv = document.createElement("div");
+				let img = document.createElement("img");
+				img.src = "./images/placeholder.avif";
+				img.id = "placeholder";
+				videoDiv.appendChild(img);
 				videoDiv.id = "video"+i;
 				card.appendChild(videoDiv);
 
@@ -484,7 +493,6 @@
 
 			
 			//youtube api call
-			console.log(arrayForYoutubeAPI);
 			async function getYoutubeLinks(sId) {
   const apiKey = 'AIzaSyDtX-GDP0AQ-oVAodPAxjiXyIAneMJQ5-U';
   const youtubeLinks = [];
@@ -499,7 +507,7 @@
 
     if (items && items.length > 0) {
       const videoId = items[0].id.videoId;
-      const youtubeLink = `https://www.youtube.com/embed/${videoId}`;
+      const youtubeLink = `https://www.youtube.com/embed/${videoId}`; // Use the embed URL
       youtubeLinks.push(youtubeLink);
     } else {
       youtubeLinks.push('Video not found');
