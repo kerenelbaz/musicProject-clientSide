@@ -34,12 +34,12 @@
 		}
 
 		#card {
-			height: 650px;
+			height: 400px;
 			width: 400px;
 			margin: 1%;
 			background-color: white;
 			font-family: 'Source Sans Pro', sans-serif;
-			border: 3px solid rgb(230, 221, 221);
+			border: 1px solid rgb(230, 221, 221);
 			border-radius: 10px;
 			display: flex;
 			flex-direction: column;
@@ -99,6 +99,8 @@
 			border: 1px solid rgb(242, 233, 243);
 			border-radius: 50px;
 			font-size: 15px;
+			padding: 5px;
+
 			
 		}
 
@@ -251,6 +253,8 @@
 		}
 
 
+
+
 	</style>
 </head>
 <body class="left-sidebar is-preload" onload="HomeRender()">
@@ -364,10 +368,13 @@
 
 		function renderSongs(songsArr) {
 			
+			arrayForYoutubeAPI = songsArr;
+			
 			let container = document.getElementById("container");
 			container.innerHTML = "";
 
-			for (var i = 0; i <songsArr.length; i++) {
+			for (var i = 0; i <songsArr.length; i++) 
+			{
 				globalLyrics = songsArr[i].lyrics;
 
 				let card = document.createElement("div");
@@ -437,6 +444,52 @@
 				};
 				card.appendChild(addOrRemoveSongBTN);
 			}
+
+			
+			//youtube api call
+			console.log(arrayForYoutubeAPI);
+			async function getYoutubeLinks() {
+				console.log(arrayForYoutubeAPI[0]);
+				const apiKey = 'AIzaSyDtX-GDP0AQ-oVAodPAxjiXyIAneMJQ5-U';
+				const youtubeLinks = [];
+
+				//for (const song of arrayForYoutubeAPI) {
+					const { songName, artist } = arrayForYoutubeAPI[0];
+					const searchQuery = encodeURIComponent(`${songName} ${artist}`);
+					console.log("PLLLLSSSSS : "+ searchQuery);
+					try {
+						
+						const apiUrl = `https://www.googleapis.com/youtube/v3/search?q=${searchQuery}&key=${apiKey}&part=snippet&type=video`;
+						const searchResponse = await fetch(apiUrl);
+						const { items } = await searchResponse.json();
+
+						if (items && items.length > 0) {
+							// Extract the video ID from the first search result
+							const videoId = items[0].id.videoId;
+							// Construct the YouTube link
+							const youtubeLink = `https://www.youtube.com/watch?v=${videoId}`;
+							youtubeLinks.push(youtubeLink);
+						} else {
+							youtubeLinks.push('Video not found'); // Or any other default value if the video is not found
+						}
+
+					} 
+					catch (error) 
+					{
+						console.error('Error fetching YouTube data:', error);
+						youtubeLinks.push('Error fetching video'); // Or any other default value in case of an error
+					}
+				//}
+
+				// The youtubeLinks array now contains the YouTube links for each song in the same order as the original songsArray
+				console.log("LIMKS: "+youtubeLinks);
+			}
+			
+			//getYoutubeLinks();
+
+
+
+
 		}
 	
 
@@ -816,7 +869,7 @@
 					}
 
 					const artistId = artists.items[0].id;
-					//note
+					
 					// Step 3: Get artist details
 					$.ajax({
 						type: 'GET',
@@ -828,9 +881,7 @@
 						if (!artistDetails || !artistDetails.images || artistDetails.images.length === 0) {
 							console.error('Artist not found or no image available.');
 							return;
-						}
-
-						//console.log(artistDetails);			
+						}	
 						
 						let container = document.getElementById("container");
 						let card = document.createElement("div");
