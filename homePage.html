@@ -841,6 +841,7 @@
 						let link = document.createElement("a");
 						link.class = "linkToSpotify";
 						link.href = `${artistDetails.external_urls.spotify}`;
+						link.target = "_blank"
 						card.appendChild(link);
 						
 						let img = document.createElement("img");
@@ -856,7 +857,7 @@
 						// let infoBTN = document.createElement("button");
 						// infoBTN.textContent = 'i';
 						let infoBTN = document.createElement("span");
-						infoBTN.innerHTML = '<i class="fa-solid fa-circle-info" style="color: #4380ea;"></i>';
+						infoBTN.innerHTML = '<i class="fa-solid fa-circle-info fa-lg" style="color: rgb(96, 73, 97);"></i>';
 						infoBTN.onclick = function() {
 							getArtistInfo(artistName);
 						}
@@ -867,7 +868,7 @@
 							function(number){	
 								let numOfFavorites = document.createElement("h4");
 								//numOfFavorites.innerHTML = `Apears ${number} times in favorites`;
-								numOfFavorites.innerHTML = ` <i class="fa-solid fa-heart" style="color: #e21d1d;"></i> ${number}`;
+								numOfFavorites.innerHTML = ` <i class="fa-solid fa-heart fa-lg" style="color: #f91a1a;"></i> ${number}`;
 								moreInfo.appendChild(numOfFavorites);
 							} , errorCB);
 						}
