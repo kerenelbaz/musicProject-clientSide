@@ -374,7 +374,8 @@
 
 
 		function renderSongs(songsArr) {
-			
+			 
+
 			arrayForYoutubeAPI = songsArr;
 			
 			let container = document.getElementById("container");
@@ -382,7 +383,8 @@
 
 			for (var i = 0; i <songsArr.length; i++) 
 			{
-				globalLyrics = songsArr[i].lyrics;
+
+				let songLyrics = songsArr[i].lyrics;
 
 				let card = document.createElement("div");
 				card.id = "card";
@@ -409,10 +411,10 @@
 				
 				let lyricsBTN = document.createElement("BUTTON");
 				lyricsBTN.innerHTML = "<i class='fa-solid fa-bars'></i>";
-				lyricsBTN.addEventListener("click", function() {
+				lyricsBTN.onclick = function() {
 					swal({
 						title: 'Lyrics',
-						text:globalLyrics,
+						text: songLyrics,
 						showClass: {
 							popup: 'animate__animated animate__fadeInDown'
 						},
@@ -420,7 +422,7 @@
 							popup: 'animate__animated animate__fadeOutUp'
 						}
 					})
-				});
+				}
 				card.appendChild(lyricsBTN);
 
 				let playBTN = document.createElement("button");
