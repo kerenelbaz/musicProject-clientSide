@@ -63,7 +63,7 @@
 			text-align: left;
 		}
 
-		#lyrics , #Bio {
+		#lyrics ,#Bio {
 			margin: 10px;
 			float: left;
 			height: 300px;
@@ -243,7 +243,12 @@
 			border-radius: 0.4em;
 		}
 
-
+		div#moreInfo {
+			display: inline-flex;
+			width: 100%;
+			align-items: center;
+			justify-content: space-evenly;
+		}
 
 
 	</style>
@@ -327,7 +332,7 @@
 
 	<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11%22%3E</script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11%22%3E"></script>
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.css" />
 	<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.js"></script>
 	<!-- //////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -626,6 +631,7 @@
 		function renderSearching(number) {
 			let container = document.getElementById("container");
 			container.innerHTML = "";
+			document.getElementById("pForm").style.display = "none"
 			const whichPage = document.getElementById("whichPage");
 			whichPage.innerHTML = "SEARCH MUSIC BY ";
 
@@ -739,21 +745,6 @@
 									popup: 'animate__animated animate__fadeOutUp'
 								}
 							});
-
-
-
-					
-					// if(JSON.parse(localStorage['onlineUser']).email == "admin@gmail.com"){
-					// 	ajaxCall("GET", `${port}/api/Artist/inFavoriteCount?artistName=${response.artist.name}`, "",
-					// 	function(number){	
-					// 		let numOfFavorites = document.createElement("h4");
-					// 		numOfFavorites.innerHTML = `Apears ${number} times in favorites`;
-					// 		card.appendChild(numOfFavorites);
-					// 	} , errorCB);
-					// }
-					
-					
-				
 				},
 				error: function(error) {
 					console.error(error);
@@ -796,7 +787,6 @@
 			const clientSecret = "df624510f02e46a39a9f04d250b1cde8";
 
 			const auth = btoa(`${clientId}:${clientSecret}`);
-
 			// Step 1: Get the access token
 			$.ajax({
 				type: 'POST',
@@ -826,7 +816,7 @@
 					}
 
 					const artistId = artists.items[0].id;
-
+					//note
 					// Step 3: Get artist details
 					$.ajax({
 						type: 'GET',
@@ -850,6 +840,7 @@
 						let link = document.createElement("a");
 						link.class = "linkToSpotify";
 						link.href = `${artistDetails.external_urls.spotify}`;
+						link.target = "_blank"
 						card.appendChild(link);
 						
 						let img = document.createElement("img");
@@ -860,12 +851,27 @@
 						artist.innerHTML = artistName;
 						card.appendChild(artist);
 
-						let infoBTN = document.createElement("button");
-						infoBTN.textContent = 'i';
-						card.appendChild(infoBTN);
+						let moreInfo = document.createElement("div")
+						moreInfo.id = "moreInfo"
+						// let infoBTN = document.createElement("button");
+						// infoBTN.textContent = 'i';
+						let infoBTN = document.createElement("span");
+						infoBTN.innerHTML = '<i class="fa-solid fa-circle-info fa-lg" style="color: rgb(96, 73, 97);"></i>';
 						infoBTN.onclick = function() {
 							getArtistInfo(artistName);
 						}
+						moreInfo.appendChild(infoBTN);
+
+						if(JSON.parse(localStorage['onlineUser']).email == "admin@gmail.com"){
+							ajaxCall("GET", `${port}/api/Artist/inFavoriteCount?artistName=${artistName}`, "",
+							function(number){	
+								let numOfFavorites = document.createElement("h4");
+								//numOfFavorites.innerHTML = `Apears ${number} times in favorites`;
+								numOfFavorites.innerHTML = ` <i class="fa-solid fa-heart fa-lg" style="color: #f91a1a;"></i> ${number}`;
+								moreInfo.appendChild(numOfFavorites);
+							} , errorCB);
+						}
+						card.appendChild(moreInfo)
 						container.appendChild(card);
 
 						
