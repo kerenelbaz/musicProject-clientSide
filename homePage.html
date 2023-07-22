@@ -250,6 +250,8 @@
 			justify-content: space-evenly;
 		}
 
+		
+
 
 	</style>
 </head>
@@ -816,7 +818,7 @@
 					}
 
 					const artistId = artists.items[0].id;
-					//note
+					
 					// Step 3: Get artist details
 					$.ajax({
 						type: 'GET',
@@ -828,9 +830,7 @@
 						if (!artistDetails || !artistDetails.images || artistDetails.images.length === 0) {
 							console.error('Artist not found or no image available.');
 							return;
-						}
-
-						//console.log(artistDetails);			
+						}	
 						
 						let container = document.getElementById("container");
 						let card = document.createElement("div");
