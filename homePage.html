@@ -404,10 +404,13 @@
 				card.id = "card";
 				container.appendChild(card);
 
-				let img = document.createElement("img");
+				// let img = document.createElement("img");
 
-				img.src = "./images/pic01.jpg"; ///// לשים פה סרטון במקום 
-				card.appendChild(img);
+				// img.src = "./images/pic01.jpg"; ///// לשים פה סרטון במקום 
+				// card.appendChild(img);
+				let videoDiv = document.createElement("div");
+				videoDiv.id = "video"+i;
+				card.appendChild(videoDiv);
 
 				let artist = document.createElement("h4");
 				artist.innerHTML = "Artist: " + songsArr[i].artist;
@@ -445,8 +448,14 @@
 
 				let playBTN = document.createElement("button");
 				playBTN.innerHTML = "<i class='fa-solid fa-play'></i>" //the star is font of the btn
+				playBTN.id = songsArr[i].songId;
 				//card.appendChild(playBTN);
 				buttonsDiv.appendChild(playBTN)
+				playBTN.addEventListener("click",function(){
+					let sID = playBTN.id;
+					console.log("i   :"+sID);
+					getYoutubeLinks(sID);
+				});
 
 				let addOrRemoveSongBTN = document.createElement("button");
 				addOrRemoveSongBTN.id = songsArr[i].songId;
@@ -476,43 +485,45 @@
 			
 			//youtube api call
 			console.log(arrayForYoutubeAPI);
-			async function getYoutubeLinks() {
-				console.log(arrayForYoutubeAPI[0]);
-				const apiKey = 'AIzaSyDtX-GDP0AQ-oVAodPAxjiXyIAneMJQ5-U';
-				const youtubeLinks = [];
+			async function getYoutubeLinks(sId) {
+  const apiKey = 'AIzaSyDtX-GDP0AQ-oVAodPAxjiXyIAneMJQ5-U';
+  const youtubeLinks = [];
 
-				//for (const song of arrayForYoutubeAPI) {
-					const { songName, artist } = arrayForYoutubeAPI[0];
-					const searchQuery = encodeURIComponent(`${songName} ${artist}`);
-					console.log("PLLLLSSSSS : "+ searchQuery);
-					try {
-						
-						const apiUrl = `https://www.googleapis.com/youtube/v3/search?q=${searchQuery}&key=${apiKey}&part=snippet&type=video`;
-						const searchResponse = await fetch(apiUrl);
-						const { items } = await searchResponse.json();
+  const { songName, artist } = arrayForYoutubeAPI[sId - 1];
+  const searchQuery = encodeURIComponent(`${songName} ${artist}`);
 
-						if (items && items.length > 0) {
-							// Extract the video ID from the first search result
-							const videoId = items[0].id.videoId;
-							// Construct the YouTube link
-							const youtubeLink = `https://www.youtube.com/watch?v=${videoId}`;
-							youtubeLinks.push(youtubeLink);
-						} else {
-							youtubeLinks.push('Video not found'); // Or any other default value if the video is not found
-						}
+  try {
+    const apiUrl = `https://www.googleapis.com/youtube/v3/search?q=${searchQuery}&key=${apiKey}&part=snippet&type=video`;
+    const searchResponse = await fetch(apiUrl);
+    const { items } = await searchResponse.json();
 
-					} 
-					catch (error) 
-					{
-						console.error('Error fetching YouTube data:', error);
-						youtubeLinks.push('Error fetching video'); // Or any other default value in case of an error
-					}
-				//}
+    if (items && items.length > 0) {
+      const videoId = items[0].id.videoId;
+      const youtubeLink = `https://www.youtube.com/embed/${videoId}`;
+      youtubeLinks.push(youtubeLink);
+    } else {
+      youtubeLinks.push('Video not found');
+    }
+  } catch (error) {
+    console.error('Error fetching YouTube data:', error);
+    youtubeLinks.push('Error fetching video');
+  }
 
-				// The youtubeLinks array now contains the YouTube links for each song in the same order as the original songsArray
-				console.log("LIMKS: "+youtubeLinks);
-			}
-			
+  console.log("LIMKS: " + youtubeLinks);
+
+  let numOfDiv = sId - 1;
+  let videoDiv = document.getElementById("video" + numOfDiv);
+  videoDiv.innerHTML = "";
+
+  let videoElement = document.createElement('iframe');
+  videoElement.src = youtubeLinks[0]; // Set the YouTube embed URL
+  videoElement.allowFullscreen = true; // Enable fullscreen mode
+  videoElement.style.width = '100%'; // Set the width of the video
+  videoElement.style.height = 'auto';
+
+  videoDiv.appendChild(videoElement);
+}
+		
 			//getYoutubeLinks();
 
 
