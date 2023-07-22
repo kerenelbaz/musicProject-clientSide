@@ -216,6 +216,37 @@
 			font-size: 17px;
 			font-family: sans-serif;
 		}
+
+		#artistCard{
+			
+			height:12em;
+			width: 9em;
+			margin: 1%;
+			background-color: white;
+			font-family: Candara;
+			border: 1px solid rgb(230, 221, 221);
+			border-radius: 10px;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			text-align: center;
+
+		}
+		#artistCard button{
+			padding: 0.3em 0.8em 0.3em 0.8em;
+		}
+
+
+	 	#artistCard a img{
+			height:7em;
+			width: 7em;
+			border-radius: 0.4em;
+		}
+
+
+
+
 	</style>
 </head>
 <body class="left-sidebar is-preload" onload="HomeRender()">
@@ -361,7 +392,6 @@
 				let lyricsBTN = document.createElement("BUTTON");
 				lyricsBTN.textContent = "L";
 				lyricsBTN.addEventListener("click", function() {
-					console.log("fffff "+globalLyrics);
 					swal({
 						title: 'Lyrics',
 						text:globalLyrics,
@@ -661,9 +691,6 @@
 					}
 				}
 			};
-
-			
-
 			searchDiv.appendChild(searchBTN);
 			whichPage.appendChild(searchDiv);
 		}
@@ -703,20 +730,19 @@
 					format: 'json'
 				},
 				success: function(response) {
-					//console.log(response);
-					// let container = document.getElementById("container");
+					swal({
+								title: artistName + ' Information:',
+								text:response.artist.bio.content,
+								showClass: {
+									popup: 'animate__animated animate__fadeInDown'
+								},
+								hideClass: {
+									popup: 'animate__animated animate__fadeOutUp'
+								}
+							});
 
-					// let card = document.createElement("div");
-					// card.id = "card";
-					// container.appendChild(card);
 
-					// let img = document.createElement("img");
-					// img.src = getArtistImage(response.artist.name);
-					// card.appendChild(img);
 
-					// let artist = document.createElement("h4");
-					// artist.innerHTML = response.artist.name;
-					// card.appendChild(artist);
 					
 					// if(JSON.parse(localStorage['onlineUser']).email == "admin@gmail.com"){
 					// 	ajaxCall("GET", `${port}/api/Artist/inFavoriteCount?artistName=${response.artist.name}`, "",
@@ -727,15 +753,10 @@
 					// 	} , errorCB);
 					// }
 					
-					// let bio = document.createElement("p");
-					// bio.id = "Bio";
-					// bio.innerHTML = "Bio: <br/>" + response.artist.bio.content;
-					// card.appendChild(bio);
-
+					
 				
 				},
 				error: function(error) {
-					// Handle the error
 					console.error(error);
 				}
 			});
@@ -759,20 +780,8 @@
 				container.innerHTML = "";
 				// Loop through the array and call the function for each artist
 				for (let i = 0; i < data.length; i++) {
-					const artistName = data[i];
-
-					let card = document.createElement("div");
-					card.id = "card";
-					container.appendChild(card);
-
-					let img = document.createElement("img");
-					img.src = getArtistImage(artistName);
-					card.appendChild(img);
-
-					let artist = document.createElement("h4");
-					artist.innerHTML = artistName
-					card.appendChild(artist);
-
+					let artistName = data[i];
+					getArtistImage(artistName);
 
 				}
 			}
@@ -781,63 +790,102 @@
 
 
 
-		
-		
 
-		async function getArtistImage(artistName) {
+
+		function getArtistImage(artistName) {
 			const clientId = "76eb58574dca4292942f6b50535fe9b9";
 			const clientSecret = "df624510f02e46a39a9f04d250b1cde8";
 
 			const auth = btoa(`${clientId}:${clientSecret}`);
-			const tokenResponse = await fetch('https://accounts.spotify.com/api/token', {
-				method: 'POST',
+
+			// Step 1: Get the access token
+			$.ajax({
+				type: 'POST',
+				url: 'https://accounts.spotify.com/api/token',
 				headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
 				'Authorization': `Basic ${auth}`
 				},
-				body: 'grant_type=client_credentials'
-			});
+				data: {
+				'grant_type': 'client_credentials'
+				},
+				success: function(tokenResponse) {
+				const access_token = tokenResponse.access_token;
 
-			const { access_token } = await tokenResponse.json();
+				// Step 2: Search for the artist
+				$.ajax({
+					type: 'GET',
+					url: `https://api.spotify.com/v1/search?q=${encodeURIComponent(artistName)}&type=artist`,
+					headers: {
+					'Authorization': `Bearer ${access_token}`
+					},
+					success: function(searchResponse) {
+					const artists = searchResponse.artists;
 
+					if (!artists || !artists.items || artists.items.length === 0) {
+						console.error('Artist not found or no image available.');
+						return;
+					}
 
+					const artistId = artists.items[0].id;
 
-			const searchResponse = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(artistName)}&type=artist`, {
-				method: 'GET',
-				headers: {
-				'Authorization': `Bearer ${access_token}`
+					// Step 3: Get artist details
+					$.ajax({
+						type: 'GET',
+						url: `https://api.spotify.com/v1/artists/${artistId}`,
+						headers: {
+						'Authorization': `Bearer ${access_token}`
+						},
+						success: function(artistDetails) {
+						if (!artistDetails || !artistDetails.images || artistDetails.images.length === 0) {
+							console.error('Artist not found or no image available.');
+							return;
+						}
+
+						//console.log(artistDetails);			
+						
+						let container = document.getElementById("container");
+						let card = document.createElement("div");
+						card.id = "artistCard";
+						
+
+						let link = document.createElement("a");
+						link.class = "linkToSpotify";
+						link.href = `${artistDetails.external_urls.spotify}`;
+						card.appendChild(link);
+						
+						let img = document.createElement("img");
+						img.src = `${artistDetails.images[0].url}`;
+						link.appendChild(img);
+
+						let artist = document.createElement("h4");
+						artist.innerHTML = artistName;
+						card.appendChild(artist);
+
+						let infoBTN = document.createElement("button");
+						infoBTN.textContent = 'i';
+						card.appendChild(infoBTN);
+						infoBTN.onclick = function() {
+							getArtistInfo(artistName);
+						}
+						container.appendChild(card);
+
+						
+						},
+						error: function(jqXHR, textStatus, errorThrown) {
+						console.error('Error fetching artist details:', textStatus, errorThrown);
+						}
+					});
+					},
+					error: function(jqXHR, textStatus, errorThrown) {
+					console.error('Error fetching artist data:', textStatus, errorThrown);
+					}
+				});
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+				console.error('Error fetching Spotify access token:', textStatus, errorThrown);
 				}
 			});
-
-			const { artists } = await searchResponse.json();
-			if (!artists || !artists.items || artists.items.length === 0) {
-				console.error('Artist not found or no image available.');
-				return;
-			}
-
-			const artistId = artists.items[0].id;
-
-			const artistDetailsResponse = await fetch(`https://api.spotify.com/v1/artists/${artistId}`, {
-				method: 'GET',
-				headers: {
-				'Authorization': `Bearer ${access_token}`
-				}
-			});
-
-			const artistDetails = await artistDetailsResponse.json();
-			if (!artistDetails || !artistDetails.images || artistDetails.images.length === 0) {
-				console.error('Artist not found or no image available.');
-				return;
-			}
-			
-
-			// Assuming you want the first image, you can customize this to use a different size if needed.
-			//const imageUrl = artistDetails.images[0].url;
-			//console.log(artistDetails);
-			//console.log('Image URL:', imageUrl);
-			
-			return artistDetails.images[0].url;
-    	}
+    }
 
 
 
