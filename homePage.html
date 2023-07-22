@@ -382,7 +382,7 @@
 
 			for (var i = 0; i <songsArr.length; i++) 
 			{
-				globalLyrics = songsArr[i].lyrics;
+				const globalLyrics = songsArr[i].lyrics;
 
 				let card = document.createElement("div");
 				card.id = "card";
@@ -401,12 +401,12 @@
 				nameOfSong.innerHTML = "Name: " + songsArr[i].songName;
 				card.appendChild(nameOfSong);
 				
-				if(JSON.parse(localStorage['onlineUser']).email == "admin@gmail.com"){
+				//if(JSON.parse(localStorage['onlineUser']).email == "admin@gmail.com"){
 					let numOfLikes = document.createElement("h4");
 					//numOfLikes.innerHTML = songsArr[i].songInFavorite +" Users like this song"
 					numOfLikes.innerHTML = `<i class="fa-solid fa-heart fa-lg" style="color: #f91a1a;"></i>  ${songsArr[i].songInFavorite} `
 					card.appendChild(numOfLikes);
-				}
+				//}
 				let buttonsDiv = document.createElement("div")
 				buttonsDiv.id = "buttonsDiv"
 				let lyricsBTN = document.createElement("BUTTON");
