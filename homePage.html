@@ -296,8 +296,8 @@
     <script src="assets/js/main.js"></script>
 
 	<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-    
-	
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11%22%3E</script>
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.css" />
 	<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.js"></script>
 	<!-- //////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -328,17 +328,20 @@
 
 
 		function renderSongs(songsArr) {
+			
 			let container = document.getElementById("container");
 			container.innerHTML = "";
 
 			for (var i = 0; i <songsArr.length; i++) {
+				globalLyrics = songsArr[i].lyrics;
+
 				let card = document.createElement("div");
 				card.id = "card";
 				container.appendChild(card);
 
 				let img = document.createElement("img");
-				// img.id = "appartmentIMG";
-				img.src = "./images/pic01.jpg";
+				// img.id = "appartmentIMG"; ////למחוק!!!!!!!!!!!!
+				img.src = "./images/pic01.jpg"; ///// לשים פה סרטון במקום 
 				card.appendChild(img);
 
 				let artist = document.createElement("h4");
@@ -355,13 +358,13 @@
 					card.appendChild(numOfLikes);
 				}
 				
-
-				let lyrics = document.createElement("p");
-				lyrics.id = "lyrics";
-				lyrics.innerHTML = "Lyrics: <br/>" + songsArr[i].lyrics;
-				lyrics.addEventListener("click", function(){
-					Swal.fire({
-						title: 'Custom animation with Animate.css',
+				let lyricsBTN = document.createElement("BUTTON");
+				lyricsBTN.textContent = "L";
+				lyricsBTN.addEventListener("click", function() {
+					console.log("fffff "+globalLyrics);
+					swal({
+						title: 'lyrics',
+						text:globalLyrics,
 						showClass: {
 							popup: 'animate__animated animate__fadeInDown'
 						},
@@ -369,8 +372,14 @@
 							popup: 'animate__animated animate__fadeOutUp'
 						}
 					})
-				})
-				card.appendChild(lyrics);
+				});
+
+				card.appendChild(lyricsBTN);
+				// let lyrics = document.createElement("p");
+				// lyrics.id = "lyrics";
+				// lyrics.innerHTML = "Lyrics: <br/>" + songsArr[i].lyrics;
+				
+				// card.appendChild(lyrics);
 
 				let addOrRemoveSongBTN = document.createElement("button");
 				addOrRemoveSongBTN.id = songsArr[i].songId;

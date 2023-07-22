@@ -213,6 +213,7 @@ function quiz()
                             // List all available voices in the console
                             console.log(synth.getVoices());
                             utterance.voice = synth.getVoices()[7]; //פה משנים מבטא!
+                            
                         }
                     
                         synth.speak(utterance);
