@@ -259,8 +259,15 @@
 
 		header img{width: 400px;}
 
+		div#searchDiv {
+			margin-top: 4%;
+		}
 
-
+		.swal-text{
+			max-height: 25em;  /* To be adjusted as you like */
+			overflow-y: scroll;
+			width: 100%;
+		}
 
 	</style>
 </head>
@@ -372,6 +379,14 @@
 				alert("Something went wrong");
 		}
 
+		function successCBsearch(data) {
+			//localStorage.setItem("songsData", JSON.stringify(data));
+			if (data)
+				renderSongs(data);
+			else
+				alert("Something went wrong");
+		}
+
 
 		function renderSongs(songsArr) {
 			 
@@ -416,6 +431,7 @@
 					swal({
 						title: 'Lyrics',
 						text: globalLyrics,
+						
 						showClass: {
 							popup: 'animate__animated animate__fadeInDown'
 						},
@@ -766,7 +782,7 @@
 		}
 
 		function searchSongs(api) {
-			ajaxCall("GET", api, "", successCB, errorCB);
+			ajaxCall("GET", api, "", successCBsearch, errorCB);
 		}
 
 		function getSongsByName(songName) {
