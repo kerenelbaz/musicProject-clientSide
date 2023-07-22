@@ -401,10 +401,12 @@
 				
 				if(JSON.parse(localStorage['onlineUser']).email == "admin@gmail.com"){
 					let numOfLikes = document.createElement("h4");
-					numOfLikes.innerHTML = songsArr[i].songInFavorite +" Users like this song"
+					//numOfLikes.innerHTML = songsArr[i].songInFavorite +" Users like this song"
+					numOfLikes.innerHTML = `<i class="fa-solid fa-heart fa-lg" style="color: #f91a1a;"></i>  ${songsArr[i].songInFavorite} `
 					card.appendChild(numOfLikes);
 				}
-				
+				let buttonsDiv = document.createElement("div")
+				buttonsDiv.id = "buttonsDiv"
 				let lyricsBTN = document.createElement("BUTTON");
 				lyricsBTN.innerHTML = "<i class='fa-solid fa-bars'></i>";
 				lyricsBTN.addEventListener("click", function() {
@@ -419,11 +421,13 @@
 						}
 					})
 				});
-				card.appendChild(lyricsBTN);
+				buttonsDiv.appendChild(lyricsBTN)
+				//card.appendChild(lyricsBTN);
 
 				let playBTN = document.createElement("button");
 				playBTN.innerHTML = "<i class='fa-solid fa-play'></i>" //the star is font of the btn
-				card.appendChild(playBTN);
+				//card.appendChild(playBTN);
+				buttonsDiv.appendChild(playBTN)
 
 				let addOrRemoveSongBTN = document.createElement("button");
 				addOrRemoveSongBTN.id = songsArr[i].songId;
@@ -445,7 +449,9 @@
 						addToFavorite(this.id);
 					}
 				};
-				card.appendChild(addOrRemoveSongBTN);
+				//card.appendChild(addOrRemoveSongBTN);
+				buttonsDiv.appendChild(addOrRemoveSongBTN)
+				card.appendChild(buttonsDiv)
 			}
 
 			
