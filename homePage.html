@@ -340,6 +340,7 @@
 				container.appendChild(card);
 
 				let img = document.createElement("img");
+
 				// img.id = "appartmentIMG"; ////למחוק!!!!!!!!!!!!
 				img.src = "./images/pic01.jpg"; ///// לשים פה סרטון במקום 
 				card.appendChild(img);
@@ -404,7 +405,7 @@
 			}
 		}
 	
-
+		
 
 
 
@@ -788,6 +789,7 @@
 			const clientSecret = "df624510f02e46a39a9f04d250b1cde8";
 
 			const auth = btoa(`${clientId}:${clientSecret}`);
+			//fetch http request (here is POST request)
 			const tokenResponse = await fetch('https://accounts.spotify.com/api/token', {
 				method: 'POST',
 				headers: {
