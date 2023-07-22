@@ -347,10 +347,13 @@
     <script src="assets/js/breakpoints.min.js"></script>
     <script src="assets/js/util.js"></script>
     <script src="assets/js/main.js"></script>
-
+	<script src="sweetalert2.min.js"></script>
+	<link rel="stylesheet" href="sweetalert2.min.css">
 	<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11%22%3E"></script>
+
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.css" />
 	<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.js"></script>
 	<!-- //////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -678,7 +681,7 @@
 
 		function successCBaddToFav(data) {
 			if (data) {
-				alert("Song added to your favorites");
+				Swal.fire('Song added to your favorites')
 
 			}
 
@@ -696,7 +699,7 @@
 		}
 
         function successCBDeleteFromFav(data) {
-            alert("song deleted");
+            Swal.fire('Song deleted')
             favoriteSongsOfUserArr = data;
 			
         }
