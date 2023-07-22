@@ -46,68 +46,75 @@
 			justify-content: center;
 			align-items: center;
 			text-align: center;
-		}
+			}
 
-		#card img {
+			#card img {
 			height: 220px;
 			width: 100%;
 			border-radius: 7px;
-		}
+			}
 
-		h4 {
+			h4 {
 			margin: 1px;
-		}
+			}
 
-		p {
+			p {
 			margin: 1px;
 			text-align: left;
-		}
+			}
 
-		#lyrics ,#Bio {
-			margin: 10px;
-			float: left;
-			height: 300px;
-			overflow-y: scroll;
-		}
-
-		#lyrics::-webkit-scrollbar-track, #Bio::-webkit-scrollbar-track,
-		body::-webkit-scrollbar-track {
-			-webkit-box-shadow: inset 0 0 6px rgba(114, 59, 114, 0.24);
-			border-radius: 10px;
-			background-color: #F5F5F5;
-		}
-
-		#lyrics::-webkit-scrollbar, #Bio::-webkit-scrollbar,
-		body::-webkit-scrollbar {
-			width: 12px;
-			background-color: #f1efef;
-		}
-
-		#lyrics::-webkit-scrollbar-thumb, #Bio::-webkit-scrollbar-thumb,
-		body::-webkit-scrollbar-thumb {
-			border-radius: 10px;
-			-webkit-box-shadow: inset 0 0 6px rgba(56, 47, 47, 0.295);
-			background-color: #655068c5;
-		}
-
-
-
-		#card button {
-			margin-top: 20px;
+			#card button {
+			margin-top: 10px;
 			background-color: hsla(0, 0%, 100%, 0.808);
 			color: rgb(179, 169, 169);
 			border: 1px solid rgb(255, 255, 255);
 			border-radius: 50px;
 			font-size: 20px;
 			padding: 5px;
+			display: inline-block; /* Add this line to make buttons appear next to each other */
+			margin-right: 10px; /* Add this line to add some space between buttons */
+			}
 
-			
-		}
-
-	
-		#card button:hover .fa-star {
+			#card button:hover .fa-star {
 			color: rgb(236, 248, 7);
+			}
+
+			#card button:hover .fa-play {
+			color: rgb(248, 7, 35);
+			}
+
+			#card button:hover .fa-bars {
+			color: rgb(29, 191, 72);
+			}
+
+
+		/* #lyrics ,#Bio {
+			margin: 10px;
+			float: left;
+			height: 300px;
+			overflow-y: scroll;
+		} */
+
+		/* #lyrics::-webkit-scrollbar-track, #Bio::-webkit-scrollbar-track, */
+		body::-webkit-scrollbar-track {
+			-webkit-box-shadow: inset 0 0 6px rgba(114, 59, 114, 0.24);
+			border-radius: 10px;
+			background-color: #F5F5F5;
 		}
+
+		/* #lyrics::-webkit-scrollbar, #Bio::-webkit-scrollbar, */
+		body::-webkit-scrollbar {
+			width: 12px;
+			background-color: #f1efef;
+		}
+
+		/* #lyrics::-webkit-scrollbar-thumb, #Bio::-webkit-scrollbar-thumb, */
+		body::-webkit-scrollbar-thumb {
+			border-radius: 10px;
+			-webkit-box-shadow: inset 0 0 6px rgba(56, 47, 47, 0.295);
+			background-color: #655068c5;
+		}
+
 
 		#searchBTN{
 			margin: 0 0 0.5em 0.5em;
@@ -401,7 +408,7 @@
 				}
 				
 				let lyricsBTN = document.createElement("BUTTON");
-				lyricsBTN.textContent = "<i class='fa-solid fa-bars'></i>";
+				lyricsBTN.innerHTML = "<i class='fa-solid fa-bars'></i>";
 				lyricsBTN.addEventListener("click", function() {
 					swal({
 						title: 'Lyrics',
@@ -417,8 +424,7 @@
 				card.appendChild(lyricsBTN);
 
 				let playBTN = document.createElement("button");
-				playBTN.id = songsArr[i].songId;
-				playBTN.innerHTML = "<i class='fa-solid fa-play'></i>"; //the star is font of the btn
+				playBTN.innerHTML = "<i class='fa-solid fa-play'></i>" //the star is font of the btn
 				card.appendChild(playBTN);
 
 				let addOrRemoveSongBTN = document.createElement("button");
