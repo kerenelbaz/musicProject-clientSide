@@ -89,13 +89,6 @@
 			}
 
 
-		/* #lyrics ,#Bio {
-			margin: 10px;
-			float: left;
-			height: 300px;
-			overflow-y: scroll;
-		} */
-
 		.swal-text::-webkit-scrollbar-track,
 		body::-webkit-scrollbar-track {
 			-webkit-box-shadow: inset 0 0 6px rgba(114, 59, 114, 0.24);
@@ -258,7 +251,7 @@
 			justify-content: space-evenly;
 		}
 
-		header img{width: 400px;}
+		header img{width: 40%;}
 
 		div#searchDiv {
 			margin-top: 4%;
@@ -352,10 +345,13 @@
     <script src="assets/js/breakpoints.min.js"></script>
     <script src="assets/js/util.js"></script>
     <script src="assets/js/main.js"></script>
-
+	<script src="sweetalert2.min.js"></script>
+	<link rel="stylesheet" href="sweetalert2.min.css">
 	<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11%22%3E"></script>
+
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.css" />
 	<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.js"></script>
 	<!-- //////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -544,13 +540,19 @@
 
 
 		function logOut() {
-			swal("Are you sure you want to log out?", {
-				buttons: ["No", "Yes"],
-			}).then((value) => {
-				if (value) {
-					window.location.href = "welcomePage.html";
+	
+			Swal.fire({
+				title: 'Are you sure?',								
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes'
+				}).then((value) => {
+					if (value) {
+						localStorage.clear()
+						window.location.href = "welcomePage.html";
 				}
-			});
+			})
 		}
 
 		function renderFavorites(userId) {
@@ -697,7 +699,7 @@
 
 		function successCBaddToFav(data) {
 			if (data) {
-				alert("Song added to your favorites");
+				Swal.fire('Song added to your favorites')
 
 			}
 
@@ -715,7 +717,7 @@
 		}
 
         function successCBDeleteFromFav(data) {
-            alert("song deleted");
+            Swal.fire('Song deleted')
             favoriteSongsOfUserArr = data;
 			
         }
