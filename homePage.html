@@ -377,23 +377,24 @@
 				</header>
 			</div>
 			<!-- Nav -->
-			<nav id="nav"><!--nevigate menu-->
+			 <nav id="nav">
 				<ul>
-					<li onclick="HomeRender()"><a href="#">Home</a></li>
-					<li onclick="renderFavorites(JSON.parse(localStorage['onlineUser']).userId)"><a href="#">Your Favorites</a></li>
-					<li onclick="renderAtrists()"><a href="#">Artists</a></li>					
+					<li ><a onclick="HomeRender()" href="#">Home</a></li>
+					<li ><a onclick="renderFavorites(JSON.parse(localStorage['onlineUser']).userId)" href="#">Your Favorites</a></li>
+					<li  ontouchstart="renderAtrists()"><a onclick="renderAtrists()" href="#">Artists</a></li>					
 					<li class="opener">
 						<a href="#">Search Music</a>
 						<ul>
-							<li onclick="renderSearching(1)"><a href="#">By Name Of Song</a></li>
-							<li onclick="renderSearching(2)"><a href="#">By Artist</a></li>
-							<li onclick="renderSearching(3)"><a href="#">By Lyrics</a></li>
+							<li ><a onclick="renderSearching(1)" href="#">By Name Of Song</a></li>
+							<li ><a onclick="renderSearching(2)" href="#">By Artist</a></li>
+							<li ><a onclick="renderSearching(3)" href="#">By Lyrics</a></li>
 						</ul>
 					</li>
-					<li onclick="quiz()"><a href="#">KILplay</a></li>
-					<li onclick="logOut()"><a href="#">Log Out</a></li>
+					<li ><a onclick="quiz()" href="#">KILplay</a></li>
+					<li ><a onclick="logOut()" href="#">Log Out</a></li>
 				</ul>
-			</nav>
+			</nav>  
+			
 		</div>
 		<form id="pForm">
 			<table id ="example"> 
@@ -455,7 +456,7 @@
 		let userID = JSON.parse(localStorage['onlineUser']).userId;
 		let favoriteSongsOfUserArr = {}; //this array will be used in 'GetFavoriteSongsOfUser' function that do the ajaxCall and read all the favorites songs.
 		GetFavoriteSongsOfUser(JSON.parse(userID));
-
+				
 
 		function HomeRender() {
 			
