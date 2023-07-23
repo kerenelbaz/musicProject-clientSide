@@ -35,8 +35,9 @@
 		}
 
 		#card {
-			height: 20em;
-			width: 18em;
+			height: 18em;
+			width: 14em;
+			padding: 1em;
 			margin: 1%;
 			background-color: white;
 			font-family: 'Source Sans Pro', sans-serif;
@@ -267,7 +268,11 @@
 
 		img#placeholder {
 			width: 11em;
-			height: 8em;
+			height: 9em;
+		}
+
+		div#inSongDiv {
+			margin-top: 1em;
 		}
 
 	</style>
@@ -417,23 +422,25 @@
 
 				videoDiv.appendChild(img);
 				
+				let inSongDiv = document.createElement("div")
+				inSongDiv.id = "inSongDiv"
 
 				videoDiv.id = "video"+i;
 				card.appendChild(videoDiv);
 
 				let artist = document.createElement("h4");
-				artist.innerHTML = "Artist: " + songsArr[i].artist;
-				card.appendChild(artist);
+				artist.innerHTML = songsArr[i].artist;
+				inSongDiv.appendChild(artist);
 
 				let nameOfSong = document.createElement("h4");
-				nameOfSong.innerHTML = "Name: " + songsArr[i].songName;
-				card.appendChild(nameOfSong);
+				nameOfSong.innerHTML = songsArr[i].songName;
+				inSongDiv.appendChild(nameOfSong);
 				
-				//if(JSON.parse(localStorage['onlineUser']).email == "admin@gmail.com"){
-					let numOfLikes = document.createElement("h4");
-					numOfLikes.innerHTML = `<i class="fa-solid fa-heart fa-lg" style="color: #f91a1a;"></i>  ${songsArr[i].songInFavorite} `
-					card.appendChild(numOfLikes);
-				//}
+				
+				let numOfLikes = document.createElement("h4");
+				numOfLikes.innerHTML = `<i class="fa-solid fa-heart fa-lg" style="color: #f91a1a;"></i>  ${songsArr[i].songInFavorite} `
+				inSongDiv.appendChild(numOfLikes);
+				
 				let buttonsDiv = document.createElement("div")
 				buttonsDiv.id = "buttonsDiv"
 
@@ -492,7 +499,8 @@
 				
 					buttonsDiv.appendChild(addOrRemoveSongBTN)
 				}
-				card.appendChild(buttonsDiv)
+				inSongDiv.appendChild(buttonsDiv)
+				card.appendChild(inSongDiv)
 			}
 
 			
