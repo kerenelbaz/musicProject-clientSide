@@ -372,6 +372,11 @@
 				margin-top : 0em;
 				border-radius :7px;
 		}
+
+		#searchBTN{
+			border: 1px solid rgb(232 5 130);
+			box-shadow: 0 0 2px rgb(232 5 130), 0 0 7px rgb(232 5 130), 0px 0px 6px rgb(232 5 130), 0 0 1px rgb(232 5 130);
+		}
 		
 		@media screen and (max-width: 736px){
 			.swal-modal {
@@ -394,6 +399,40 @@
 				transition: opacity .2s,-webkit-transform .3s;
 				transition: transform .3s,opacity .2s;
 				transition: transform .3s,opacity .2s,-webkit-transform .3s;
+			}
+
+			div#quizDiv {
+				width: 90%;
+				margin-top: 5em;
+			}
+
+			button#songNum {
+				width: 3em;
+				height: 3em;
+				display: inline;
+				position: initial;
+				margin-top: -2em;
+			}
+			h3#queStr {
+				padding: 0;
+			}
+			button#questionBtn {
+				width: 30%;
+				margin: auto;
+				margin-bottom: 1em;
+				margin-top: 3em;
+			}
+			div#radioContainer {
+				padding-left: 0;
+				margin-left: 5%;
+				line-height: 1.25em;
+			}
+			#radioContainer {
+				font-size: 20px;
+				direction: ltr;
+				padding-left: 22%;
+				padding-top: 7%;
+				padding-bottom: 6%;
 			}
 		}
 		
@@ -450,39 +489,7 @@
 			
 			}
 			
-			div#quizDiv {
-				width: 90%;
-				margin-top: 5em;
-			}
-
-			button#songNum {
-				width: 3em;
-				height: 3em;
-				display: inline;
-				position: initial;
-				margin-top: -2em;
-			}
-			h3#queStr {
-				padding: 0;
-			}
-			button#questionBtn {
-				width: 30%;
-				margin: auto;
-				margin-bottom: 1em;
-				margin-top: 3em;
-			}
-			div#radioContainer {
-				padding-left: 0;
-				margin-left: 5%;
-				line-height: 1.25em;
-			}
-			#radioContainer {
-				font-size: 20px;
-				direction: ltr;
-				padding-left: 22%;
-				padding-top: 7%;
-				padding-bottom: 6%;
-			}
+			
 		}
 		
 		.fa-heart:before {
@@ -1008,6 +1015,7 @@
 
 			const searchBTN = document.createElement('button');
 			searchBTN.style.margin = "0 0 0.5em 0.5em";
+			searchBTN.id="searchBTN"
 			searchBTN.innerHTML = 'Search';
 			searchBTN.onclick = function() {
 				const input = document.getElementById("searchBox").value;

@@ -2063,13 +2063,13 @@ input, select, textarea {
 		-ms-transition: background-color 0.35s ease-in-out, color 0.35s ease-in-out, border-bottom-color 0.35s ease-in-out;
 		transition: background-color 0.35s ease-in-out, color 0.35s ease-in-out, border-bottom-color 0.35s ease-in-out;
 		text-shadow: 0 0 3px #D000FE, 0 0 10px #D000FE, 0 0 20px #D000FE;
-    color: #6dd7d2;
-    background-color: #2E8ECE;
-    font-weight: 300;
-    background-color: rgb(25 9 51 / 0%);
-    font-size: 17px;
-    font-family: sans-serif;
-    border: 1px solid rgb(25 9 51 / 0%);
+		color: #6dd7d2;
+		background-color: #2E8ECE;
+		font-weight: 300;
+		background-color: rgb(25 9 51 / 0%);
+		font-size: 17px;
+		font-family: sans-serif;
+		border: 1px solid rgb(25 9 51 / 0%);
 	}
 
 		input[type="button"]:hover,
@@ -2080,15 +2080,15 @@ input, select, textarea {
 			color: #fff;
 			background: rgba(123, 94, 124, 0.91);
 			text-shadow: 0 0 3px #D000FE, 0 0 10px #D000FE, 0 0 20px #D000FE;
-    color: #6dd7d2;
-    background-color: #2E8ECE;
-    font-weight: 300;
-    background-color: #000613;
-    font-size: 17px;
-    font-family: sans-serif;
-    border: 1px solid rgb(232 5 130);
-	box-shadow: 0 0 2px rgb(232 5 130), 0 0 7px rgb(232 5 130), 0px 0px 6px rgb(232 5 130), 0 0 1px rgb(232 5 130);
+			color: #6dd7d2;
+			background-color: #2E8ECE;
+			font-weight: 300;
+			background-color: #000613;
+			font-size: 17px;
+			font-family: sans-serif;
+			
 		}
+
 
 		input[type="button"].alt,
 		input[type="submit"].alt,

@@ -91,7 +91,7 @@ function quiz()
                         window.speechSynthesis.cancel();
 					}
 
-                    if (questionBtn.textContent == "check") 
+                    if (questionBtn.textContent == "Check") 
                     {
                         // Get the selected radio button
                         const selectedRadioButton = document.querySelector('input[type="radio"]:checked');
@@ -224,10 +224,10 @@ function quiz()
 					function renderQuestion()
 					{
 						const questionDict={
-							A : 'which artist perform the song #?',
-							B : 'what is the name of the song that its lyrics are: \n# ?', 
-							C : 'who wrote the song that goes like that # ?', 
-							D : 'which song did # wrote ?'
+							A : 'Which artist perform the song #?',
+							B : 'What is the name of the song that its lyrics are: \n# ?', 
+							C : 'Who preform the song that goes like that # ?', 
+							D : 'Which song did # wrote ?'
 						};
  
 
@@ -336,7 +336,7 @@ function quiz()
 						
 						// Get the index of the correct answer radio button
   						const correctAnswerIndex = possibleAnswer.indexOf(correctAnswer);
-						questionBtn.textContent = "check";
+						questionBtn.textContent = "Check";
 
 						for (let i = 0; i < possibleAnswer.length; i++) {
 							const radioLabel = document.createElement("label");
