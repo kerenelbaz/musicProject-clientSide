@@ -1956,6 +1956,7 @@ input, select, textarea {
 		-webkit-transition: background-color 0.35s ease-in-out, border-color 0.35s ease-in-out;
 		-ms-transition: background-color 0.35s ease-in-out, border-color 0.35s ease-in-out;
 		transition: background-color 0.35s ease-in-out, border-color 0.35s ease-in-out;
+		box-shadow: 0 0 2px #61cacf, 0px 0px 7px #61cacf, 0px 0px 6px #61cacf, 0px 0px 1px #61cacf;
 	}
 
 		form input[type="text"]:focus,
@@ -2052,7 +2053,7 @@ input, select, textarea {
 		text-align: center;
 		border-radius: 3em;
 		text-decoration: none;
-		padding: 0.65em 3em 0.65em 3em;
+		padding: 0.65em 1em 0.65em 1em;
 		border: 0;
 		cursor: pointer;
 		outline: 0;
@@ -2061,6 +2062,14 @@ input, select, textarea {
 		-webkit-transition: background-color 0.35s ease-in-out, color 0.35s ease-in-out, border-bottom-color 0.35s ease-in-out;
 		-ms-transition: background-color 0.35s ease-in-out, color 0.35s ease-in-out, border-bottom-color 0.35s ease-in-out;
 		transition: background-color 0.35s ease-in-out, color 0.35s ease-in-out, border-bottom-color 0.35s ease-in-out;
+		text-shadow: 0 0 3px #D000FE, 0 0 10px #D000FE, 0 0 20px #D000FE;
+    color: #6dd7d2;
+    background-color: #2E8ECE;
+    font-weight: 300;
+    background-color: rgb(25 9 51 / 0%);
+    font-size: 17px;
+    font-family: sans-serif;
+    border: 1px solid rgb(25 9 51 / 0%);
 	}
 
 		input[type="button"]:hover,
@@ -2070,6 +2079,15 @@ input, select, textarea {
 		.button:hover {
 			color: #fff;
 			background: rgba(123, 94, 124, 0.91);
+			text-shadow: 0 0 3px #D000FE, 0 0 10px #D000FE, 0 0 20px #D000FE;
+    color: #6dd7d2;
+    background-color: #2E8ECE;
+    font-weight: 300;
+    background-color: #000613;
+    font-size: 17px;
+    font-family: sans-serif;
+    border: 1px solid rgb(232 5 130);
+	box-shadow: 0 0 2px rgb(232 5 130), 0 0 7px rgb(232 5 130), 0px 0px 6px rgb(232 5 130), 0 0 1px rgb(232 5 130);
 		}
 
 		input[type="button"].alt,
@@ -2179,7 +2197,9 @@ input, select, textarea {
 		border-bottom: 1px solid #ecf808;
 		text-shadow: 0 0 3px #FFE205, 0 0 7px #FFE205, 0 0 20px #EDD205;
 		color: #FFE205;
-		background-color: #262626;
+		/* background-color: #262626; */
+		box-shadow: 0 0 2px #EDD205, 0px 0px 7px #EDD205, 0px 0px 6px #EDD205, 0px 0px 1px #EDD205;
+		
 	}
 
 		#header:before {
@@ -2226,6 +2246,7 @@ input, select, textarea {
 			text-align: center;
 			font-size: 1.25em;
 			padding: 0;
+			
 		}
 
 		#header hr {
