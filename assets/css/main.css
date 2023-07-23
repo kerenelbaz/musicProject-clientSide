@@ -113,7 +113,8 @@ input, select, textarea {
 		font-weight: 400;
 		color: rgb(0, 0, 0);
 		line-height: 1.25em;
-		color: #FFE205;
+		color: #63dfe7;
+		text-shadow: 0 0 3px #D000FE, 0 0 10px #D000FE, 0 0 20px #D000FE;
 		font-family: 'Source Sans Pro', sans-serif;
 	}
 
@@ -2194,11 +2195,11 @@ input, select, textarea {
 		text-align: center;
 		padding: 4.5em 0 0em 0;
 		cursor: default;
-		border-bottom: 1px solid #ecf808;
-		text-shadow: 0 0 3px #FFE205, 0 0 7px #FFE205, 0 0 20px #EDD205;
-		color: #FFE205;
+		border-bottom: 1px solid #0838f8;
+		text-shadow: 0 0 2px #0512ff, 0 0 2px #05d1ff, 0 0 2px #0598ed;
+		color: #b2d0f3;
 		/* background-color: #262626; */
-		box-shadow: 0 0 2px #EDD205, 0px 0px 7px #EDD205, 0px 0px 6px #EDD205, 0px 0px 1px #EDD205;
+		box-shadow: 0 0 2px #0524ed, 0px 0px 2px #05e5ed, 0px 0px 2px #05e5ed, 0px 0px 2px #EDD205;
 		
 	}
 
@@ -2947,7 +2948,7 @@ input, select, textarea {
 						position: absolute;
 						left: 50%;
 						margin-left: -40px;
-						background: rgba(132, 128, 136, 0.75);
+						background: #8bc34a2e;
 						border-top: 0;
 						border-radius: 0 0 0.35em 0.35em;
 					}
