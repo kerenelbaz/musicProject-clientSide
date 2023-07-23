@@ -16,11 +16,13 @@
 				indent = Math.max(0, $this.parents('li').length - 1),
 				href = $this.attr('href'),
 				target = $this.attr('target');
-
+				onclickeve = $this.attr('onclick');
+				
 			b.push(
 				'<a ' +
 					'class="link depth-' + indent + '"' +
 					( (typeof target !== 'undefined' && target != '') ? ' target="' + target + '"' : '') +
+					( (typeof onclickeve !== 'undefined' && onclickeve != '') ? ' onclick="' + onclickeve + '"' : '') +
 					( (typeof href !== 'undefined' && href != '') ? ' href="' + href + '"' : '') +
 				'>' +
 					'<span class="indent-' + indent + '"></span>' +
