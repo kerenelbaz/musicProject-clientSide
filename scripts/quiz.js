@@ -102,13 +102,15 @@ function quiz()
                             if (selectedRadioButton.getAttribute("data-correct") === "true") 
                             {
                                // questionBtn.style.backgroundColor = "green";
+							   
+							   questionBtn.style.textShadow = "0 0 3px #60c627, 0 0 10px #60c627, 0 0 20px #60c627;";
                                 questionBtn.textContent = "correct";
                                 console.log("Correct answer!");
                             } 
                             else 
                             {
                                 //questionBtn.style.backgroundColor = "red";
-								questionBtn.style.textShadow = "0 0 2px #FF0000,0 0 30px #FF0000,5px 9px 5px #333, 0 0 150px #FF0000;color:#FF0000;";
+								questionBtn.style.textShadow = "0 0 3px #FF0000, 0 0 10px #FF0000, 0 0 20px #FF0000;";
                                 
 								questionBtn.textContent = "wrong";
                                 //צובע את הנכון בירוק
