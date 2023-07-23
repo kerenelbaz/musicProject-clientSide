@@ -168,18 +168,20 @@ function quiz()
                         songNum.innerHTML = `<i class="fa fa-play"></i>`;
 
                     });
-                    songNum.addEventListener("mouseout", function() {
-                        // Change the content of the element back to the current question number when the mouse leaves the button.
-                        songNum.innerHTML = currentQuestion;
-                    });
+                    // songNum.addEventListener("mouseout", function() {
+                    //     // Change the content of the element back to the current question number when the mouse leaves the button.
+                    //     songNum.innerHTML = currentQuestion;
+                    // });
                     initializeTTS();
-                    songNum.addEventListener("click", function () {
-                        // Call initializeTTS at the start of your application
-                        
-                        speakQueStr(queStr.innerHTML);
-                        
-                        
-                    });
+					
+                    songNum.addEventListener("click", function (event) {
+						// Check if the click event occurred on the button or its child elements
+						if (event.target === songNum || songNum.contains(event.target)) {
+						  
+							speakQueStr(queStr.innerHTML);
+						  
+						}
+					  });	
 					let queStr = document.createElement("h3");
 					queStr.id = "queStr"; 
 					queStr.innerHTML = renderQuestion();
@@ -212,7 +214,7 @@ function quiz()
                         if (synth.getVoices().length > 0) {
                             // List all available voices in the console
                             console.log(synth.getVoices());
-                            utterance.voice = synth.getVoices()[7]; //פה משנים מבטא!
+                            utterance.voice = synth.getVoices()[0]; //פה משנים מבטא!
                             
                         }
                     
