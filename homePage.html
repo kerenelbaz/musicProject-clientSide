@@ -449,6 +449,8 @@
 				padding: 5.5em 0 5em 0;
 			
 			}
+
+			
 		}
 		
 		.fa-heart:before {
@@ -465,6 +467,27 @@
 			color: #00FFFC;
 			color: #000613;
 			/* background-color: #2E8ECE; */
+		}
+		i.fa-solid.fa-heart.fa-lg {
+			padding-top: 0.7em;
+		}
+		div#example_wrapper {
+			background-color: #716565a1;
+			color: white;
+			font-weight: 400;
+			margin-top: 2em;
+		}
+		button.viewBtn.btn.btn-info {
+			background-color: #a16ed1e3;
+		}
+		div#example_filter {
+			margin-right: 2em;
+		}
+		div#example_info {
+			margin-left: 2em;
+		}
+		div#example_length {
+			margin-left: 2em;
 		}
 	</style>
 </head>
@@ -500,22 +523,25 @@
 			</nav>  
 			
 		</div>
-		<form id="pForm">
-			<table id ="example"> 
-				<thead>
-					<tr>
-						<td></td>
-						<td>User Id</td>
-						<td>Name</td>
-						<td>Country</td>
-						<td>Email</td>
-						<td>Password</td>
-						<td>Phone Number</td>
-						<td>Registered At</td>
-					</tr>
-				</thead>			
-			</table>
-		</form>
+		<div class="table-responsive">
+			<form id="pForm">
+				<table id="example" class="display responsive nowrap" cellspacing="0" width="100%"> 
+					<thead>
+						<tr>
+							<td></td>
+							<td>User Id</td>
+							<td>Name</td>
+							<td>Country</td>
+							<td>Email</td>
+							<td>Password</td>
+							<td>Phone Number</td>
+							<td>Registered At</td>
+						</tr>
+					</thead>			
+				</table>
+			</form>
+		</div>
+		
 		<div id="container"></div>
 	</div>
 
@@ -528,7 +554,7 @@
 		}
 		if(JSON.parse(localStorage['onlineUser']).email == 'admin@gmail.com'){
 			const usersLi = document.createElement("li");
-    		usersLi.innerHTML = '<a href="#">Users</a>';
+    		usersLi.innerHTML = '<a href="#" onclick="renderUsersTable()">Users</a>';
 			usersLi.addEventListener("click", function(){
 				renderUsersTable()
 			})
@@ -552,8 +578,11 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11%22%3E"></script>
 
-	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.css" />
+	<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
 	<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.js"></script>
+	<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.css" />
+	<link rel="stylesheet" href="path/to/responsive.dataTables.min.css">
 	<!-- //////////////////////////////////////////////////////////////////////////////////////////////// -->
 	<script>
 
@@ -806,6 +835,7 @@
                     data: usersdata,
 					retrieve: true,  				
                     pageLength: 5,
+					
                     columns: [
                         {
                             render: function (data, type, row, meta) {
@@ -823,6 +853,12 @@
                         { data: "phoneNumber" },
                         { data: "registrationTime" }                                              
                     ],
+					responsive: {
+						details: {
+							type: 'column',
+							target: -1
+						}
+					}
                 });
                 buttonEvents();
             }
