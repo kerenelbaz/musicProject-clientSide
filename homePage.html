@@ -35,9 +35,9 @@
 		}
 
 		#card {
-			height: 18em;
-			width: 14em;
-			padding: 1em;
+			height: 14.4em;
+			width: 11em;
+			padding: 0em;
 			margin: 1%;
 			background-color: white;
 			font-family: 'Source Sans Pro', sans-serif;
@@ -58,6 +58,7 @@
 
 			h4 {
 			margin: 1px;
+			font-size: 13px;
 			}
 
 			p {
@@ -71,7 +72,7 @@
 			color: rgb(179, 169, 169);
 			border: 1px solid rgb(255, 255, 255);
 			border-radius: 50px;
-			font-size: 20px;
+			font-size: 1em;
 			padding: 5px;
 			display: inline-block; /* Add this line to make buttons appear next to each other */
 			margin-right: 10px; /* Add this line to add some space between buttons */
@@ -250,7 +251,10 @@
 			justify-content: space-evenly;
 		}
 
-		header img{width: 40%;}
+		header img{
+			width: 40%;
+			margin-top: -1.4em;
+		}
 
 		div#searchDiv {
 			margin-top: 4%;
@@ -267,14 +271,22 @@
 		}
 
 		img#placeholder {
-			width: 11em;
-			height: 9em;
+			width: 8em;
+			height: 7em;
+			margin-top: 0;
 		}
 
 		div#inSongDiv {
-			margin-top: 1em;
+			margin-top: 0em;
 		}
 
+		#videoElement{
+			
+				width :8em; 
+				height : 7em;
+				margin-top : 0em;
+				border-radius :7px;
+		}
 	</style>
 </head>
 <body class="left-sidebar is-preload" onload="HomeRender()">
@@ -536,10 +548,13 @@
 				videoDiv.innerHTML = "";
 
 				let videoElement = document.createElement('iframe');
+				videoElement.id = "videoElement"
 				videoElement.src = youtubeLinks[0]; // Set the YouTube embed URL
 				videoElement.allowFullscreen = true; // Enable fullscreen mode
-				videoElement.style.width = '100%'; // Set the width of the video
-				videoElement.style.height = 'auto';
+				// videoElement.style.width = '8em'; // Set the width of the video
+				// videoElement.style.height = '6em';
+				// videoElement.style.marginTop = '1em';
+				// videoElement.style.borderRadius = '7px'
 
 				videoDiv.appendChild(videoElement);
 				}
