@@ -67,7 +67,7 @@ function quiz()
 				const whichPage = document.getElementById("whichPage");
 				whichPage.innerHTML = "Let's play!";
 
-				currentQuestion=1; 
+				
 
 				const quizDiv = document.createElement("div");
 				quizDiv.id = "quizDiv";
@@ -85,8 +85,8 @@ function quiz()
 					if(questionBtn.textContent == "Next question")
 					{
 						quizDiv.innerHTML = "";
-						currentQuestion += 1;
-						showCurrentSong(currentQuestion);
+						
+						showCurrentSong();
                         // Stop any ongoing speech playback
                         window.speechSynthesis.cancel();
 					}
@@ -101,14 +101,16 @@ function quiz()
                             // Check if the selected radio button has the "data-correct" attribute set to "true"
                             if (selectedRadioButton.getAttribute("data-correct") === "true") 
                             {
-                                questionBtn.style.backgroundColor = "green";
+                               // questionBtn.style.backgroundColor = "green";
                                 questionBtn.textContent = "correct";
                                 console.log("Correct answer!");
                             } 
                             else 
                             {
-                                questionBtn.style.backgroundColor = "red";
-                                questionBtn.textContent = "wrong";
+                                //questionBtn.style.backgroundColor = "red";
+								questionBtn.style.textShadow = "0 0 2px #FF0000,0 0 30px #FF0000,5px 9px 5px #333, 0 0 150px #FF0000;color:#FF0000;";
+                                
+								questionBtn.textContent = "wrong";
                                 //צובע את הנכון בירוק
                                 const radioButtons = document.getElementsByName('radioOptions');
                                 for (let i = 0; i < radioButtons.length; i++) {
@@ -144,50 +146,38 @@ function quiz()
                       {
                           setTimeout(function () {
                               questionBtn.textContent = "Next question";
+							  questionBtn.style.backgroundColor = "rgb(8 18 30)";
                               questionBtn.disabled=false;
-                              questionBtn.style.backgroundColor = 'rgb(96 73 97 / 159%)';
+                              
                           }, 1500);
                       }
 					
 					
 				});
 				
-				showCurrentSong(currentQuestion);
+				showCurrentSong();
 				
-				function showCurrentSong(currentQuestion) {
+				function showCurrentSong() {
 					quizDiv.innerHTML = "";
 					
-					// const songNum = document.createElement("h3");
-					// songNum.id="songNum";
-					// songNum.innerHTML = currentQuestion;
+					
                     const songNum = document.createElement("BUTTON");
 					songNum.id="songNum";
-					songNum.textContent =  currentQuestion;
+					
+					songNum.innerHTML = `<i class="fa fa fa-play"></i>`;
                     
-                    songNum.addEventListener("mouseover",function(){
-                        songNum.innerHTML = `<i class="fa fa fa-play"></i>`;
-						
-                    });
-
-					$('nav i').on('click', function () {  // we are letting the li bind to the event
-						alert('This works, though');
-					  });
-						
-                    // songNum.addEventListener("mouseout", function() {
-                    //     // Change the content of the element back to the current question number when the mouse leaves the button.
-                    //     songNum.innerHTML = currentQuestion;
-                    // });
+                    
                     initializeTTS();
 					
 					
-                    // songNum.addEventListener("click", function (event) {
-					// 	// Check if the click event occurred on the button or its child elements
-					// 	if (event.target === songNum || songNum.contains(event.target)) {
+                    songNum.addEventListener("click", function (event) {
+						// Check if the click event occurred on the button or its child elements
+						if (event.target === songNum || songNum.contains(event.target)) {
 						  
-					// 		speakQueStr(queStr.innerHTML);
+							speakQueStr(queStr.innerHTML);
 						  
-					// 	}
-					//   });	
+						}
+					  });	
 					let queStr = document.createElement("h3");
 					queStr.id = "queStr"; 
 					queStr.innerHTML = renderQuestion();
