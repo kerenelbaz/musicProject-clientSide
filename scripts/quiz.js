@@ -165,23 +165,29 @@ function quiz()
 					songNum.textContent =  currentQuestion;
                     
                     songNum.addEventListener("mouseover",function(){
-                        songNum.innerHTML = `<i class="fa fa-play"></i>`;
-
+                        songNum.innerHTML = `<i class="fa fa fa-play"></i>`;
+						
                     });
+
+					$('nav i').on('click', function () {  // we are letting the li bind to the event
+						alert('This works, though');
+					  });
+						
                     // songNum.addEventListener("mouseout", function() {
                     //     // Change the content of the element back to the current question number when the mouse leaves the button.
                     //     songNum.innerHTML = currentQuestion;
                     // });
                     initializeTTS();
 					
-                    songNum.addEventListener("click", function (event) {
-						// Check if the click event occurred on the button or its child elements
-						if (event.target === songNum || songNum.contains(event.target)) {
+					
+                    // songNum.addEventListener("click", function (event) {
+					// 	// Check if the click event occurred on the button or its child elements
+					// 	if (event.target === songNum || songNum.contains(event.target)) {
 						  
-							speakQueStr(queStr.innerHTML);
+					// 		speakQueStr(queStr.innerHTML);
 						  
-						}
-					  });	
+					// 	}
+					//   });	
 					let queStr = document.createElement("h3");
 					queStr.id = "queStr"; 
 					queStr.innerHTML = renderQuestion();
