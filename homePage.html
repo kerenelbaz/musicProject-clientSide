@@ -320,6 +320,9 @@
 			transition: transform .3s,opacity .2s,-webkit-transform .3s;
 		}
 
+		body{
+			background-color: #000613f5;
+		}
 		.swal-text::-webkit-scrollbar-track,
 		body::-webkit-scrollbar-track {
 			-webkit-box-shadow: inset 0 0 6px #2E8ECE;;
@@ -362,7 +365,84 @@
 				margin-top : 0em;
 				border-radius :7px;
 		}
+		
+		@media screen and (max-width: 736px){
+			.swal-modal {
+				width: 87%;
+				opacity: 0;
+				border-radius: 40px;
+				pointer-events: none;
+				background-color: #2a2929;
+				text-align: center;
+				border-radius: 5px;
+				position: static;
+				margin: 20px auto;
+				display: inline-block;
+				vertical-align: middle;
+				-webkit-transform: scale(1);
+				transform: scale(1);
+				-webkit-transform-origin: 50% 50%;
+				transform-origin: 50% 50%;
+				z-index: 10001;
+				transition: opacity .2s,-webkit-transform .3s;
+				transition: transform .3s,opacity .2s;
+				transition: transform .3s,opacity .2s,-webkit-transform .3s;
+			}
+		}
+		
+		@media screen and (max-width: 400px){
+			.swal-footer {
+				text-align: right;
+				padding-top: 13px;
+				margin-top: 0px;
+				padding: 9px 16px;
+				border-radius: inherit;
+				border-top-left-radius: 0;
+				border-top-right-radius: 0;
+			}
 
+			.swal-button {
+				background-color: #2a2a2a;
+				color: #FFE205;
+				border: none;
+				box-shadow: none;
+				border-radius: 5px;
+				font-weight: 300;
+				font-size: 17px;
+				padding: 10px 24px;
+				margin: 0;
+				cursor: pointer;
+				text-shadow: 0 0 3px #0061FE, 0 0 7px #0061FE, 0 0 20px #0061FE;
+				color: #0061FE;
+			}
+
+			.swal-text {
+				font-size: 16px;
+				position: relative;
+				float: none;
+				line-height: normal;
+				vertical-align: top;
+				text-align: left;
+				display: inline-block;
+				margin: 0;
+				padding: 0 5%;
+				font-weight: 200;
+				color: #ffe202;
+				max-width: calc(100% - 20px);
+				overflow-wrap: break-word;
+				box-sizing: border-box;
+				max-height: 60%;
+				overflow-y: scroll;
+				width: 100%;
+			}
+
+			
+			body.homepage #header {
+				min-height: 0;
+				padding: 5.5em 0 5em 0;
+			
+			}
+		}
 		
 	</style>
 </head>
@@ -653,10 +733,13 @@
 				cancelButtonColor: '#d33',
 				confirmButtonText: 'Yes'
 				}).then((value) => {
-					if (value) {
+					if (value.isConfirmed) {
 						localStorage.clear()
 						window.location.href = "welcomePage.html";
-				}
+					}
+					else{
+
+					}
 			})
 		}
 
