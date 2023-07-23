@@ -452,7 +452,7 @@
 				//card.appendChild(lyricsBTN);
 
 				let playBTN = document.createElement("button");
-				playBTN.innerHTML = "<i class='fa-solid fa-play'></i>" //the star is font of the btn
+				playBTN.innerHTML = "<i class='fa-solid fa-play'></i>" 
 				playBTN.id = songsArr[i].songId;
 				//card.appendChild(playBTN);
 				buttonsDiv.appendChild(playBTN)
@@ -462,77 +462,76 @@
 					getYoutubeLinks(sID);
 				});
 
-				let addOrRemoveSongBTN = document.createElement("button");
-				addOrRemoveSongBTN.id = songsArr[i].songId;
-				addOrRemoveSongBTN.innerHTML = "<i class='fa-solid fa-star'></i>"; //the star is font of the btn
+				if (whichPage.innerHTML != "USERS VIEW"){
+					let addOrRemoveSongBTN = document.createElement("button");
+					addOrRemoveSongBTN.id = songsArr[i].songId;
+					addOrRemoveSongBTN.innerHTML = "<i class='fa-solid fa-star'></i>"; //the star is font of the btn
 
-				for (var j = 0 ; j<favoriteSongsOfUserArr.length ; j++){ //checking if the favorite song is in the array in order to mark it as favorite
-					if(favoriteSongsOfUserArr[j].songId == songsArr[i].songId){
-						addOrRemoveSongBTN.style.color='rgb(236, 248, 7)'; //change the font color in order to mark the song as favorite
+					for (var j = 0 ; j<favoriteSongsOfUserArr.length ; j++){ //checking if the favorite song is in the array in order to mark it as favorite
+						if(favoriteSongsOfUserArr[j].songId == songsArr[i].songId){
+							addOrRemoveSongBTN.style.color='rgb(236, 248, 7)'; //change the font color in order to mark the song as favorite
+						}
 					}
+
+					addOrRemoveSongBTN.onclick = function () {
+						if (this.style.color=='rgb(236, 248, 7)'){
+							this.style.color='rgb(179, 169, 169)';
+							removeSongFromFav(this.id);
+						}
+						else{
+							this.style.color='rgb(236, 248, 7)';
+							addToFavorite(this.id);
+						}
+					}
+				
+					//card.appendChild(addOrRemoveSongBTN);
+					buttonsDiv.appendChild(addOrRemoveSongBTN)
 				}
-
-				addOrRemoveSongBTN.onclick = function () {
-					if (this.style.color=='rgb(236, 248, 7)'){
-						this.style.color='rgb(179, 169, 169)';
-						removeSongFromFav(this.id);
-					}
-					else{
-						this.style.color='rgb(236, 248, 7)';
-						addToFavorite(this.id);
-					}
-				};
-				//card.appendChild(addOrRemoveSongBTN);
-				buttonsDiv.appendChild(addOrRemoveSongBTN)
 				card.appendChild(buttonsDiv)
 			}
 
 			
 			//youtube api call
 			async function getYoutubeLinks(sId) {
-  const apiKey = 'AIzaSyDtX-GDP0AQ-oVAodPAxjiXyIAneMJQ5-U';
-  const youtubeLinks = [];
+				const apiKey = 'AIzaSyDtX-GDP0AQ-oVAodPAxjiXyIAneMJQ5-U';
+				const youtubeLinks = [];
 
-  const { songName, artist } = arrayForYoutubeAPI[sId - 1];
-  const searchQuery = encodeURIComponent(`${songName} ${artist}`);
+				const { songName, artist } = arrayForYoutubeAPI[sId - 1];
+				const searchQuery = encodeURIComponent(`${songName} ${artist}`);
 
-  try {
-    const apiUrl = `https://www.googleapis.com/youtube/v3/search?q=${searchQuery}&key=${apiKey}&part=snippet&type=video`;
-    const searchResponse = await fetch(apiUrl);
-    const { items } = await searchResponse.json();
+				try {
+					const apiUrl = `https://www.googleapis.com/youtube/v3/search?q=${searchQuery}&key=${apiKey}&part=snippet&type=video`;
+					const searchResponse = await fetch(apiUrl);
+					const { items } = await searchResponse.json();
 
-    if (items && items.length > 0) {
-      const videoId = items[0].id.videoId;
-      const youtubeLink = `https://www.youtube.com/embed/${videoId}`; // Use the embed URL
-      youtubeLinks.push(youtubeLink);
-    } else {
-      youtubeLinks.push('Video not found');
-    }
-  } catch (error) {
-    console.error('Error fetching YouTube data:', error);
-    youtubeLinks.push('Error fetching video');
-  }
+					if (items && items.length > 0) {
+					const videoId = items[0].id.videoId;
+					const youtubeLink = `https://www.youtube.com/embed/${videoId}`; // Use the embed URL
+					youtubeLinks.push(youtubeLink);
+					} else {
+					youtubeLinks.push('Video not found');
+					}
+				} catch (error) {
+					console.error('Error fetching YouTube data:', error);
+					youtubeLinks.push('Error fetching video');
+				}
 
-  console.log("LIMKS: " + youtubeLinks);
+				console.log("LIMKS: " + youtubeLinks);
 
-  let numOfDiv = sId - 1;
-  let videoDiv = document.getElementById("video" + numOfDiv);
-  videoDiv.innerHTML = "";
+				let numOfDiv = sId - 1;
+				let videoDiv = document.getElementById("video" + numOfDiv);
+				videoDiv.innerHTML = "";
 
-  let videoElement = document.createElement('iframe');
-  videoElement.src = youtubeLinks[0]; // Set the YouTube embed URL
-  videoElement.allowFullscreen = true; // Enable fullscreen mode
-  videoElement.style.width = '100%'; // Set the width of the video
-  videoElement.style.height = 'auto';
+				let videoElement = document.createElement('iframe');
+				videoElement.src = youtubeLinks[0]; // Set the YouTube embed URL
+				videoElement.allowFullscreen = true; // Enable fullscreen mode
+				videoElement.style.width = '100%'; // Set the width of the video
+				videoElement.style.height = 'auto';
 
-  videoDiv.appendChild(videoElement);
-}
-		
-			//getYoutubeLinks();
-
-
-
-
+				videoDiv.appendChild(videoElement);
+				}
+						
+							//getYoutubeLinks();
 		}
 	
 
@@ -631,43 +630,7 @@
 			const api = `${port}/api/User/GetFavoriteSongsOfUser?userId=${userId}`;
 			ajaxCall("GET", api, "", successCB_getFavoriteSongsOfUser, errorCB);
 		}
-
-		function renderSongsFromTable(songsArr) {
-			let container = document.getElementById("container");
-			container.innerHTML = "";
-
-			for (var i = 0; i <songsArr.length; i++) {
-				let card = document.createElement("div");
-				card.id = "card";
-				container.appendChild(card);
-
-				let img = document.createElement("img");
-				// img.id = "appartmentIMG";
-				img.src = "./images/pic01.jpg";
-				card.appendChild(img);
-
-				let artist = document.createElement("h4");
-				artist.innerHTML = "Artist: " + songsArr[i].artist;
-				card.appendChild(artist);
-
-				let nameOfSong = document.createElement("h4");
-				nameOfSong.innerHTML = "Name: " + songsArr[i].songName;
-				card.appendChild(nameOfSong);
 				
-				if(JSON.parse(localStorage['onlineUser']).email == "admin@gmail.com"){
-					let numOfLikes = document.createElement("h4");
-					numOfLikes.innerHTML = songsArr[i].songInFavorite +" Users like this song"
-					card.appendChild(numOfLikes);
-				}
-				
-
-				let lyrics = document.createElement("p");
-				lyrics.id = "lyrics";
-				lyrics.innerHTML = "Lyrics: <br/>" + songsArr[i].lyrics;
-				card.appendChild(lyrics);
-			}
-		}
-		
 		function successCB_getFavoriteSongsOfUser(data) {
 			if (data){
 				favoriteSongsOfUserArr = data;
@@ -676,7 +639,8 @@
 					renderSongs(favoriteSongsOfUserArr);
 				}
 				if(whichPage.innerHTML == "USERS VIEW"){
-					renderSongsFromTable(favoriteSongsOfUserArr)
+					
+					renderSongs(favoriteSongsOfUserArr)
 				}
 					
 				
