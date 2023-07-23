@@ -35,8 +35,8 @@
 		}
 
 		#card {
-			height: 400px;
-			width: 400px;
+			height: 20em;
+			width: 18em;
 			margin: 1%;
 			background-color: white;
 			font-family: 'Source Sans Pro', sans-serif;
@@ -267,6 +267,11 @@
 			width:300px; height:160px;
 		}
 
+		img#placeholder {
+			width: 11em;
+			height: 8em;
+		}
+
 	</style>
 </head>
 <body class="left-sidebar is-preload" onload="HomeRender()">
@@ -411,14 +416,13 @@
 				// card.appendChild(img);
 				let videoDiv = document.createElement("div");
 				let img = document.createElement("img");
-				img.src = "./images/pic09.jpg";
+				img.src = "./images/musicphoto.png";
 				img.id = "placeholder";
 
-				let iconTav = document.createElement("span")
-				iconTav.innerHTML = `<i class="fa-solid fa-music fa-xl" style="color: #e44474;"></i>`
+				
 
 				videoDiv.appendChild(img);
-				videoDiv.appendChild(iconTav);
+				
 
 				videoDiv.id = "video"+i;
 				card.appendChild(videoDiv);
