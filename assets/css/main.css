@@ -2241,6 +2241,7 @@ input, select, textarea {
 	body.homepage #header {
 		height: 100vh;
 		min-height: 40em;
+		padding: 1em;
 	}
 
 		body.homepage #header h1 {
@@ -2667,6 +2668,7 @@ input, select, textarea {
 				#header .inner {
 					padding-left: 2em;
 					padding-right: 2em;
+					margin-top: -5em
 				}
 
 		/* Banner */
