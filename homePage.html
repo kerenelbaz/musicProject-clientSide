@@ -17,14 +17,9 @@
 	<script src="./scripts/quiz.js"></script>
 	<link rel="stylesheet" href="assets/css/homePageStyle.css" />
 
-
-
 </head>
-<style>
-	.ytp-youtube-button svg{
-		width :50% !important; 
-	}
-</style>
+
+
 <body class="left-sidebar is-preload" onload="HomeRender()">
 	<div id="page-wrapper">
 		<!-- Header -->
@@ -144,6 +139,7 @@
 		}
 
 		function successCBsearch(data) {
+			//localStorage.setItem("songsData", JSON.stringify(data));
 			if (data)
 				renderSongs(data);
 			else
@@ -217,8 +213,6 @@
 				buttonsDiv.appendChild(playBTN);
 				playBTN.addEventListener("click",function(){
 					getYoutubeLinks(this.id); //this.id = playBtn.id
-					test = document.getElementsByTagName("svg")
-					console.log(test)
 				});
 
 				if (whichPage.innerHTML != "USERS VIEW"){
@@ -267,30 +261,36 @@
 					const { items } = await searchResponse.json();
 
 					if (items && items.length > 0) {
-						const videoId = items[0].id.videoId;
-						const youtubeLink = `https://www.youtube.com/embed/${videoId}`; // Use the embed URL
-						youtubeLinks.push(youtubeLink); //inserts the link to the empty array of the links.  
-					}
-					else {
-						youtubeLinks.push('Video not found');
+					const videoId = items[0].id.videoId;
+					const youtubeLink = `https://www.youtube.com/embed/${videoId}`; // Use the embed URL
+					youtubeLinks.push(youtubeLink);
+					} else {
+					youtubeLinks.push('Video not found');
 					}
 				} catch (error) {
 					console.error('Error fetching YouTube data:', error);
 					youtubeLinks.push('Error fetching video');
 				}
 
+				console.log("LIMKS: " + youtubeLinks);
+
 				let numOfDiv = songID - 1;
 				let videoDiv = document.getElementById("video" + numOfDiv);
-				videoDiv.innerHTML = ""; //replace the image of the song in the card
+				videoDiv.innerHTML = "";
 
 				let videoElement = document.createElement('iframe');
-				videoElement.id = "videoElement";
+				videoElement.id = "videoElement"
 				videoElement.src = youtubeLinks[0]; // Set the YouTube embed URL
 				videoElement.allowFullscreen = true; // Enable fullscreen mode
-				
+				// videoElement.style.width = '8em'; // Set the width of the video
+				// videoElement.style.height = '6em';
+				// videoElement.style.marginTop = '1em';
+				// videoElement.style.borderRadius = '7px'
+
 				videoDiv.appendChild(videoElement);
-				
-			}
+				}
+						
+				//getYoutubeLinks();
 		}
 	
 
@@ -307,7 +307,7 @@
 				confirmButtonText: 'Yes'
 				}).then((value) => {
 					if (value.isConfirmed) {
-						localStorage.clear();
+						localStorage.clear()
 						window.location.href = "welcomePage.html";
 					}
 					else{
@@ -551,6 +551,10 @@
 		}
 
 
+
+
+
+		
 		function getArtistInfo(artistName) {
 			$.ajax({
 				url: 'http://ws.audioscrobbler.com/2.0/',
@@ -585,12 +589,14 @@
 			document.getElementById("pForm").style.display = "none"
 			const api =  `${port}/api/Artist/GetAllArtists`;			
 			ajaxCall("GET", api, "", successCB_renderAtrists , errorCB);
+
 		}
 
 
 
 		function successCB_renderAtrists(data){			
 			if(data){
+
 				let container = document.getElementById("container");
 				container.innerHTML = "";
 				// Loop through the array and call the function for each artist
@@ -602,6 +608,9 @@
 			}
 			else alert("something wrong");
 		}
+
+
+
 
 
 		function getArtistImage(artistName) {
@@ -636,6 +645,7 @@
 						console.error('Artist not found or no image available.');
 						return;
 					}
+
 					const artistId = artists.items[0].id;
 					
 					// Step 3: Get artist details
@@ -646,61 +656,63 @@
 						'Authorization': `Bearer ${access_token}`
 						},
 						success: function(artistDetails) {
-							if (!artistDetails || !artistDetails.images || artistDetails.images.length === 0) {
-								console.error('Artist not found or no image available.');
-								return;
-							}	
-							
-							let container = document.getElementById("container");
-							let card = document.createElement("div");
-							card.id = "artistCard";
-							
-							let link = document.createElement("a");
-							link.class = "linkToSpotify";
-							link.href = `${artistDetails.external_urls.spotify}`;
-							link.target = "_blank"
-							card.appendChild(link);
-							
-							let img = document.createElement("img");
-							img.src = `${artistDetails.images[0].url}`;
-							link.appendChild(img);
+						if (!artistDetails || !artistDetails.images || artistDetails.images.length === 0) {
+							console.error('Artist not found or no image available.');
+							return;
+						}	
+						
+						let container = document.getElementById("container");
+						let card = document.createElement("div");
+						card.id = "artistCard";
+						
 
-							let artist = document.createElement("h4");
-							artist.innerHTML = artistName;
-							card.appendChild(artist);
+						let link = document.createElement("a");
+						link.class = "linkToSpotify";
+						link.href = `${artistDetails.external_urls.spotify}`;
+						link.target = "_blank"
+						card.appendChild(link);
+						
+						let img = document.createElement("img");
+						img.src = `${artistDetails.images[0].url}`;
+						link.appendChild(img);
 
-							let moreInfo = document.createElement("div")
-							moreInfo.id = "moreInfo"
+						let artist = document.createElement("h4");
+						artist.innerHTML = artistName;
+						card.appendChild(artist);
 
-							let infoBTN = document.createElement("span");
-							infoBTN.innerHTML = '<i class="fa-solid fa-circle-info fa-lg" style="color: rgb(94 212 219);"></i>';
-							infoBTN.onclick = function() {
-								getArtistInfo(artistName);
-							}
-							moreInfo.appendChild(infoBTN);
+						let moreInfo = document.createElement("div")
+						moreInfo.id = "moreInfo"
+						// let infoBTN = document.createElement("button");
+						// infoBTN.textContent = 'i';
+						let infoBTN = document.createElement("span");
+						infoBTN.innerHTML = '<i class="fa-solid fa-circle-info fa-lg" style="color: rgb(94 212 219);"></i>';
+						infoBTN.onclick = function() {
+							getArtistInfo(artistName);
+						}
+						moreInfo.appendChild(infoBTN);
 
-							if(JSON.parse(localStorage['onlineUser']).email == "admin@gmail.com"){
-								ajaxCall("GET", `${port}/api/Artist/inFavoriteCount?artistName=${artistName}`, "",
-								function(number){	
-									let numOfFavorites = document.createElement("h4");
-									//numOfFavorites.innerHTML = `Apears ${number} times in favorites`;
-									numOfFavorites.innerHTML = ` <i class="fa-solid fa-heart fa-lg" style="color: #f91a1a;"></i> ${number}`;
-									moreInfo.appendChild(numOfFavorites);
-								} , errorCB);
-							}
-							card.appendChild(moreInfo)
-							container.appendChild(card);
+						if(JSON.parse(localStorage['onlineUser']).email == "admin@gmail.com"){
+							ajaxCall("GET", `${port}/api/Artist/inFavoriteCount?artistName=${artistName}`, "",
+							function(number){	
+								let numOfFavorites = document.createElement("h4");
+								//numOfFavorites.innerHTML = `Apears ${number} times in favorites`;
+								numOfFavorites.innerHTML = ` <i class="fa-solid fa-heart fa-lg" style="color: #f91a1a;"></i> ${number}`;
+								moreInfo.appendChild(numOfFavorites);
+							} , errorCB);
+						}
+						card.appendChild(moreInfo)
+						container.appendChild(card);
 
 						
 						},
 						error: function(jqXHR, textStatus, errorThrown) {
-							console.error('Error fetching artist details:', textStatus, errorThrown);
+						console.error('Error fetching artist details:', textStatus, errorThrown);
 						}
 					});
 					},
 					error: function(jqXHR, textStatus, errorThrown) {
-								console.error('Error fetching artist data:', textStatus, errorThrown);
-						}
+					console.error('Error fetching artist data:', textStatus, errorThrown);
+					}
 				});
 				},
 				error: function(jqXHR, textStatus, errorThrown) {
