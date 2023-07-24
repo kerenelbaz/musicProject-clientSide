@@ -73,16 +73,32 @@
             return false
         	}
 
-			// This function is called in case of a success
+			// // This function is called in case of a success
+			// function success(data) {
+			// 	localStorage.setItem('onlineUser', JSON.stringify(data));
+			// 	window.location.href = "homePage.html"; 
+			// }
+
+			// // This function is called in case of an error
+			// function error(err) {
+			// 	swal("this user doesn't exist", "try again", "error");
+			// }
+
 			function success(data) {
-				localStorage.setItem('onlineUser', JSON.stringify(data));
-				window.location.href = "homePage.html"; 
+                if(data){
+                    localStorage.setItem('onlineUser', JSON.stringify(data));
+                    window.location.href = "homePage.html"; 
+                }
+                else{
+					
+					swal("This user doesn't exist", "try again", "error");
+				}										     
 			}
 
-			// This function is called in case of an error
-			function error(err) {
-				swal("this user doesn't exist", "try again", "error");
-			}
+			 // This function is called in case of an error
+			 function error(err) {
+                swal("Server error", "Try again", "error");
+            }
 
 		</script>
 		
