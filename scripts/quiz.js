@@ -101,7 +101,7 @@ function quiz()
                             // Check if the selected radio button has the "data-correct" attribute set to "true"
                             if (selectedRadioButton.getAttribute("data-correct") === "true") 
                             {
-                               // questionBtn.style.backgroundColor = "green";
+                               questionBtn.style.backgroundColor = "#52c01b";
 							   
 							   questionBtn.style.textShadow = "0 0 3px #60c627, 0 0 10px #60c627, 0 0 20px #60c627;";
                                 questionBtn.textContent = "correct";
@@ -109,7 +109,7 @@ function quiz()
                             } 
                             else 
                             {
-                                //questionBtn.style.backgroundColor = "red";
+                                questionBtn.style.backgroundColor = "red";
 								questionBtn.style.textShadow = "0 0 3px #FF0000, 0 0 10px #FF0000, 0 0 20px #FF0000;";
                                 
 								questionBtn.textContent = "wrong";
@@ -122,9 +122,9 @@ function quiz()
                                     if (isCorrect) {
                                         // Change the style of the correct radio button's label to green
                                         const labelForCorrectOption = document.querySelector(`label[for=${radioButton.id}]`);
-                                        labelForCorrectOption.style.color = "green";
-                                        radioButton.style.backgroundColor = "green";
-                                        radioButton.style.borderColor = "green";
+                                        labelForCorrectOption.style.color = "#52c01b";
+                                        radioButton.style.backgroundColor = "#52c01b";
+                                        radioButton.style.borderColor = "#52c01b";
                                         radioButton.style.color = "white";
                                     } else {
                                         // Reset the style of the other radio buttons' labels
