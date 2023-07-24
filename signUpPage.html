@@ -43,7 +43,7 @@
 	</style>
 	<script>
 		$(document).ready(function () {
-			$("#myForm").submit(f1); // bind the submit event to a function called f1
+			$("#myForm").submit(register); // bind the submit event to a function called register function
 		});
 
 		function AddUser() {
@@ -57,7 +57,7 @@
 			ajaxCall("POST", `${port}/api/User/registration`, JSON.stringify(User), success, error);
 		}
 
-		// This function is called in case of success
+		// This function is return true/false in case of success
 		function success(data) {
 			if (data) {
 				swal({
@@ -89,7 +89,7 @@
 			swal("Something went wrong!", "Oops", "error");
 		}
 
-		function f1() {
+		function register() {
 			AddUser();
 
 			return false; // the return false will prevent the form from being submitted
