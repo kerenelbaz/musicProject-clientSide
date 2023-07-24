@@ -67,8 +67,6 @@ function quiz()
 				const whichPage = document.getElementById("whichPage");
 				whichPage.innerHTML = "Let's play!";
 
-				
-
 				const quizDiv = document.createElement("div");
 				quizDiv.id = "quizDiv";
 				container.appendChild(quizDiv);
@@ -87,13 +85,13 @@ function quiz()
 						quizDiv.innerHTML = "";
 						
 						showCurrentSong();
-                        // Stop any ongoing speech playback
+                        // Stop ongoing speech playback
                         window.speechSynthesis.cancel();
 					}
 
                     if (questionBtn.textContent == "Check") 
                     {
-                        // Get the selected radio button
+                        // Catch the selected radio button
                         const selectedRadioButton = document.querySelector('input[type="radio"]:checked');
                     
                         if (selectedRadioButton) 
@@ -101,26 +99,23 @@ function quiz()
                             // Check if the selected radio button has the "data-correct" attribute set to "true"
                             if (selectedRadioButton.getAttribute("data-correct") === "true") 
                             {
-                               questionBtn.style.backgroundColor = "#52c01b";
-							   
-							   questionBtn.style.textShadow = "0 0 3px #60c627, 0 0 10px #60c627, 0 0 20px #60c627;";
-                                questionBtn.textContent = "correct";
-                                console.log("Correct answer!");
+                               	questionBtn.style.backgroundColor = "#52c01b";
+							   	questionBtn.style.textShadow = "0 0 3px #60c627, 0 0 10px #60c627, 0 0 20px #60c627;";
+                                questionBtn.textContent = "Correct";
                             } 
                             else 
                             {
                                 questionBtn.style.backgroundColor = "red";
 								questionBtn.style.textShadow = "0 0 3px #FF0000, 0 0 10px #FF0000, 0 0 20px #FF0000;";
-                                
-								questionBtn.textContent = "wrong";
-                                //צובע את הנכון בירוק
+								questionBtn.textContent = "Wrong";
+                                // paint the radio button and the label of the correct answer in green
                                 const radioButtons = document.getElementsByName('radioOptions');
                                 for (let i = 0; i < radioButtons.length; i++) {
                                     const radioButton = radioButtons[i];
                                     const isCorrect = radioButton.getAttribute("data-correct") === "true";
                         
                                     if (isCorrect) {
-                                        // Change the style of the correct radio button's label to green
+                                        // Change the style of the correct radio button's label and button to green
                                         const labelForCorrectOption = document.querySelector(`label[for=${radioButton.id}]`);
                                         labelForCorrectOption.style.color = "#52c01b";
                                         radioButton.style.backgroundColor = "#52c01b";
@@ -135,7 +130,6 @@ function quiz()
                                         radioButton.style.color = "";
                                     }
                                 }
-                                console.log("Incorrect answer!");
                             }
                         } 
                         else
@@ -144,7 +138,7 @@ function quiz()
                             console.log("Please select an answer.");
                         }
                       }
-                      if(questionBtn.textContent == "correct" || questionBtn.textContent == "wrong")
+                      if(questionBtn.textContent == "Correct" || questionBtn.textContent == "Wrong")
                       {
                           setTimeout(function () {
                               questionBtn.textContent = "Next question";
@@ -153,31 +147,23 @@ function quiz()
                               
                           }, 1500);
                       }
-					
-					
 				});
 				
 				showCurrentSong();
 				
 				function showCurrentSong() {
 					quizDiv.innerHTML = "";
-					
-					
                     const songNum = document.createElement("BUTTON");
 					songNum.id="songNum";
 					
 					songNum.innerHTML = `<i class="fa fa fa-play"></i>`;
                     
-                    
                     initializeTTS();
-					
 					
                     songNum.addEventListener("click", function (event) {
 						// Check if the click event occurred on the button or its child elements
 						if (event.target === songNum || songNum.contains(event.target)) {
-						  
 							speakQueStr(queStr.innerHTML);
-						  
 						}
 					  });	
 					let queStr = document.createElement("h3");
