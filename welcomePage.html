@@ -2,11 +2,10 @@
 
 <html>
 	<head>
-		<title>KILYRICS</title>		
+		<title>Welcome</title>		
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="./assets/css/main.css" />
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -62,33 +61,30 @@
         	});
 
 			function LogIn(event) {
-            event.preventDefault(); // prevent the default form submission behavior
-            details = {
-                Email: $("#emailInput").val(),
-                Password: $("#passwordInput").val()
-            }
-
-            ajaxCall("POST", `${port}/api/User/login?email=${details.Email}`, (JSON.stringify(details.Email), JSON.stringify(details.Password)), success, error);
-
-            return false
+				event.preventDefault(); // prevent the default form submission behavior
+				details = {
+					Email: $("#emailInput").val(),
+					Password: $("#passwordInput").val()
+				}
+				ajaxCall("POST", `${port}/api/User/login?email=${details.Email}`, (JSON.stringify(details.Email), JSON.stringify(details.Password)), success, error);
+				return false;
         	}
 
 
 			function success(data) {
 				if(data){
                     localStorage.setItem('onlineUser', JSON.stringify(data));
-	                    window.location.href = "homePage.html"; 
+	                window.location.href = "homePage.html"; 
 	            }
 				else{
 					swal("This user doesn't exist", "try again", "error");
 				}
 			}
 
-			 // This function is called in case of an error
-			 function error(err) {
+			// This function is called in case of an error
+			function error(err) {
                 swal("Server error", "Try again", "error");
             }
-
 		</script>
 		
 
@@ -98,7 +94,6 @@
 
 			<!-- Header -->
 				<div id="header">
-
 					<!-- Inner -->
 						<div class="inner">
 							<div id="welcome">
@@ -123,10 +118,7 @@
 								</form>							
 							</div>
 						</div>
-
-				</div>		
-
-						
+				</div>			
 		</div>
 
 		<script>
