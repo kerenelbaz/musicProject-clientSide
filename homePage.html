@@ -139,6 +139,7 @@
 		}
 
 		function successCBsearch(data) {
+			//localStorage.setItem("songsData", JSON.stringify(data));
 			if (data)
 				renderSongs(data);
 			else
