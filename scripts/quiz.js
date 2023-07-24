@@ -101,7 +101,7 @@ function quiz()
                                 questionBtn.style.backgroundColor = "red";
 								questionBtn.style.textShadow = "0 0 3px #FF0000, 0 0 10px #FF0000, 0 0 20px #FF0000;";
 								questionBtn.textContent = "Wrong";
-								
+
                                 // paint the radio button and the label of the correct answer in green
                                 const radioButtons = document.getElementsByName('radioOptions');
                                 for (let i = 0; i < radioButtons.length; i++) {
@@ -170,7 +170,7 @@ function quiz()
 
 					//Turning the audio of the question in sound 0
                     function initializeTTS() {
-                        const synth = window.speechSynthesis;
+                        const synth = window.speechSynthesis; //מאפשר את הפונקציונליות לדיבור מהדפדפן
 
                         const dummyUtterance = new SpeechSynthesisUtterance("Initializing TTS"); //speach the text - Initializing TTS
                         dummyUtterance.volume = 0; // set the volume to 0 to make it silent
@@ -182,18 +182,14 @@ function quiz()
                     }
 
                     function speakQueStr(text) {
-                        const synth = window.speechSynthesis;
-                        const utterance = new SpeechSynthesisUtterance(text);
+                        const synth = window.speechSynthesis; //מאפשר את הפונקציונליות לדיבור מהדפדפן
+                        const utterance = new SpeechSynthesisUtterance(text); //constructor to TTS 
                     
-                        // Check if there are available voices
-                        if (synth.getVoices().length > 0) {
-                            // List all available voices in the console
-                            console.log(synth.getVoices());
-                            utterance.voice = synth.getVoices()[0]; //פה משנים מבטא!
-                            
+                        if (synth.getVoices().length > 0) {// Check if there are available voices
+                            utterance.voice = synth.getVoices()[0]; //הקול שמקריא
                         }
-                    
-                        synth.speak(utterance);
+
+                        synth.speak(utterance); // פקודה להקראה
                     }
 					
 				}
@@ -270,12 +266,12 @@ function quiz()
 						return tmpArr;
 					}
 					
-					function pickAndInsertRandomStrings(setOfStrings, givenString) {
-						// Make a copy of the setOfStrings array to avoid modifying the original array
-						const remainingStrings = [...setOfStrings];
+					function pickAndInsertRandomStrings(setOfStrings, correctString) {
+						// make a copy of the setOfStrings array to avoid modifying the original array
+						const remainingStrings = [...setOfStrings]; //spread opertor - creats new individual items
 
-						// Remove the givenString from the remainingStrings array (if exists)
-						const indexToRemove = remainingStrings.indexOf(givenString);
+						// Remove the correctString from the remainingStrings array (if exists)
+						const indexToRemove = remainingStrings.indexOf(correctString);
 						if (indexToRemove !== -1) {
 							remainingStrings.splice(indexToRemove, 1);
 						}
@@ -284,22 +280,21 @@ function quiz()
 						const pickedStrings = [];
 						for (let i = 0; i < 3; i++) {
 							const randomIndex = Math.floor(Math.random() * remainingStrings.length);
-							const randomString = remainingStrings.splice(randomIndex, 1)[0];
+							const randomString = remainingStrings.splice(randomIndex, 1)[0]; //remove the random option - one element to remove
 							pickedStrings.push(randomString);
 						}
 
-						// Insert the givenString randomly into the pickedStrings array
+						// Insert the correctString randomly into the pickedStrings array
 						const randomInsertIndex = Math.floor(Math.random() * 4);
-						pickedStrings.splice(randomInsertIndex, 0, givenString);
-
+						pickedStrings.splice(randomInsertIndex, 0, correctString); //מכניס בצורה רנדומלית את המחרוזת הנכונה למערך
 						return pickedStrings;
 					}
 					
 					function createAnswerOption(arr, songID)
 					{
-						let correctAnswer = arr[songID] //מוצאים את השם של האופציה באמצעות הID
+						let correctAnswer = arr[songID] //מוצאים את הערך עצמו של האופציה באמצעות הID
 						const valuesNames = Object.values(arr);
-						const uniqueArray = [...new Set(valuesNames)]; //unique the array above
+						const uniqueArray = [...new Set(valuesNames)]; //Set - unique the array above and use the spread operator (...)
 						let possibleAnswer = pickAndInsertRandomStrings(uniqueArray, correctAnswer);
 	
 						const radioContainer = document.createElement("div");
@@ -321,29 +316,21 @@ function quiz()
 							radioButton.name = "radioOptions";
 							radioButton.value = i;
 
-							// Add a unique identifier (e.g., data-correct) to the correct answer radio button
+							// Add a unique identifier (data-correct) to the correct answer radio button
 							if (i === correctAnswerIndex) {
 								radioButton.setAttribute("data-correct", "true");
 							}
-
 							radioContainer.appendChild(radioButton);
 							radioContainer.appendChild(radioLabel);
 							radioContainer.appendChild(document.createElement("br"));
 						}
 
-							
-
 							return radioContainer;
 					}
 		
 					
-                    
-					
-					
-				
-
 			}	
-		}
+}
 
 
 
