@@ -523,6 +523,30 @@
 		div#example_length {
 			margin-left: 2em;
 		}
+
+		.swal2-container.swal2-center>.swal2-popup {
+			grid-column: 2;
+			grid-row: 2;
+			align-self: center;
+			justify-self: center;
+			background-color: #0f0f0f;
+			box-shadow: 0 0 2px rgb(232 5 130), 0 0 7px rgb(232 5 130), 0px 0px 6px rgb(232 5 130), 0 0 1px rgb(232 5 130);
+			border: 1px solid rgb(232 5 130);
+			box-shadow: 0 0 2px rgb(232 5 130), 0 0 7px rgb(232 5 130), 0px 0px 6px rgb(232 5 130), 0 0 1px rgb(232 5 130);
+		}
+		.swal2-styled.swal2-confirm {
+			border: 0;
+			border-radius: 0.25em;
+			background: initial;
+			/* background-color: #7367f0; */
+			color: #fff;
+			font-size: 1em;
+			text-shadow: 0 0 20px #00FFFC, 2px 3px 3px #00040a, 0 0 100px #00D4D1;
+			/* color: #00FFFC; */
+			background-color: #0a121e;
+			box-shadow: 0 0 2px rgb(1 255 252), 0 0 7px rgb(1 255 252), 0px 0px 6px rgb(1 255 252), 0 0 1px rgb(1 255 252);
+		}
+	
 	</style>
 </head>
 <body class="left-sidebar is-preload" onload="HomeRender()">
@@ -814,8 +838,8 @@
 			Swal.fire({
 				title: 'Are you sure?',								
 				showCancelButton: true,
-				confirmButtonColor: '#3085d6',
-				cancelButtonColor: '#d33',
+				confirmButtonColor: '#08121e',
+				cancelButtonColor: '#08121e',
 				confirmButtonText: 'Yes'
 				}).then((value) => {
 					if (value.isConfirmed) {
