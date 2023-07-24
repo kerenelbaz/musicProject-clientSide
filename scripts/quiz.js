@@ -1,6 +1,5 @@
 function quiz()
 		{
-			
 			document.getElementById("pForm").style.display = "none"
 			const songsData =  JSON.parse(localStorage.getItem("songsData"));
 			
@@ -8,7 +7,6 @@ function quiz()
 			const songsMap={};
 			const lyricsMap = {};
 			const artistsMap = {};
-			const allArrays=[songsMap,lyricsMap,artistsMap]; //not necessary
 
 			function createDS()
 			{
@@ -25,14 +23,12 @@ function quiz()
 
 					const lyrics = item.lyrics;
 					lyricsMap[songID] = lyrics;
-					
 				}
-				allArrays.push(songsMap, artistsMap, lyricsMap);
                 
 				// Iterate through each key-value pair in the lyricsMap and truncate the values
 				for (const key in lyricsMap) {
-					if (lyricsMap.hasOwnProperty(key)) {
-						lyricsMap[key] = truncateToWords(lyricsMap[key], 10);
+					if (lyricsMap.hasOwnProperty(key)) {//מוודא שלמפתח יש ערך ייחודי 
+						lyricsMap[key] = cutFirstWords(lyricsMap[key], 10);
 					}
 				}
 			}
@@ -40,7 +36,7 @@ function quiz()
 			createDS();
 			
             //חותכת את מילות השיר למספר מילים שנותנים לפונקציה
-			function truncateToWords(str, numWords) 
+			function cutFirstWords(str, numWords) 
 			{
 				const words = str.split(" ");
 				stringToReturn = words.slice(0, numWords).join(" ");
@@ -58,9 +54,9 @@ function quiz()
                 return resultString;
             }
 			
-			createQuastion();
+			createQuestion();
 
-			function createQuastion()
+			function createQuestion()
 			{
 				let container = document.getElementById("container");
 				container.innerHTML = "";
@@ -77,16 +73,13 @@ function quiz()
 				
 				const questionBtn = document.createElement("BUTTON");
 				questionBtn.id = "questionBtn";
-				questionBtn.textContent = "Next question";
 				
 				questionBtn.addEventListener("click", function () {
 					if(questionBtn.textContent == "Next question")
 					{
 						quizDiv.innerHTML = "";
-						
 						showCurrentSong();
-                        // Stop ongoing speech playback
-                        window.speechSynthesis.cancel();
+                        window.speechSynthesis.cancel(); // Stop ongoing speech playback
 					}
 
                     if (questionBtn.textContent == "Check") 
@@ -108,6 +101,7 @@ function quiz()
                                 questionBtn.style.backgroundColor = "red";
 								questionBtn.style.textShadow = "0 0 3px #FF0000, 0 0 10px #FF0000, 0 0 20px #FF0000;";
 								questionBtn.textContent = "Wrong";
+								
                                 // paint the radio button and the label of the correct answer in green
                                 const radioButtons = document.getElementsByName('radioOptions');
                                 for (let i = 0; i < radioButtons.length; i++) {
@@ -151,42 +145,39 @@ function quiz()
 				
 				showCurrentSong();
 				
+				//builds the question and answers divs
 				function showCurrentSong() {
 					quizDiv.innerHTML = "";
-                    const songNum = document.createElement("BUTTON");
-					songNum.id="songNum";
+                    const playBtn = document.createElement("BUTTON");
+					playBtn.id="songNum";
 					
-					songNum.innerHTML = `<i class="fa fa fa-play"></i>`;
+					playBtn.innerHTML = `<i class="fa fa fa-play"></i>`;
                     
-                    initializeTTS();
+                    initializeTTS(); //פונקציה שמפעילה את הקול בסאונד 0 בשביל למנוע עיוותי קול
 					
-                    songNum.addEventListener("click", function (event) {
-						// Check if the click event occurred on the button or its child elements
-						if (event.target === songNum || songNum.contains(event.target)) {
-							speakQueStr(queStr.innerHTML);
-						}
-					  });	
+                    playBtn.addEventListener("click", function () {
+						speakQueStr(queStr.innerHTML);
+					});	
+
 					let queStr = document.createElement("h3");
 					queStr.id = "queStr"; 
-					queStr.innerHTML = renderQuestion();
-                    // speakQueStr("hello world for everyone. nice to meet you");
+					queStr.innerHTML = createContentToQuestion();
 
-					quizDiv.appendChild(songNum);
+					quizDiv.appendChild(playBtn);
 					quizDiv.appendChild(queStr);
 					quizDiv.appendChild(optionDiv);
 					quizDiv.appendChild(questionBtn);
 
+					//Turning the audio of the question in sound 0
                     function initializeTTS() {
                         const synth = window.speechSynthesis;
+
+                        const dummyUtterance = new SpeechSynthesisUtterance("Initializing TTS"); //speach the text - Initializing TTS
+                        dummyUtterance.volume = 0; // set the volume to 0 to make it silent
                     
-                        // Create a dummy utterance to trigger TTS engine initialization
-                        const dummyUtterance = new SpeechSynthesisUtterance("Initializing TTS.");
-                        dummyUtterance.volume = 0; // Set the volume to 0 to make it silent
-                    
-                        // Add an event listener for the "onvoiceschanged" event
+                        // מופעלת כאשר הדפדפן עולה ונטענים הקולות
                         synth.onvoiceschanged = function() {
-                            // Trigger the dummy TTS request to initialize the engine
-                            synth.speak(dummyUtterance);
+                            synth.speak(dummyUtterance); //מפעילה את הדאמי טקסט שהגדרנו
                         };
                     }
 
@@ -207,7 +198,8 @@ function quiz()
 					
 				}
 
-					function renderQuestion()
+					//Create and retrun the complete question - מחזירה את השאלה השלמה
+					function createContentToQuestion()
 					{
 						const questionDict={
 							A : 'Which artist perform the song #?',
@@ -216,23 +208,20 @@ function quiz()
 							D : 'Which song did # wrote ?'
 						};
  
-
 						//random select which question (A B C or D) selected
 						const keyQue = getRandomQuestion(questionDict);
-						// const keyQue = 'A';
 						let returnedArray=[];
 						switch (keyQue) {
 							case 'A':
 								returnedArray = GetTheCompleteSentence(songsMap, questionDict[keyQue]);
-								//console.log("2 song id came from the function: "+returnedArray[0]);
-								radioContainer = createArtistsOption(artistsMap, returnedArray[0]);
+								radioContainer = createAnswerOption(artistsMap, returnedArray[0]);
 								optionDiv.innerHTML = "";
 								optionDiv.appendChild(radioContainer);
 								return returnedArray[2]; 
 							break;
 							case 'B':
 								returnedArray = GetTheCompleteSentence(lyricsMap, questionDict[keyQue]);
-                                radioContainer = createArtistsOption(songsMap, returnedArray[0]);
+                                radioContainer = createAnswerOption(songsMap, returnedArray[0]);
                                 optionDiv.innerHTML = "";
 								optionDiv.appendChild(radioContainer);
 								return returnedArray[2]; 
@@ -240,7 +229,7 @@ function quiz()
 
 							case 'C':
                                 returnedArray = GetTheCompleteSentence(lyricsMap, questionDict[keyQue]);
-                                radioContainer = createArtistsOption(artistsMap, returnedArray[0]);
+                                radioContainer = createAnswerOption(artistsMap, returnedArray[0]);
                                 optionDiv.innerHTML = "";
 								optionDiv.appendChild(radioContainer);
 								return returnedArray[2];
@@ -248,7 +237,7 @@ function quiz()
 
 							case 'D':
 								returnedArray = GetTheCompleteSentence(artistsMap, questionDict[keyQue]);
-                                radioContainer = createArtistsOption(songsMap, returnedArray[0]);
+                                radioContainer = createAnswerOption(songsMap, returnedArray[0]);
                                 optionDiv.innerHTML = "";
 								optionDiv.appendChild(radioContainer);
 								return returnedArray[2];
@@ -259,7 +248,7 @@ function quiz()
 						
 					}
 
-					function getRandomQuestion(obj) { // get a random question by key
+					function getRandomQuestion(obj) { // מגרילה אות לשאלה
 						const keys = Object.keys(obj);
 						const randomIndex = Math.floor(Math.random() * keys.length);
 						return keys[randomIndex]; 
@@ -275,7 +264,6 @@ function quiz()
 						const randomSongName = arr[randomSongID];
 
 						const completeQuestion = question.replace('#', randomSongName);
-						console.log("1 in the function - currrntSongID: "+randomSongID); 
 						tmpArr.push(randomSongID);
 						tmpArr.push(randomSongName);
 						tmpArr.push(completeQuestion);
@@ -307,11 +295,9 @@ function quiz()
 						return pickedStrings;
 					}
 					
-					function createArtistsOption(arr, songID)
+					function createAnswerOption(arr, songID)
 					{
-						let quizDiv = document.getElementById("quizDiv");
-						//מוצאים את השם של האופציה באמצעות הID
-						let correctAnswer = arr[songID] 
+						let correctAnswer = arr[songID] //מוצאים את השם של האופציה באמצעות הID
 						const valuesNames = Object.values(arr);
 						const uniqueArray = [...new Set(valuesNames)]; //unique the array above
 						let possibleAnswer = pickAndInsertRandomStrings(uniqueArray, correctAnswer);
