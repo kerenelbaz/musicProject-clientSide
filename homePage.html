@@ -4,7 +4,7 @@
 	<title>KILYRICS</title>
 	<link rel="icon" type="image/png" href="./images/icon.ico"/>
 	<meta charset="utf-8" />
-	<link rel="icon" type="image/png" href="./images/iconKIL.png"/>
+
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 	<link rel="stylesheet" href="assets/css/main.css" />
 	
@@ -79,6 +79,7 @@
 			loginDiv.innerHTML = `<span>Hello ${JSON.parse(localStorage['onlineUser']).name}!</span>`;
 			document.getElementById("helloUserName").appendChild(loginDiv);
 		}
+		//If the user is admin, User's button added to the menu
 		if(JSON.parse(localStorage['onlineUser']).email == 'admin@gmail.com'){
 			const usersLi = document.createElement("li");
     		usersLi.innerHTML = '<a href="#" onclick="renderUsersTable()">Users</a>';
@@ -119,7 +120,6 @@
 				
 
 		function HomeRender() {
-			
 			whichPage = document.getElementById("whichPage");
 			whichPage.innerHTML = "HOME";
 			GetFavoriteSongsOfUser(JSON.parse(userID));
@@ -146,8 +146,6 @@
 
 
 		function renderSongs(songsArr) {
-			 
-
 			arrayForYoutubeAPI = songsArr;
 			
 			let container = document.getElementById("container");
@@ -162,19 +160,17 @@
 				container.appendChild(card);
 
 				let videoDiv = document.createElement("div");
+				videoDiv.id = "video"+i;
+
 				let img = document.createElement("img");
 				img.src = "./images/neon.png";
 				img.id = "placeholder";
 
-				
-
 				videoDiv.appendChild(img);
-				
-				let inSongDiv = document.createElement("div")
-				inSongDiv.id = "inSongDiv"
-
-				videoDiv.id = "video"+i;
 				card.appendChild(videoDiv);
+
+				let inSongDiv = document.createElement("div") //Div who contains the song name, artist name and buttons
+				inSongDiv.id = "inSongDiv"
 
 				let artist = document.createElement("h4");
 				artist.innerHTML = songsArr[i].artist;
@@ -184,14 +180,12 @@
 				nameOfSong.innerHTML = songsArr[i].songName;
 				inSongDiv.appendChild(nameOfSong);
 				
-				
 				let numOfLikes = document.createElement("h4");
 				numOfLikes.innerHTML = `<i class="fa-solid fa-heart fa-lg" style="color: #f91a1a;"></i>  ${songsArr[i].songInFavorite} `
 				inSongDiv.appendChild(numOfLikes);
 				
-				let buttonsDiv = document.createElement("div")
+				let buttonsDiv = document.createElement("div") //contains all the 3 buttons
 				buttonsDiv.id = "buttonsDiv"
-
 
 				let lyricsBTN = document.createElement("BUTTON");
 				lyricsBTN.innerHTML = "<i class='fa-solid fa-bars'></i>";
@@ -200,7 +194,6 @@
 					swal({
 						title: 'Lyrics',
 						text: globalLyrics,
-						
 						showClass: {
 							popup: 'animate__animated animate__fadeInDown'
 						},
@@ -217,8 +210,7 @@
 				playBTN.title = "Play the song";
 				buttonsDiv.appendChild(playBTN);
 				playBTN.addEventListener("click",function(){
-					let sID = playBTN.id;
-					getYoutubeLinks(sID);
+					getYoutubeLinks(this.id); //this.id = playBtn.id
 				});
 
 				if (whichPage.innerHTML != "USERS VIEW"){
@@ -253,16 +245,17 @@
 
 			
 			//youtube api call
-			async function getYoutubeLinks(sId) {
+			async function getYoutubeLinks(songID) {
 				const apiKey = 'AIzaSyDtX-GDP0AQ-oVAodPAxjiXyIAneMJQ5-U';
 				const youtubeLinks = [];
 
-				const { songName, artist } = arrayForYoutubeAPI[sId - 1];
+				//סינטקס לשינוי מבנה - מוציא מהמערך באינדקס הספציפי את השדות שם השיר ואומן בהתאמה
+				const { songName, artist } = arrayForYoutubeAPI[songID - 1];
 				const searchQuery = encodeURIComponent(`${songName} ${artist}`);
 
 				try {
 					const apiUrl = `https://www.googleapis.com/youtube/v3/search?q=${searchQuery}&key=${apiKey}&part=snippet&type=video`;
-					const searchResponse = await fetch(apiUrl);
+					const searchResponse = await fetch(apiUrl); //מחכה עד שיבא את הלינק לAPI
 					const { items } = await searchResponse.json();
 
 					if (items && items.length > 0) {
@@ -279,7 +272,7 @@
 
 				console.log("LIMKS: " + youtubeLinks);
 
-				let numOfDiv = sId - 1;
+				let numOfDiv = songID - 1;
 				let videoDiv = document.getElementById("video" + numOfDiv);
 				videoDiv.innerHTML = "";
 
@@ -327,41 +320,40 @@
 			document.getElementById("pForm").style.display = "none"
 			GetFavoriteSongsOfUser(userId);
 
-			
-			
 		}
 
 		function renderUsersTable(){
 			let whichPage = document.getElementById("whichPage");
 			whichPage.innerHTML = "USERS VIEW";
 			document.getElementById("container").innerHTML = ""
-			document.getElementById("pForm").style.display = "flex"
-			ajaxCall("GET", "https://localhost:7070/api/User", "", getSuccess, error);
+			document.getElementById("pForm").style.display = "flex" //cancel the display none and then use it for design
+			ajaxCall("GET", `${port}/api/User`, "", getSuccessTable, error);
 		}
 
-		// wire all the buttons to their functions
+		// Wire all the buttons to their functions
         function buttonEvents() {
 			$(document).on("click", ".viewBtn", function () {
 				markSelected(this);
 				GetFavoriteSongsOfUser(this.getAttribute('data-userid'))
-				
 			});
 		}
 
-		// mark the selected row
+		// Mark the selected row - make the row sleceted with blue
         function markSelected(btn) {
             $("#example tr").removeClass("selected"); // remove seleced class from rows that were selected before
             row = (btn.parentNode).parentNode; // button is in TD which is in Row
             row.className = 'selected'; // mark as selected
         }
 
-		function getSuccess(usersdata) {
-            users = usersdata; // keep the cars array in a global variable;
+		//Brings array of objects
+		function getSuccessTable(usersdata) {
+            users = usersdata; //Global array of user's objects for general scope
             try{
+				//emample is the id of the table. DataTable is the constructor 
                 tbl = $('#example').DataTable({
                     data: usersdata,
 					retrieve: true,  				
-                    pageLength: 5,
+                    pageLength: 5, 
 					
                     columns: [
                         {
@@ -412,13 +404,9 @@
 				if (whichPage.innerHTML == "YOUR FAVORITES"){
 					renderSongs(favoriteSongsOfUserArr);
 				}
-				if(whichPage.innerHTML == "USERS VIEW"){
-					
+				if(whichPage.innerHTML == "USERS VIEW"){//user's table of ADMIN
 					renderSongs(favoriteSongsOfUserArr)
 				}
-					
-				
-				
 			}
 
 			else
