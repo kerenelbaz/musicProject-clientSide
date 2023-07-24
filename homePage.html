@@ -27,7 +27,7 @@
 			<!-- Inner -->
 			<div class="inner">
 				<header>
-					<img src="./images/logo.png" alt="alternate_text">
+					<img src="./images/KILYRICS_LOGO2.png" alt="alternate_text">
 					<h1 id="whichPage"></h1>
 					<div id="helloUserName"></div>
 				</header>
@@ -162,7 +162,8 @@
 				container.appendChild(card);
 
 				let videoDiv = document.createElement("div");
-				videoDiv.id = "video"+i;
+				//videoDiv.id = "video"+i;
+				videoDiv.id = "video"+songsArr[i].songId;
 
 				let img = document.createElement("img");
 				img.src = "./images/neon.png";
@@ -211,9 +212,13 @@
 				playBTN.id = songsArr[i].songId;
 				playBTN.title = "Play the song";
 				buttonsDiv.appendChild(playBTN);
-				playBTN.addEventListener("click",function(){
-					getYoutubeLinks(this.id); //this.id = playBtn.id
-				});
+				
+				playBTN.setAttribute("data-song-name", songsArr[i].songName);
+				playBTN.setAttribute("data-artist-name", songsArr[i].artist);
+
+				playBTN.onclick = function(){
+					getYoutubeLinks(this); //this.id = playBtn.id
+				}
 
 				if (whichPage.innerHTML != "USERS VIEW"){
 					let addOrRemoveSongBTN = document.createElement("button");
@@ -244,12 +249,14 @@
 			}
 
 			//youtube api call
-			async function getYoutubeLinks(songID) {
-				const apiKey = 'AIzaSyDtX-GDP0AQ-oVAodPAxjiXyIAneMJQ5-U';
+			async function getYoutubeLinks(elem) {
+				const songName = $(elem).attr('data-song-name');
+				const artist = $(elem).attr('data-artist-name');
+				const songID = elem.id;
+				
+				const apiKey = 'AIzaSyBaw6ZYTt9mljC1rceD5iTrRzUDgzcX1l4';
 				const youtubeLinks = [];
 
-				//סינטקס לשינוי מבנה - מוציא מהמערך באינדקס הספציפי את השדות שם השיר ואומן בהתאמה
-				const { songName, artist } = arrayForYoutubeAPI[songID - 1];
 				const searchQuery = encodeURIComponent(`${songName} ${artist}`);
 
 				try {
@@ -270,15 +277,15 @@
 				}
 
 				let numOfDiv = songID - 1;
-				let videoDiv = document.getElementById("video" + numOfDiv);
+				let videoDiv = document.getElementById("video" + songID);
+				console.log(videoDiv);
 				videoDiv.innerHTML = "";
-
+				
 				let videoElement = document.createElement('iframe');
 				videoElement.id = "videoElement"
 				videoElement.src = youtubeLinks[0]; // Set the YouTube embed URL
 				videoElement.allowFullscreen = true; // Enable fullscreen mode
 				videoDiv.appendChild(videoElement);
-				
 			}
 		}
 	
