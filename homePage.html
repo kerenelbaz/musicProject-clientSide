@@ -147,8 +147,6 @@
 
 
 		function renderSongs(songsArr) {
-			arrayForYoutubeAPI = songsArr;
-			
 			let container = document.getElementById("container");
 			container.innerHTML = "";
 
@@ -161,7 +159,6 @@
 				container.appendChild(card);
 
 				let videoDiv = document.createElement("div");
-				//videoDiv.id = "video"+i;
 				videoDiv.id = "video"+songsArr[i].songId;
 
 				let img = document.createElement("img");
@@ -216,7 +213,7 @@
 				playBTN.setAttribute("data-artist-name", songsArr[i].artist);
 
 				playBTN.onclick = function(){
-					getYoutubeLinks(this); //this.id = playBtn.id
+					getYoutubeLinks(this); 
 				}
 
 				if (whichPage.innerHTML != "USERS VIEW"){
