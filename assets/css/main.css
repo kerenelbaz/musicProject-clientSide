@@ -114,7 +114,7 @@ input, select, textarea {
 		color: rgb(0, 0, 0);
 		line-height: 1.25em;
 		color: #63dfe7;
-		text-shadow: 0 0 3px #D000FE, 0 0 10px #D000FE, 0 0 20px #D000FE;
+		text-shadow: 0 0 4px #D000FE, 0 0 4px #D000FE, 0 0 4px #D000FE;
 		font-family: 'Source Sans Pro', sans-serif;
 	}
 
@@ -2196,7 +2196,7 @@ input, select, textarea {
 		padding: 4.5em 0 0em 0;
 		cursor: default;
 		border-bottom: 1px solid #0838f8;
-		text-shadow: 0 0 2px #0512ff, 0 0 2px #05d1ff, 0 0 2px #0598ed;
+		text-shadow: 0 0 4px #0512ff, 0 0 4px #05d1ff, 0 0 4px #0598ed;
 		color: #b2d0f3;
 		/* background-color: #262626; */
 		box-shadow: 0 0 2px #0524ed, 0px 0px 2px #05e5ed, 0px 0px 2px #05e5ed, 0px 0px 2px #EDD205;
