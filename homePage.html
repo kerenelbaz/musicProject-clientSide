@@ -213,8 +213,6 @@
 				buttonsDiv.appendChild(playBTN);
 				playBTN.addEventListener("click",function(){
 					getYoutubeLinks(this.id); //this.id = playBtn.id
-					// test = document.getElementsByTagName("svg")
-					// console.log(test)
 				});
 
 				if (whichPage.innerHTML != "USERS VIEW"){
@@ -223,7 +221,6 @@
 					addOrRemoveSongBTN.innerHTML = "<i class='fa-solid fa-star'></i>"; //the star is font of the btn
 					addOrRemoveSongBTN.title = "Add to your favorites";
 
-
 					for (var j = 0 ; j<favoriteSongsOfUserArr.length ; j++){ //checking if the favorite song is in the array in order to mark it as favorite
 						if(favoriteSongsOfUserArr[j].songId == songsArr[i].songId){
 							addOrRemoveSongBTN.style.color='rgb(236, 248, 7)'; //change the font color in order to mark the song as favorite
@@ -231,7 +228,7 @@
 					}
 
 					addOrRemoveSongBTN.onclick = function () {
-						if (this.style.color=='rgb(236, 248, 7)'){
+						if (this.style.color=='rgb(236, 248, 7)'){ //checks if the star is yellow 
 							this.style.color='rgb(179, 169, 169)';
 							removeSongFromFav(this.id);
 						}
@@ -240,14 +237,12 @@
 							addToFavorite(this.id);
 						}
 					}
-				
 					buttonsDiv.appendChild(addOrRemoveSongBTN)
 				}
 				inSongDiv.appendChild(buttonsDiv)
 				card.appendChild(inSongDiv)
 			}
 
-			
 			//youtube api call
 			async function getYoutubeLinks(songID) {
 				const apiKey = 'AIzaSyDtX-GDP0AQ-oVAodPAxjiXyIAneMJQ5-U';
@@ -263,18 +258,16 @@
 					const { items } = await searchResponse.json();
 
 					if (items && items.length > 0) {
-					const videoId = items[0].id.videoId;
-					const youtubeLink = `https://www.youtube.com/embed/${videoId}`; // Use the embed URL
-					youtubeLinks.push(youtubeLink);
+						const videoId = items[0].id.videoId;
+						const youtubeLink = `https://www.youtube.com/embed/${videoId}`; // Use the embed URL
+						youtubeLinks.push(youtubeLink);
 					} else {
-					youtubeLinks.push('Video not found');
+						youtubeLinks.push('Video not found');
 					}
 				} catch (error) {
 					console.error('Error fetching YouTube data:', error);
 					youtubeLinks.push('Error fetching video');
 				}
-
-				console.log("LIMKS: " + youtubeLinks);
 
 				let numOfDiv = songID - 1;
 				let videoDiv = document.getElementById("video" + numOfDiv);
@@ -284,22 +277,12 @@
 				videoElement.id = "videoElement"
 				videoElement.src = youtubeLinks[0]; // Set the YouTube embed URL
 				videoElement.allowFullscreen = true; // Enable fullscreen mode
-				// videoElement.style.width = '8em'; // Set the width of the video
-				// videoElement.style.height = '6em';
-				// videoElement.style.marginTop = '1em';
-				// videoElement.style.borderRadius = '7px'
-
 				videoDiv.appendChild(videoElement);
 				
 			}
 		}
 	
-
-
-
-
 		function logOut() {
-	
 			Swal.fire({
 				title: 'Are you sure?',								
 				showCancelButton: true,
@@ -310,9 +293,6 @@
 					if (value.isConfirmed) {
 						localStorage.clear()
 						window.location.href = "welcomePage.html";
-					}
-					else{
-
 					}
 			})
 		}
@@ -399,7 +379,8 @@
 			const api = `${port}/api/User/GetFavoriteSongsOfUser?userId=${userId}`;
 			ajaxCall("GET", api, "", successCB_getFavoriteSongsOfUser, errorCB);
 		}
-				
+		
+		//inserts the favorite songs into the array
 		function successCB_getFavoriteSongsOfUser(data) {
 			if (data){
 				favoriteSongsOfUserArr = data;
@@ -411,13 +392,11 @@
 					renderSongs(favoriteSongsOfUserArr)
 				}
 			}
-
 			else
 				alert("Something went wrong");
 		}
 
-
-		
+		//clicking the star button
 		function addToFavorite(songId) {
 			if (localStorage['onlineUser'] != null) {
 				let userId = JSON.parse(localStorage['onlineUser']).userId;
@@ -427,28 +406,16 @@
 		}
 
 		function successCBaddToFav(data) {
-			if (data) {
-				Swal.fire('Song added to your favorites')
-
-			}
-
-			if (data == false) {
-				alert("This song is already in your favorites");
-			}
+			return null;
 		}
-
-
 
 		function removeSongFromFav(songId){
 			const api = `${port}/api/User/deleteSongFromFavorites?songId=${songId}&userId=${JSON.parse(localStorage['onlineUser']).userId}`;
             ajaxCall("DELETE", api, "", successCBDeleteFromFav, errorCB);
-
 		}
 
         function successCBDeleteFromFav(data) {
-            Swal.fire('Song deleted')
             favoriteSongsOfUserArr = data;
-			
         }
 
 		function errorCB(data) {
@@ -457,12 +424,10 @@
 			}
 		}
 
-
-
 		function renderSearching(number) {
 			let container = document.getElementById("container");
 			container.innerHTML = "";
-			document.getElementById("pForm").style.display = "none"
+			document.getElementById("pForm").style.display = "none" //user's table unvisable
 			const whichPage = document.getElementById("whichPage");
 			whichPage.innerHTML = "SEARCH MUSIC BY ";
 
@@ -551,38 +516,7 @@
 			searchSongs(api);
 		}
 
-
-
-
-
 		
-		function getArtistInfo(artistName) {
-			$.ajax({
-				url: 'http://ws.audioscrobbler.com/2.0/',
-				method: 'GET',
-				data: {
-					method: 'artist.getinfo',
-					artist: artistName,
-					api_key: 'd213eba8760d06561048ca7e571dcce2', //this is the API of lastFM website
-					format: 'json'
-				},
-				success: function(response) {
-					swal({
-								title: artistName + ' Information:',
-								text:response.artist.bio.content,
-								showClass: {
-									popup: 'animate__animated animate__fadeInDown'
-								},
-								hideClass: {
-									popup: 'animate__animated animate__fadeOutUp'
-								}
-							});
-				},
-				error: function(error) {
-					console.error(error);
-				}
-			});
-		}
 
 		function renderAtrists(){
 			whichPage = document.getElementById("whichPage");
@@ -590,36 +524,30 @@
 			document.getElementById("pForm").style.display = "none"
 			const api =  `${port}/api/Artist/GetAllArtists`;			
 			ajaxCall("GET", api, "", successCB_renderAtrists , errorCB);
-
 		}
-
-
 
 		function successCB_renderAtrists(data){			
 			if(data){
-
 				let container = document.getElementById("container");
 				container.innerHTML = "";
 				// Loop through the array and call the function for each artist
 				for (let i = 0; i < data.length; i++) {
 					let artistName = data[i];
 					getArtistImage(artistName);
-
 				}
 			}
 			else alert("something wrong");
 		}
 
-
-
-
-
+		//using Spotify API in order to use artist image
 		function getArtistImage(artistName) {
-			const clientId = "76eb58574dca4292942f6b50535fe9b9";
+			//Spotify credentials
+			const clientId = "76eb58574dca4292942f6b50535fe9b9"; 
 			const clientSecret = "df624510f02e46a39a9f04d250b1cde8";
 
+			//btoa does encryption into authorization variiable (מאמת)
 			const auth = btoa(`${clientId}:${clientSecret}`);
-			// Step 1: Get the access token
+			// Step 1: Get the access token עושה את ההתחברות
 			$.ajax({
 				type: 'POST',
 				url: 'https://accounts.spotify.com/api/token',
@@ -632,7 +560,7 @@
 				success: function(tokenResponse) {
 				const access_token = tokenResponse.access_token;
 
-				// Step 2: Search for the artist
+				// Step 2: Search for the artist - מקבלת שם ומחזירה ID
 				$.ajax({
 					type: 'GET',
 					url: `https://api.spotify.com/v1/search?q=${encodeURIComponent(artistName)}&type=artist`,
@@ -641,7 +569,7 @@
 					},
 					success: function(searchResponse) {
 					const artists = searchResponse.artists;
-
+					
 					if (!artists || !artists.items || artists.items.length === 0) {
 						console.error('Artist not found or no image available.');
 						return;
@@ -649,7 +577,7 @@
 
 					const artistId = artists.items[0].id;
 					
-					// Step 3: Get artist details
+					// Step 3: Get artist details - function gets artistID and returns his details
 					$.ajax({
 						type: 'GET',
 						url: `https://api.spotify.com/v1/artists/${artistId}`,
@@ -662,17 +590,17 @@
 							return;
 						}	
 						
+						//Render the artist cards into the container
 						let container = document.getElementById("container");
 						let card = document.createElement("div");
 						card.id = "artistCard";
 						
-
 						let link = document.createElement("a");
 						link.class = "linkToSpotify";
-						link.href = `${artistDetails.external_urls.spotify}`;
+						link.href = `${artistDetails.external_urls.spotify}`; //לינק לעמוד של האומן בספוטיפיי
 						link.target = "_blank"
 						card.appendChild(link);
-						
+
 						let img = document.createElement("img");
 						img.src = `${artistDetails.images[0].url}`;
 						link.appendChild(img);
@@ -681,16 +609,14 @@
 						artist.innerHTML = artistName;
 						card.appendChild(artist);
 
-						let moreInfo = document.createElement("div")
-						moreInfo.id = "moreInfo"
-						// let infoBTN = document.createElement("button");
-						// infoBTN.textContent = 'i';
+						let moreInfoDiv = document.createElement("div")
+						moreInfoDiv.id = "moreInfo"
 						let infoBTN = document.createElement("span");
-						infoBTN.innerHTML = '<i class="fa-solid fa-circle-info fa-lg" style="color: rgb(94 212 219);"></i>';
+						infoBTN.innerHTML = '<a href=# title="Artist bio"><i class="fa-solid fa-circle-info fa-lg" style="color: rgb(94 212 219);"></i></a>';
 						infoBTN.onclick = function() {
 							getArtistInfo(artistName);
 						}
-						moreInfo.appendChild(infoBTN);
+						moreInfoDiv.appendChild(infoBTN);
 
 						if(JSON.parse(localStorage['onlineUser']).email == "admin@gmail.com"){
 							ajaxCall("GET", `${port}/api/Artist/inFavoriteCount?artistName=${artistName}`, "",
@@ -698,10 +624,10 @@
 								let numOfFavorites = document.createElement("h4");
 								//numOfFavorites.innerHTML = `Apears ${number} times in favorites`;
 								numOfFavorites.innerHTML = ` <i class="fa-solid fa-heart fa-lg" style="color: #f91a1a;"></i> ${number}`;
-								moreInfo.appendChild(numOfFavorites);
+								moreInfoDiv.appendChild(numOfFavorites);
 							} , errorCB);
 						}
-						card.appendChild(moreInfo)
+						card.appendChild(moreInfoDiv)
 						container.appendChild(card);
 
 						
@@ -721,9 +647,36 @@
 				}
 			});
 			//notr
-    }
+    	}
 
-
+		//Using LastFM API in order to get the artist biogrephy by artistName 
+		function getArtistInfo(artistName) {
+			$.ajax({
+				url: 'http://ws.audioscrobbler.com/2.0/',
+				method: 'GET',
+				data: {
+					method: 'artist.getinfo',
+					artist: artistName,
+					api_key: 'd213eba8760d06561048ca7e571dcce2', //this is the API of lastFM website
+					format: 'json'
+				},
+				success: function(response) {
+					swal({
+						title: artistName + ' Information:',
+						text:response.artist.bio.content,
+						showClass: {
+							popup: 'animate__animated animate__fadeInDown'
+						},
+						hideClass: {
+							popup: 'animate__animated animate__fadeOutUp'
+						}
+					});
+				},
+				error: function(error) {
+					console.error(error);
+				}
+			});
+		}
 
 
 
