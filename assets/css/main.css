@@ -2189,6 +2189,7 @@ input, select, textarea {
 	#header {
 		position: relative;
 		background-color: #06031b;
+		/* background-image: url("images/dark.avif"); */
 		background-size: cover;
 		background-position: center center;
 		background-attachment: fixed;

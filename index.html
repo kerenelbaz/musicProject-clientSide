@@ -43,6 +43,11 @@
 		</style>
 		
 		<script>
+			function init() {
+				if (localStorage['onlineUser'] != null) {
+					window.location.href = "homePage.html"
+				}
+			}
 			// function to show the login form
 			function showLoginForm() {
 				// hide the register button
@@ -57,6 +62,7 @@
 			$(document).ready(function () 
 			{
             	$("#loginForm").submit(LogIn);
+				
 
         	});
 
@@ -89,7 +95,7 @@
 		
 
 	</head>
-	<body class="homepage is-preload">
+	<body class="homepage is-preload"  onload="init()">
 		<div id="page-wrapper">
 
 			<!-- Header -->
